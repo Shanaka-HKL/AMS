@@ -11,7 +11,7 @@ namespace AMS
 {
 
 
-    public partial class _Contactus
+    public partial class Contactus
     {
 
         /// <summary>

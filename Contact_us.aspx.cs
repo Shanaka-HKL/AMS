@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace AMS
 {
-    public partial class _Contactus : Page
+    public partial class Contactus : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -41,7 +41,7 @@ namespace AMS
             }
             else
             {
-                EmailAsync();
+                _ = EmailAsync();
             }
         }
         public async Task EmailAsync()
@@ -68,8 +68,10 @@ namespace AMS
         {
             try
             {
-                MailMessage mail = new MailMessage();
-                mail.From = new MailAddress("alert@advertisementmanagementsystem.com");
+                MailMessage mail = new MailMessage
+                {
+                    From = new MailAddress("alert@advertisementmanagementsystem.com")
+                };
                 mail.To.Add("shanaka@iq-global.com");
                 mail.IsBodyHtml = true;
                 mail.Subject = subject;
