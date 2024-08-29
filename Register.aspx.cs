@@ -75,7 +75,7 @@ namespace AMS
                 {
                     ErrTB.ForeColor = Color.Green;
                     ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + reslt + "');", true);
-                    ErrTB.Text = reslt + "Check your email inbox and please click on the link to activate your account.";
+                    ErrTB.Text = "Check your email inbox and please click on the link to activate your account.";
                 }
                 else
                 {
