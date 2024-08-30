@@ -66,9 +66,9 @@ namespace AMS
 
                     BannerGridView.DataSource = dta;
                     BannerGridView.DataBind();
-
-                    BindDropDowns();
                 }
+                
+                BindDropDowns();
             }
             catch (Exception ex)
             {

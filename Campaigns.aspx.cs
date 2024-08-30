@@ -65,6 +65,8 @@ namespace AMS
                     CampaignGridView.DataSource = dta;
                     CampaignGridView.DataBind();
                 }
+
+                BindWeb();
             }
             catch (Exception ex)
             {
@@ -220,7 +222,7 @@ namespace AMS
             }
         }
 
-        protected void AdvertiserDDL_SelectedIndexChanged(object sender, EventArgs e)
+        private void BindWeb()
         {
             try
             {
