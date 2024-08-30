@@ -79,6 +79,7 @@ namespace AMS
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public string get_string(string method, string JsonOutput, string meth_)
         {
+            InitializeSecurityProtocol(); // Ensure TLS 1.2 is used
             string result = "";
             try
             {
@@ -87,42 +88,49 @@ namespace AMS
                 http.KeepAlive = true;
                 http.PreAuthenticate = true;
                 http.AllowAutoRedirect = true;
-                ASCIIEncoding encoding = new ASCIIEncoding();
-                byte[] bytes = encoding.GetBytes(JsonOutput);
-                http.ContentLength = bytes.Length;
-                http.Headers["AMS_KEY"] = ApiKey;
-                http.Accept = "application/json";
                 http.ContentType = "application/json";
-                http.MediaType = "application/json";
-                http.Headers["Cache-Control"] = "no-cache";
                 http.Method = meth_.ToUpper();
 
-                Stream newStream = http.GetRequestStream();
-                newStream.Write(bytes, 0, bytes.Length);
-
-                using ((HttpWebResponse)http.GetResponse())
+                // Check if the method requires a request body
+                if (http.Method == "POST" || http.Method == "PUT")
                 {
-                    StreamReader sr = new StreamReader(http.GetResponse().GetResponseStream());
-                    result = sr.ReadToEnd().Trim();
-                    string[] resultCollection = Regex.Split(result, ",");
+                    ASCIIEncoding encoding = new ASCIIEncoding();
+                    byte[] bytes = encoding.GetBytes(JsonOutput);
+                    http.ContentLength = bytes.Length;
+                    http.Headers["AMS_KEY"] = ApiKey;
+                    http.Accept = "application/json";
+                    http.Headers["Cache-Control"] = "no-cache";
+
+                    using (Stream newStream = http.GetRequestStream())
+                    {
+                        newStream.Write(bytes, 0, bytes.Length);
+                    }
                 }
-                return result;
+
+                using (HttpWebResponse response = (HttpWebResponse)http.GetResponse())
+                {
+                    using (StreamReader sr = new StreamReader(response.GetResponseStream()))
+                    {
+                        result = sr.ReadToEnd().Trim();
+                    }
+                }
             }
             catch (WebException e)
             {
-                return e.Message;
-                //using (WebResponse response = e.Response)
-                //{
-                //    HttpWebResponse httpResponse = (HttpWebResponse)response;
-                //    Console.WriteLine("Error code: {0}", httpResponse.StatusCode);
-                //    using (Stream data = response.GetResponseStream())
-                //    using (var reader = new StreamReader(data))
-                //    {
-                //        string text = reader.ReadToEnd();
-                //    }
-                //}
-                //return result;
+                // Log detailed error information
+                string errorMessage = "WebException: " + e.Message;
+                if (e.Response != null)
+                {
+                    using (var response = (HttpWebResponse)e.Response)
+                    using (var reader = new StreamReader(response.GetResponseStream()))
+                    {
+                        string errorResponse = reader.ReadToEnd();
+                        errorMessage += $" | Status Code: {response.StatusCode} | Error Response: {errorResponse}";
+                    }
+                }
+                return errorMessage;
             }
+            return result;
         }
 
         public string gAPIRequest(string result_)

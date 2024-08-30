@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -14,7 +15,7 @@ namespace AMS
 {
     public partial class _Banners : Page
     {
-        String Id = "";
+        
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -27,7 +28,7 @@ namespace AMS
                 }
                 else
                 {
-                    Id = Kripta.Decrypt(userin4ck["id"].Trim(), "PPA4XCyfPMBrVASxNr/8A").ToString().Trim();
+                    Idn.Value = Kripta.Decrypt(userin4ck["id"].Trim(), "PPA4XCyfPMBrVASxNr/8A").ToString().Trim();
 
                     BindBannerGridView();
                 }
@@ -51,7 +52,7 @@ namespace AMS
         {
             try
             {
-                string JsonInput = "{\r\n    \"UserId\" : " + "'" + Id + "'" + "\r\n}";
+                string JsonInput = "{\r\n    \"UserId\" : " + "'" + Idn.Value + "'" + "\r\n}";
 
                 DataTable dta = new DataTable();
 
@@ -61,30 +62,9 @@ namespace AMS
 
                 if (dta.Rows.Count > 0)
                 {
-                    DataTable dt = new DataTable();
-                    dt.Columns.Add("Id", typeof(int));
-                    dt.Columns.Add("CampaignName", typeof(string));
-                    dt.Columns.Add("WebsiteName", typeof(string));
-                    dt.Columns.Add("ZoneName", typeof(string));
-                    dt.Columns.Add("BannerName", typeof(string));
-                    dt.Columns.Add("Priority", typeof(int));
-                    dt.Columns.Add("CreatedBy", typeof(string));
-                    dt.Columns.Add("CreatedDate", typeof(DateTime));
-                    dt.Columns.Add("UpdatedDate", typeof(DateTime));
-                    dt.Columns.Add("Status", typeof(string));
+                    ViewState["BannerTable"] = dta;
 
-                    foreach (DataRow dr in dta.Rows)
-                    {
-                        dt.Rows.Add(dr["Id"].ToString(), dr["CampaignName"].ToString(),
-                            dr["WebsiteName"].ToString(), dr["ZoneName"].ToString(),
-                            dr["BannerName"].ToString(),
-                            dr["Priority"].ToString(), dr["CreatedBy"].ToString(),
-                            dr["CreatedDate"].ToString(), dr["UpdatedDate"].ToString(), dr["Status"].ToString());
-                    }
-
-                    ViewState["BannerTable"] = dt;
-
-                    BannerGridView.DataSource = dt;
+                    BannerGridView.DataSource = dta;
                     BannerGridView.DataBind();
 
                     BindDropDowns();
@@ -100,7 +80,7 @@ namespace AMS
         {
             try
             {
-                string JsonInput = "{\r\n    \"UserId\" : " + "'" + Id + "'" + "\r\n}";
+                string JsonInput = "{\r\n    \"UserId\" : " + "'" + Idn.Value + "'" + "\r\n}";
 
                 DataTable dta = new DataTable();
 
@@ -127,7 +107,16 @@ namespace AMS
         {
             try
             {
-                string JsonInput = "{\r\n   \"BannerId\" : " + "'" + websiteID + "'" + "\r\n  \"Status\" : " + "'" + status + "'" + "\r\n  \"UserId\" : " + "'" + Id + "'" + "\r\n}";
+                // Create a JSON object using a C# dictionary
+                var jsonObject = new
+                {
+                    BannerId = websiteID,
+                    Status = status,
+                    UserId = Idn.Value
+                };
+
+                // Serialize the object to a JSON string
+                string JsonInput = JsonConvert.SerializeObject(jsonObject);
 
                 PostAPI apir = new PostAPI();
 
@@ -314,7 +303,7 @@ namespace AMS
                     ",\r\n    \"BannerLink\" : " + "'" + txtBannerLinkVlu + "'" +
                     ",\r\n    \"Name\" : " + "'" + txtBannerNameVlu + "'" +
                     ",\r\n    \"Priority\" : " + "'" + txtPriority_ + "'" +
-                    ",\r\n    \"UserId\" : " + "'" + Id + "'" + "\r\n}";
+                    ",\r\n    \"UserId\" : " + "'" + Idn.Value + "'" + "\r\n}";
 
                 PostAPI apir = new PostAPI();
                 string result = apir.get_string("updateBannerByBannerId", JsonInput, "post");
@@ -339,7 +328,7 @@ namespace AMS
                     ",\r\n    \"BannerLink\" : " + "'" + txtBannerLinkVlu + "'" +
                     ",\r\n    \"Name\" : " + "'" + txtBannerNameVlu + "'" +
                     ",\r\n    \"Priority\" : " + "'" + txtPriority_ + "'" +
-                    ",\r\n    \"UserId\" : " + "'" + Id + "'" + "\r\n}";
+                    ",\r\n    \"UserId\" : " + "'" + Idn.Value + "'" + "\r\n}";
 
                 PostAPI apir = new PostAPI();
                 string result = apir.get_string("insertBanner", JsonInput, "post");

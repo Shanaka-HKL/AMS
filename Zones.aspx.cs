@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -13,7 +15,7 @@ namespace AMS
 {
     public partial class _Zones : Page
     {
-        String Id = "";
+        
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -26,7 +28,7 @@ namespace AMS
                 }
                 else
                 {
-                    Id = Kripta.Decrypt(userin4ck["id"].Trim(), "PPA4XCyfPMBrVASxNr/8A").ToString().Trim();
+                    Idn.Value = Kripta.Decrypt(userin4ck["id"].Trim(), "PPA4XCyfPMBrVASxNr/8A").ToString().Trim();
 
                     BindZoneGridView();
                 }
@@ -50,7 +52,7 @@ namespace AMS
         {
             try
             {
-                string JsonInput = "{\r\n    \"UserId\" : " + "'" + Id + "'" + "\r\n}";
+                string JsonInput = "{\r\n    \"UserId\" : " + "'" + Idn.Value + "'" + "\r\n}";
 
                 DataTable dta = new DataTable();
 
@@ -60,74 +62,13 @@ namespace AMS
 
                 if (dta.Rows.Count > 0)
                 {
-                    DataTable dt = new DataTable();
-                    dt.Columns.Add("Id", typeof(int));
-                    dt.Columns.Add("WebsiteName", typeof(string));
-                    dt.Columns.Add("ZoneName", typeof(string));
-                    dt.Columns.Add("ZoneType", typeof(string));
-                    dt.Columns.Add("ZoneSize", typeof(string));
-                    dt.Columns.Add("CreatedBy", typeof(string));
-                    dt.Columns.Add("CreatedDate", typeof(DateTime));
-                    dt.Columns.Add("UpdatedDate", typeof(DateTime));
-                    dt.Columns.Add("Status", typeof(string));
+                    ViewState["ZoneTable"] = dta;
 
-                    var zoneTypeMapping = new Dictionary<string, string>
-    {
-        { "Banner", "Banner, Button or Rectangle" },
-        { "Interstitial", "Interstitial or Floating DHTML" },
-        { "TextAd", "Text ad" },
-        { "EmailNewsletter", "Email/Newsletter zone" },
-        { "InlineVideoAd", "Inline Video ad" },
-        { "OverlayVideoAd", "Overlay Video ad" }
-    };
-
-                    var zoneSizeMapping = new Dictionary<string, string>
-    {
-        { "Banner", "Banner, Button or Rectangle" },
-        { "468x60", "IAB Full Banner (468 x 60)" },
-        { "120x600", "IAB Skyscraper (120 x 600)" },
-        { "728x90", "IAB Leaderboard (728 x 90)" },
-        { "120x90", "IAB Button 1 (120 x 90)" },
-        { "120x60", "IAB Button 2 (120 x 60)" },
-        { "234x60", "IAB Half Banner (234 x 60)" },
-        { "88x31", "IAB Micro Bar (88 x 31)" },
-        { "125x125", "IAB Square Button (125 x 125)" },
-        { "120x240", "IAB Vertical Banner (120 x 240)" },
-        { "180x150", "IAB Rectangle (180 x 150)" },
-        { "300x250", "IAB Medium Rectangle (300 x 250)" },
-        { "336x280", "IAB Large Rectangle (336 x 280)" },
-        { "240x400", "IAB Vertical Rectangle (240 x 400)" },
-        { "250x250", "IAB Square Pop-up (250 x 250)" },
-        { "160x600", "IAB Wide Skyscraper (160 x 600)" },
-        { "720x300", "IAB Pop-Under (720 x 300)" },
-        { "-", "Custom" }
-    };
-
-                    foreach (DataRow dr in dta.Rows)
-                    {
-                        string zoneTypeText = zoneTypeMapping.ContainsKey(dr["ZoneType"].ToString())
-    ? zoneTypeMapping[dr["ZoneType"].ToString()]
-    : dr["ZoneType"].ToString();
-
-                        string zoneSizeText = zoneSizeMapping.ContainsKey(dr["ZoneSize"].ToString())
-                            ? zoneSizeMapping[dr["ZoneSize"].ToString()]
-                            : dr["ZoneSize"].ToString();
-
-                        dt.Rows.Add(dr["Id"].ToString(), dr["WebsiteName"].ToString(), dr["ZoneName"].ToString(),
-            zoneTypeText,
-            zoneSizeText,
-
-                            dr["CreatedBy"].ToString(), dr["CreatedDate"].ToString(),
-                            dr["UpdatedDate"].ToString(), dr["Status"].ToString());
-                    }
-
-                    ViewState["ZoneTable"] = dt;
-
-                    ZoneGridView.DataSource = dt;
+                    ZoneGridView.DataSource = dta;
                     ZoneGridView.DataBind();
-
-                    BindDropDowns();
                 }
+                
+                BindDropDowns();
             }
             catch (Exception ex)
             {
@@ -139,7 +80,7 @@ namespace AMS
         {
             try
             {
-                string JsonInput = "{\r\n    \"AdvertiserId\" : " + "'" + Id + "'" + "\r\n}";
+                string JsonInput = "{\r\n    \"AdvertiserId\" : " + "'" + Idn.Value + "'" + "\r\n}";
 
                 DataTable dtc = new DataTable();
 
@@ -166,7 +107,16 @@ namespace AMS
         {
             try
             {
-                string JsonInput = "{\r\n   \"ZoneId\" : " + "'" + websiteID + "'" + "\r\n  \"Status\" : " + "'" + status + "'" + "\r\n  \"UserId\" : " + "'" + Id + "'" + "\r\n}";
+                // Create a JSON object using a C# dictionary
+                var jsonObject = new
+                {
+                    ZoneId = websiteID,
+                    Status = status,
+                    UserId = Idn.Value
+                };
+
+                // Serialize the object to a JSON string
+                string JsonInput = JsonConvert.SerializeObject(jsonObject);
 
                 PostAPI apir = new PostAPI();
 
@@ -272,14 +222,29 @@ namespace AMS
         {
             try
             {
-                string JsonInput = "{\r\n    \"ZoneTypeId\" : " + "'" + ddlZoneTypeDDL + "'" +
-                    ",\r\n    \"ZoneSizeId\" : " + "'" + ddlZoneSizeDDL + "'" +
-                    ",\r\n    \"Description\" : " + "'" + txtZoneDescription + "'" +
-                    ",\r\n    \"WebsiteId\" : " + "'" + WebSiteDDL_ + "'" +
-                    ",\r\n    \"Name\" : " + "'" + txtZoneName + "'" +
-                    ",\r\n    \"mWidth\" : " + "'" + txtWidth + "'" +
-                    ",\r\n    \"mHeight\" : " + "'" + txtHeight + "'" +
-                    ",\r\n    \"UserId\" : " + "'" + Id + "'" + "\r\n}";
+                // Parse numeric values
+                int width = 0;
+                int height = 0;
+
+                // Try parsing the width and height values
+                int.TryParse(txtWidth, out width);
+                int.TryParse(txtHeight, out height);
+
+                // Create a JSON object with proper formatting
+                var jsonObject = new
+                {
+                    ZoneTypeId = ddlZoneTypeDDL,
+                    ZoneSizeId = ddlZoneSizeDDL,
+                    Description = txtZoneDescription,
+                    WebsiteId = WebSiteDDL_,
+                    Name = txtZoneName,
+                    mWidth = width,
+                    mHeight = height,
+                    UserId = Idn.Value
+                };
+
+                // Serialize the object to a JSON string
+                string JsonInput = JsonConvert.SerializeObject(jsonObject);
 
                 PostAPI apir = new PostAPI();
                 string result = apir.get_string("insertZone", JsonInput, "post");
@@ -292,6 +257,7 @@ namespace AMS
                 return ex.Message;
             }
         }
+
         protected void DownloadButton_Click(object sender, EventArgs e)
         {
             LinkButton clickedButton = sender as LinkButton;

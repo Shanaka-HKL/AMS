@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -12,7 +13,7 @@ namespace AMS
 {
     public partial class _Websites : Page
     {
-        String Id = "";
+        
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -25,7 +26,7 @@ namespace AMS
                 }
                 else
                 {
-                    Id = Kripta.Decrypt(userin4ck["id"].Trim(), "PPA4XCyfPMBrVASxNr/8A").ToString().Trim();
+                    Idn.Value = Kripta.Decrypt(userin4ck["id"].Trim(), "PPA4XCyfPMBrVASxNr/8A").ToString().Trim();
                     BindWebsiteGridView();
                 }
             }
@@ -48,7 +49,7 @@ namespace AMS
         {
             try
             {
-                string JsonInput = "{\r\n    \"UserId\" : " + "'" + Id + "'" + "\r\n}";
+                string JsonInput = "{\r\n    \"UserId\" : " + "'" + Idn.Value + "'" + "\r\n}";
 
                 DataTable dta = new DataTable();
 
@@ -58,24 +59,9 @@ namespace AMS
 
                 if (dta.Rows.Count > 0)
                 {
-                    DataTable dt = new DataTable();
-                    dt.Columns.Add("Id", typeof(int));
-                    dt.Columns.Add("WebsiteName", typeof(string));
-                    dt.Columns.Add("CreatedBy", typeof(string));
-                    dt.Columns.Add("CreatedDate", typeof(DateTime));
-                    dt.Columns.Add("UpdatedDate", typeof(DateTime));
-                    dt.Columns.Add("Status", typeof(string));
+                    ViewState["WebsiteTable"] = dta;
 
-                    foreach (DataRow dr in dta.Rows)
-                    {
-                        dt.Rows.Add(dr["Id"].ToString(), dr["WebsiteName"].ToString(),
-                            dr["CreatedBy"].ToString(), dr["CreatedDate"].ToString(),
-                            dr["UpdatedDate"].ToString(), dr["Status"].ToString());
-                    }
-
-                    ViewState["WebsiteTable"] = dt;
-
-                    WebsiteGridView.DataSource = dt;
+                    WebsiteGridView.DataSource = dta;
                     WebsiteGridView.DataBind();
                 }
             }
@@ -89,7 +75,16 @@ namespace AMS
         {
             try
             {
-                string JsonInput = "{\r\n   \"WebsiteId\" : " + "'" + websiteID + "'" + "\r\n  \"Status\" : " + "'" + status + "'" + "\r\n  \"UserId\" : " + "'" + Id + "'" + "\r\n}";
+                // Create a JSON object using a C# dictionary
+                var jsonObject = new
+                {
+                    WebsiteId = websiteID,
+                    Status = status,
+                    UserId = Idn.Value
+                };
+
+                // Serialize the object to a JSON string
+                string JsonInput = JsonConvert.SerializeObject(jsonObject);
 
                 PostAPI apir = new PostAPI();
 
@@ -185,7 +180,7 @@ namespace AMS
                 string JsonInput = "{\r\n    \"Name\" : " + "'" + NameTextBox_ + "'" +
                     ",\r\n    \"WebsiteUrl\" : " + "'" + WebsiteUrlTextBox_ + "'" +
                     ",\r\n    \"TargetFrame\" : " + "'" + TargetFrameDropDownList_ + "'" +
-                    ",\r\n    \"UserId\" : " + "'" + Id + "'" + "\r\n}";
+                    ",\r\n    \"UserId\" : " + "'" + Idn.Value + "'" + "\r\n}";
 
                 PostAPI apir = new PostAPI();
                 string result = apir.get_string("insertWebsite", JsonInput, "post");

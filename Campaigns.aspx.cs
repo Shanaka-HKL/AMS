@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -12,7 +13,7 @@ namespace AMS
 {
     public partial class _Campaigns : Page
     {
-        String Id = "";
+        
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -25,7 +26,7 @@ namespace AMS
                 }
                 else
                 {
-                    Id = Kripta.Decrypt(userin4ck["id"].Trim(), "PPA4XCyfPMBrVASxNr/8A").ToString().Trim();
+                    Idn.Value = Kripta.Decrypt(userin4ck["id"].Trim(), "PPA4XCyfPMBrVASxNr/8A").ToString().Trim();
 
                     BindCampaignGridView();
                 }
@@ -49,7 +50,7 @@ namespace AMS
         {
             try
             {
-                string JsonInput = "{\r\n    \"UserId\" : " + "'" + Id + "'" + "\r\n}";
+                string JsonInput = "{\r\n    \"UserId\" : " + "'" + Idn.Value + "'" + "\r\n}";
 
                 DataTable dta = new DataTable();
 
@@ -59,32 +60,13 @@ namespace AMS
 
                 if (dta.Rows.Count > 0)
                 {
-                    DataTable dt = new DataTable();
-                    dt.Columns.Add("Id", typeof(int));
-                    dt.Columns.Add("CampaignName", typeof(string));
-                    dt.Columns.Add("Advertiser", typeof(string));
-                    dt.Columns.Add("WebsiteName", typeof(string));
-                    dt.Columns.Add("CreatedBy", typeof(string));
-                    dt.Columns.Add("CreatedDate", typeof(DateTime));
-                    dt.Columns.Add("StartDate", typeof(DateTime));
-                    dt.Columns.Add("EndDate", typeof(DateTime));
-                    dt.Columns.Add("Status", typeof(string));
+                    ViewState["CampaignTable"] = dta;
 
-                    foreach (DataRow dr in dta.Rows)
-                    {
-                        dt.Rows.Add(dr["Id"].ToString(), dr["CampaignName"].ToString(),
-                            dr["Advertiser"].ToString(), dr["WebsiteName"].ToString(),
-                            dr["CreatedBy"].ToString(), dr["CreatedDate"].ToString(),
-                            dr["StartDate"].ToString(), dr["EndDate"].ToString(), dr["Status"].ToString());
-                    }
-
-                    ViewState["CampaignTable"] = dt;
-
-                    CampaignGridView.DataSource = dt;
+                    CampaignGridView.DataSource = dta;
                     CampaignGridView.DataBind();
-
-                    BindDropDowns();
                 }
+                
+                BindDropDowns();
             }
             catch (Exception ex)
             {
@@ -96,7 +78,7 @@ namespace AMS
         {
             try
             {
-                string JsonInput = "{\r\n    \"UserId\" : " + "'" + Id + "'" + "\r\n}";
+                string JsonInput = "{\r\n    \"UserId\" : " + "'" + Idn.Value + "'" + "\r\n}";
 
                 DataTable dta = new DataTable();
 
@@ -123,7 +105,16 @@ namespace AMS
         {
             try
             {
-                string JsonInput = "{\r\n   \"CampaignId\" : " + "'" + websiteID + "'" + "\r\n  \"Status\" : " + "'" + status + "'" + "\r\n  \"UserId\" : " + "'" + Id + "'" + "\r\n}";
+                // Create a JSON object using a C# dictionary
+                var jsonObject = new
+                {
+                    CampaignId = websiteID,
+                    Status = status,
+                    UserId = Idn.Value
+                };
+
+                // Serialize the object to a JSON string
+                string JsonInput = JsonConvert.SerializeObject(jsonObject);
 
                 PostAPI apir = new PostAPI();
 
@@ -225,14 +216,31 @@ namespace AMS
         {
             try
             {
-                string JsonInput = "{\r\n    \"Name\" : " + "'" + txtCampaignName_ + "'" +
-                    ",\r\n    \"Description\" : " + "'" + txtCampaignDescription_ + "'" +
-                    ",\r\n    \"AdvertiserId\" : " + "'" + AdvertiserDDL_ + "'" +
-                    ",\r\n    \"WebsiteId\" : " + "'" + WebsiteDDL_ + "'" +
-                    ",\r\n    \"Budget\" : " + "'" + txtCampaignBudget_ + "'" +
-                    ",\r\n    \"StartDate\" : " + "'" + txtStartDate_ + "'" +
-                    ",\r\n    \"EndDate\" : " + "'" + txtEndDate_ + "'" +
-                    ",\r\n    \"UserId\" : " + "'" + Id + "'" + "\r\n}";
+                // Parse numeric value for budget
+                decimal budget = 0;
+                decimal.TryParse(txtCampaignBudget_, out budget);
+
+                // Convert date strings to DateTime objects
+                DateTime startDate;
+                DateTime endDate;
+                DateTime.TryParse(txtStartDate_, out startDate);
+                DateTime.TryParse(txtEndDate_, out endDate);
+
+                // Create a JSON object with proper formatting
+                var jsonObject = new
+                {
+                    Name = txtCampaignName_,
+                    Description = txtCampaignDescription_,
+                    AdvertiserId = AdvertiserDDL_,
+                    WebsiteId = WebsiteDDL_,
+                    Budget = budget,
+                    StartDate = startDate.ToString("yyyy-MM-dd"), // Adjust format as needed
+                    EndDate = endDate.ToString("yyyy-MM-dd"),     // Adjust format as needed
+                    UserId = Idn.Value
+                };
+
+                // Serialize the object to a JSON string
+                string JsonInput = JsonConvert.SerializeObject(jsonObject);
 
                 PostAPI apir = new PostAPI();
                 string result = apir.get_string("insertCampaign", JsonInput, "post");
@@ -245,6 +253,7 @@ namespace AMS
                 return ex.Message;
             }
         }
+
         protected void AdvertiserDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
             try

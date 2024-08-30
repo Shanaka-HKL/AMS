@@ -16,7 +16,7 @@ namespace AMS
 {
     public partial class _Profile : Page
     {
-        String Id = ""; String Email = ""; String DName = ""; String AId = ""; String Address = ""; String Type = "";
+         String Email = ""; String DName = ""; String AId = ""; String Address = ""; String Type = "";
         String Phone = ""; String Pic = ""; String Description = "";
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -30,7 +30,7 @@ namespace AMS
                 }
                 else
                 {
-                    Id = Kripta.Decrypt(userin4ck["id"].Trim(), "PPA4XCyfPMBrVASxNr/8A").ToString().Trim();
+                    Idn.Value = Kripta.Decrypt(userin4ck["id"].Trim(), "PPA4XCyfPMBrVASxNr/8A").ToString().Trim();
                     Email = Kripta.Decrypt(userin4ck["email"].Trim(), "PPA4XCyfPMBrVASxNr/8A").ToString().Trim();
                     profileEmail.Text = Email;
                     DName = Kripta.Decrypt(userin4ck["dname"].Trim(), "PPA4XCyfPMBrVASxNr/8A").ToString().Trim();
@@ -102,7 +102,7 @@ namespace AMS
         {
             try
             {
-                string JsonInput = "{\r\n   \"Email\" : " + "'" + Email + "'" + "\r\n  \"Status\" : " + "'" + 0 + "'" + "\r\n  \"UserId\" : " + "'" + Id + "'" + "\r\n}";
+                string JsonInput = "{\r\n   \"Email\" : " + "'" + Email + "'" + "\r\n  \"Status\" : " + "'" + 0 + "'" + "\r\n  \"UserId\" : " + "'" + Idn.Value + "'" + "\r\n}";
 
                 PostAPI apir = new PostAPI();
 
