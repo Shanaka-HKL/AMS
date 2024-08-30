@@ -25,13 +25,6 @@
                                 </asp:DropDownList>
                             </div>
                             <div class="form-group">
-                                <asp:Label ID="Label6" runat="server" Text="Update Priority" />
-                                <asp:DropDownList ID="BannerDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="BannerDDL_SelectedIndexChanged" AutoPostBack="true">
-                                </asp:DropDownList>
-                            </div>
-                            <asp:TextBox ID="txtPriority" runat="server" CssClass="form-control" Width="86px" Enabled="false" Text="1" TextMode="Number"/>
-                            <hr />
-                            <div class="form-group">
                                 <asp:Label ID="lblWebsite" runat="server" Text="Website:" />
                                 <asp:DropDownList ID="WebsiteDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="WebsiteDDL_SelectedIndexChanged" AutoPostBack="true">
                                 </asp:DropDownList>
@@ -130,11 +123,6 @@
                                 <asp:TemplateField HeaderText="Banner Name" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
                                         <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("BannerName") %>'><%# Eval("BannerName") %></span>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Priority" HeaderStyle-CssClass="sortable">
-                                    <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("Priority") %>'><%# Eval("Priority") %></span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Created By" HeaderStyle-CssClass="sortable">

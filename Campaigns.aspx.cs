@@ -65,12 +65,78 @@ namespace AMS
                     CampaignGridView.DataSource = dta;
                     CampaignGridView.DataBind();
                 }
-
-                BindWeb();
             }
             catch (Exception ex)
             {
                 ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + ex.Message + "');", true);
+            }
+        }
+
+        protected void CampaignDDL_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (CampaignDDL.SelectedIndex != 0)
+            {
+                try
+                {
+                    string JsonInput = "{\r\n    \"CampaignId\" : " + "'" + CampaignDDL.SelectedValue.ToString() + "'" + "\r\n}";
+
+                    DataTable dta = new DataTable();
+
+                    PostAPI apir = new PostAPI();
+
+                    dta = apir.get_datatable("getCampaignByCampaignId", JsonInput, "POST");
+
+                    foreach (DataRow dr in dta.Rows)
+                    {
+                        CampaignDDL.SelectedValue = dr["CampaignId"].ToString().Trim();
+                        txtCampaignName.Text = dr["CampaignName"].ToString().Trim();
+                        txtCampaignDescription.Text = dr["CampaignDescription"].ToString().Trim();
+                        txtCampaignBudget.Text = dr["CampaignBudget"].ToString().Trim();
+                        txtPriority.Text = dr["Priority"].ToString().Trim();
+                        txtStartDate.Text = dr["StartDate"].ToString().Trim();
+                        txtEndDate.Text = dr["EndDate"].ToString().Trim();
+                    }
+
+                    CampaignDDL.Enabled = false;
+                    txtCampaignName.Enabled = false;
+                    txtCampaignDescription.Enabled = false;
+                    txtCampaignBudget.Enabled = false;
+                    txtPriority.Enabled = true;
+                    txtStartDate.Enabled = false;
+                    txtEndDate.Enabled = false;
+
+                    CampaignDDL.ForeColor = Color.Black;
+                    txtCampaignName.ForeColor = Color.Black;
+                    txtCampaignDescription.ForeColor = Color.Black;
+                    txtCampaignBudget.ForeColor = Color.Black;
+                    txtPriority.ForeColor = Color.Black;
+                    txtStartDate.ForeColor = Color.Black;
+                    txtEndDate.ForeColor = Color.Black;
+                }
+                catch (Exception ex)
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + ex.Message + "');", true);
+                }
+            }
+            else
+            {
+                CampaignDDL.Enabled = false;
+                txtCampaignName.Enabled = false;
+                txtCampaignDescription.Enabled = false;
+                txtCampaignBudget.Enabled = false;
+                txtPriority.Enabled = true;
+                txtStartDate.Enabled = false;
+                txtEndDate.Enabled = false;
+
+                CampaignDDL.ForeColor = Color.Black;
+                txtCampaignName.ForeColor = Color.Black;
+                txtCampaignDescription.ForeColor = Color.Black;
+                txtCampaignBudget.ForeColor = Color.Black;
+                txtPriority.ForeColor = Color.Black;
+                txtStartDate.ForeColor = Color.Black;
+                txtEndDate.ForeColor = Color.Black;
+
+                txtPriority.Text = "1";
             }
         }
 
@@ -115,6 +181,16 @@ namespace AMS
         {
             ErrLbl.ForeColor = Color.Red;
 
+            int txtPriority_ = 0;
+            try
+            {
+                txtPriority_ = Convert.ToInt16(txtPriority.Text);
+            }
+            catch
+            {
+                txtPriority_ = 0;
+            }
+
             if (txtCampaignName.Text.Trim() == "")
             {
                 ErrLbl.Text = "Enter Campaign Name!";
@@ -127,32 +203,66 @@ namespace AMS
             {
                 ErrLbl.Text = "Select the End Date!";
             }
+            else if (CampaignDDL.SelectedValue.ToString() != "0" && txtPriority_ <= 0)
+            {
+                ErrLbl.Text = "Enter the Priority!";
+            }
             else
             {
                 PostAPI apir = new PostAPI();
                 string reslt = "";
 
-                reslt = InsertRecord(txtCampaignName.Text.Trim(), txtCampaignDescription.Text.Trim(), Idn.Value, WebsiteDDL.SelectedValue.ToString().Trim(),
-                     txtCampaignBudget.Text.Trim(), txtStartDate.Text.Trim(), txtEndDate.Text.Trim());
-                if (reslt.Contains(" successful"))
+                if (CampaignDDL.SelectedIndex != 0)
                 {
-                    ErrLbl.ForeColor = Color.Green;
-                    ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + reslt + "');", true);
-                    ErrLbl.Text = reslt;
+                    reslt = UpdateRecord(txtCampaignName.Text.Trim(), txtPriority_, txtCampaignDescription.Text.Trim(), Idn.Value, txtCampaignBudget.Text.Trim(), txtStartDate.Text.Trim(), txtEndDate.Text.Trim());
+                    if (reslt.Contains(" successful"))
+                    {
+                        ErrLbl.ForeColor = Color.Green;
+                        ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + reslt + "');", true);
+                        ErrLbl.Text = reslt;
 
-                    BindCampaignGridView();
+                        BindCampaignGridView();
 
-                    WebsiteDDL.SelectedIndex = 0;
-                    txtCampaignName.Text = "";
-                    txtCampaignDescription.Text = "";
-                    txtCampaignBudget.Text = "";
-                    txtStartDate.Text = "";
-                    txtEndDate.Text = "";
+                        txtCampaignName.Text = "";
+                        txtCampaignDescription.Text = "";
+                        txtCampaignBudget.Text = "";
+                        txtStartDate.Text = "";
+                        txtEndDate.Text = "";
+                        txtPriority.Enabled = false;
+                        txtPriority.Text = "1";
+                        CampaignDDL.SelectedIndex = 0;
+                    }
+                    else
+                    {
+                        ErrLbl.ForeColor = Color.Red;
+                        ErrLbl.Text = reslt;
+                    }
                 }
                 else
                 {
-                    ErrLbl.ForeColor = Color.Red;
-                    ErrLbl.Text = reslt;
+                    reslt = InsertRecord(txtCampaignName.Text.Trim(), txtPriority_, txtCampaignDescription.Text.Trim(), Idn.Value, txtCampaignBudget.Text.Trim(), txtStartDate.Text.Trim(), txtEndDate.Text.Trim());
+                    if (reslt.Contains(" successful"))
+                    {
+                        ErrLbl.ForeColor = Color.Green;
+                        ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + reslt + "');", true);
+                        ErrLbl.Text = reslt;
+
+                        BindCampaignGridView();
+
+                        txtCampaignName.Text = "";
+                        txtCampaignDescription.Text = "";
+                        txtCampaignBudget.Text = "";
+                        txtStartDate.Text = "";
+                        txtEndDate.Text = "";
+                        txtPriority.Enabled = false;
+                        txtPriority.Text = "1";
+                        CampaignDDL.SelectedIndex = 0;
+                    }
+                    else
+                    {
+                        ErrLbl.ForeColor = Color.Red;
+                        ErrLbl.Text = reslt;
+                    }
                 }
             }
         }
@@ -180,7 +290,7 @@ namespace AMS
 
             BindCampaignGridView();
         }
-        public string InsertRecord(string txtCampaignName_, string txtCampaignDescription_, string AdvertiserDDL_, string WebsiteDDL_, string txtCampaignBudget_, string txtStartDate_, string txtEndDate_)
+        public string UpdateRecord(string txtCampaignName_, int prio, string txtCampaignDescription_, string AdvertiserDDL_, string txtCampaignBudget_, string txtStartDate_, string txtEndDate_)
         {
             try
             {
@@ -199,8 +309,49 @@ namespace AMS
                 {
                     Name = txtCampaignName_,
                     Description = txtCampaignDescription_,
+                    Priority = prio,
                     AdvertiserId = AdvertiserDDL_,
-                    WebsiteId = WebsiteDDL_,
+                    Budget = budget,
+                    StartDate = startDate.ToString("yyyy-MM-dd"), // Adjust format as needed
+                    EndDate = endDate.ToString("yyyy-MM-dd"),     // Adjust format as needed
+                    UserId = Idn.Value
+                };
+
+                // Serialize the object to a JSON string
+                string JsonInput = JsonConvert.SerializeObject(jsonObject);
+
+                PostAPI apir = new PostAPI();
+                string result = apir.get_string("updateCampaign", JsonInput, "post");
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + ex.Message + "');", true);
+                return ex.Message;
+            }
+        }
+        public string InsertRecord(string txtCampaignName_, int prio, string txtCampaignDescription_, string AdvertiserDDL_, string txtCampaignBudget_, string txtStartDate_, string txtEndDate_)
+        {
+            try
+            {
+                // Parse numeric value for budget
+                decimal budget = 0;
+                decimal.TryParse(txtCampaignBudget_, out budget);
+
+                // Convert date strings to DateTime objects
+                DateTime startDate;
+                DateTime endDate;
+                DateTime.TryParse(txtStartDate_, out startDate);
+                DateTime.TryParse(txtEndDate_, out endDate);
+
+                // Create a JSON object with proper formatting
+                var jsonObject = new
+                {
+                    Name = txtCampaignName_,
+                    Description = txtCampaignDescription_,
+                    Priority = prio,
+                    AdvertiserId = AdvertiserDDL_,
                     Budget = budget,
                     StartDate = startDate.ToString("yyyy-MM-dd"), // Adjust format as needed
                     EndDate = endDate.ToString("yyyy-MM-dd"),     // Adjust format as needed
@@ -219,33 +370,6 @@ namespace AMS
             {
                 ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + ex.Message + "');", true);
                 return ex.Message;
-            }
-        }
-
-        private void BindWeb()
-        {
-            try
-            {
-                string JsonInput = "{\r\n    \"AdvertiserId\" : " + "'" + Idn.Value + "'" + "\r\n}";
-
-                DataTable dta = new DataTable();
-
-                PostAPI apir = new PostAPI();
-
-                dta = apir.get_datatable("getWebsiteByAdvertiserId", JsonInput, "POST");
-
-                if (dta.Rows.Count > 0)
-                {
-                    WebsiteDDL.DataValueField = "Id";
-                    WebsiteDDL.DataTextField = "Name";
-                    WebsiteDDL.DataSource = dta;
-                    WebsiteDDL.DataBind();
-                    WebsiteDDL.SelectedIndex = 0;
-                }
-            }
-            catch (Exception ex)
-            {
-                ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + ex.Message + "');", true);
             }
         }
     }

@@ -142,16 +142,6 @@ namespace AMS
 
         protected void CreateBannerButton_Click(object sender, EventArgs e)
         {
-            int txtPriority_ = 0;
-            try
-            {
-                txtPriority_ = Convert.ToInt16(txtPriority.Text);
-            }
-            catch
-            {
-                txtPriority_ = 0;
-            }
-
             ErrLbl.ForeColor = Color.Red;
 
             if (CampaignDDL.SelectedValue.ToString() == "0")
@@ -186,10 +176,6 @@ namespace AMS
             {
                 ErrLbl.Text = "Select the Target!";
             }
-            else if (CampaignDDL.SelectedValue.ToString() != "0" && txtPriority_ <= 0)
-            {
-                ErrLbl.Text = "Enter the Priority!";
-            }
             else
             {
                 bool proceed;
@@ -210,7 +196,7 @@ namespace AMS
 
                     //    fileBannerUpload.SaveAs(savePath);
                     //    ErrLbl.Text = "File uploaded successfully!";
-                        proceed = true;
+                    proceed = true;
                     //}
                     //else
                     //{
@@ -229,68 +215,34 @@ namespace AMS
                     PostAPI apir = new PostAPI();
                     string reslt = "";
 
-                    if (BannerDDL.SelectedIndex != 0)
+                    reslt = InsertRecord(CampaignDDL.SelectedValue.ToString().Trim(), ZonesDDL.SelectedValue.ToString().Trim(), ddlBannerType.SelectedValue.ToString().Trim(),
+                        ddlTarget.SelectedValue.ToString().Trim(), txtBannerLink.Text.Trim(), txtBannerName.Text.Trim());
+                    if (reslt.Contains(" successful"))
                     {
-                        reslt = UpdateRecord(BannerDDL.SelectedValue.ToString().Trim(), txtPriority_, CampaignDDL.SelectedValue.ToString().Trim(), WebsiteDDL.SelectedValue.ToString().Trim(), ZonesDDL.SelectedValue.ToString().Trim(), ddlBannerType.SelectedValue.ToString().Trim(),
-                            ddlTarget.SelectedValue.ToString().Trim(), txtBannerLink.Text.Trim(), txtBannerName.Text.Trim());
-                        if (reslt.Contains(" successful"))
-                        {
-                            ErrLbl.ForeColor = Color.Green;
-                            ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + reslt + "');", true);
-                            ErrLbl.Text = reslt;
+                        ErrLbl.ForeColor = Color.Green;
+                        ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + reslt + "');", true);
+                        ErrLbl.Text = reslt;
 
-                            BindBannerGridView();
+                        BindBannerGridView();
 
-                            CampaignDDL.SelectedIndex = 0;
-                            BannerDDL.SelectedIndex = 0;
-                            WebsiteDDL.SelectedIndex = 0;
-                            ZonesDDL.SelectedIndex = 0;
-                            ddlBannerType.SelectedIndex = 0;
-                            ddlTarget.SelectedIndex = 0;
-                            txtBannerLink.Text = "";
-                            txtBannerName.Text = "";
-                            txtPriority.Enabled = false;
-                            txtPriority.Text = "1";
-                        }
-                        else
-                        {
-                            ErrLbl.ForeColor = Color.Red;
-                            ErrLbl.Text = reslt;
-                        }
+                        CampaignDDL.SelectedIndex = 0;
+                        WebsiteDDL.SelectedIndex = 0;
+                        ZonesDDL.SelectedIndex = 0;
+                        ddlBannerType.SelectedIndex = 0;
+                        ddlTarget.SelectedIndex = 0;
+                        txtBannerLink.Text = "";
+                        txtBannerName.Text = "";
                     }
                     else
                     {
-                        reslt = InsertRecord(txtPriority_, CampaignDDL.SelectedValue.ToString().Trim(), WebsiteDDL.SelectedValue.ToString().Trim(), ZonesDDL.SelectedValue.ToString().Trim(), ddlBannerType.SelectedValue.ToString().Trim(),
-                            ddlTarget.SelectedValue.ToString().Trim(), txtBannerLink.Text.Trim(), txtBannerName.Text.Trim());
-                        if (reslt.Contains(" successful"))
-                        {
-                            ErrLbl.ForeColor = Color.Green;
-                            ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + reslt + "');", true);
-                            ErrLbl.Text = reslt;
-
-                            BindBannerGridView();
-
-                            CampaignDDL.SelectedIndex = 0;
-                            BannerDDL.SelectedIndex = 0;
-                            WebsiteDDL.SelectedIndex = 0;
-                            ZonesDDL.SelectedIndex = 0;
-                            ddlBannerType.SelectedIndex = 0;
-                            ddlTarget.SelectedIndex = 0;
-                            txtBannerLink.Text = "";
-                            txtBannerName.Text = "";
-                            txtPriority.Enabled = false;
-                            txtPriority.Text = "1";
-                        }
-                        else
-                        {
-                            ErrLbl.ForeColor = Color.Red;
-                            ErrLbl.Text = reslt;
-                        }
+                        ErrLbl.ForeColor = Color.Red;
+                        ErrLbl.Text = reslt;
                     }
                 }
             }
         }
-        public string UpdateRecord(string BannerDDL_, int txtPriority_, string CampaignDDLVlu, string WebsiteDDLVlu, string ZonesDDLVlu, string ddlBannerTypeVlu, string ddlTargetVlu, string txtBannerLinkVlu, string txtBannerNameVlu)
+
+        public string InsertRecord(string CampaignDDLVlu, string ZonesDDLVlu, string ddlBannerTypeVlu, string ddlTargetVlu, string txtBannerLinkVlu, string txtBannerNameVlu)
         {
             try
             {
@@ -298,48 +250,11 @@ namespace AMS
                 var jsonObject = new
                 {
                     CampaignId = CampaignDDLVlu,
-                    BId = BannerDDL_,
-                    WebsiteId = WebsiteDDLVlu,
                     ZoneId = ZonesDDLVlu,
                     BannerTypeId = ddlBannerTypeVlu,
                     Target = ddlTargetVlu,
                     BannerLink = txtBannerLinkVlu,
                     Name = txtBannerNameVlu,
-                    Priority = txtPriority_,
-                    UserId = Idn.Value
-                };
-
-                // Serialize the object to a JSON string
-                string JsonInput = JsonConvert.SerializeObject(jsonObject);
-
-                // Create instance of PostAPI and retrieve data
-                PostAPI apir = new PostAPI();
-                string result = apir.get_string("updateBannerByBannerId", JsonInput, "POST");
-
-                return result;
-            }
-            catch (Exception ex)
-            {
-                ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + ex.Message + "');", true);
-                return ex.Message;
-            }
-        }
-
-        public string InsertRecord(int txtPriority_, string CampaignDDLVlu, string WebsiteDDLVlu, string ZonesDDLVlu, string ddlBannerTypeVlu, string ddlTargetVlu, string txtBannerLinkVlu, string txtBannerNameVlu)
-        {
-            try
-            {
-                // Create a JSON object with the required fields
-                var jsonObject = new
-                {
-                    CampaignId = CampaignDDLVlu,
-                    WebsiteId = WebsiteDDLVlu,
-                    ZoneId = ZonesDDLVlu,
-                    BannerTypeId = ddlBannerTypeVlu,
-                    Target = ddlTargetVlu,
-                    BannerLink = txtBannerLinkVlu,
-                    Name = txtBannerNameVlu,
-                    Priority = txtPriority_,
                     UserId = Idn.Value
                 };
 
@@ -383,76 +298,6 @@ namespace AMS
             BindBannerGridView();
         }
 
-        protected void BannerDDL_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (BannerDDL.SelectedIndex != 0)
-            {
-                try
-                {
-                    string JsonInput = "{\r\n    \"BannerId\" : " + "'" + BannerDDL.SelectedValue.ToString() + "'" + "\r\n}";
-
-                    DataTable dta = new DataTable();
-
-                    PostAPI apir = new PostAPI();
-
-                    dta = apir.get_datatable("getWebsiteByBannerId", JsonInput, "POST");
-
-                    foreach (DataRow dr in dta.Rows)
-                    {
-                        CampaignDDL.SelectedValue = dr["CampaignId"].ToString().Trim();
-                        WebsiteDDL.SelectedValue = dr["WebsiteId"].ToString().Trim();
-                        ZonesDDL.SelectedValue = dr["ZoneId"].ToString().Trim();
-                        txtBannerName.Text = dr["Name"].ToString().Trim();
-                        txtBannerLink.Text = dr["BannerLink"].ToString().Trim();
-                        ddlBannerType.SelectedValue = dr["BannerTypeId"].ToString().Trim();
-                        ddlTarget.SelectedValue = dr["Target"].ToString().Trim();
-                        txtPriority.Text = dr["Priority"].ToString().Trim();
-                    }
-
-                    CampaignDDL.Enabled = false;
-                    WebsiteDDL.Enabled = false;
-                    ZonesDDL.Enabled = false;
-                    ddlBannerType.Enabled = false;
-                    ddlTarget.Enabled = false;
-                    txtBannerLink.Enabled = false;
-                    txtBannerName.Enabled = false;
-                    txtPriority.Enabled = true;
-
-                    CampaignDDL.ForeColor = Color.Black;
-                    WebsiteDDL.ForeColor = Color.Black;
-                    ZonesDDL.ForeColor = Color.Black;
-                    ddlBannerType.ForeColor = Color.Black;
-                    ddlTarget.ForeColor = Color.Black;
-                    txtBannerLink.ForeColor = Color.Black;
-                    txtBannerName.ForeColor = Color.Black;
-                }
-                catch (Exception ex)
-                {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + ex.Message + "');", true);
-                }
-            }
-            else
-            {
-                CampaignDDL.Enabled = true;
-                WebsiteDDL.Enabled = true;
-                ZonesDDL.Enabled = true;
-                ddlBannerType.Enabled = true;
-                ddlTarget.Enabled = true;
-                txtBannerLink.Enabled = true;
-                txtBannerName.Enabled = true;
-                txtPriority.Enabled = false;
-                txtPriority.Text = "1";
-
-                CampaignDDL.ForeColor = Color.White;
-                WebsiteDDL.ForeColor = Color.White;
-                ZonesDDL.ForeColor = Color.White;
-                ddlBannerType.ForeColor = Color.White;
-                ddlTarget.ForeColor = Color.White;
-                txtBannerLink.ForeColor = Color.White;
-                txtBannerName.ForeColor = Color.White;
-            }
-        }
-
         protected void WebsiteDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
@@ -492,7 +337,6 @@ namespace AMS
                 PostAPI apir = new PostAPI();
 
                 dta = apir.get_datatable("getWebsiteByCampaignId", JsonInput, "POST");
-                dtb = apir.get_datatable("getBannerByCampaignId", JsonInput, "POST");
 
                 if (dta.Rows.Count > 0)
                 {
@@ -501,15 +345,6 @@ namespace AMS
                     WebsiteDDL.DataSource = dta;
                     WebsiteDDL.DataBind();
                     WebsiteDDL.SelectedIndex = 0;
-                }
-
-                if (dtb.Rows.Count > 0)
-                {
-                    BannerDDL.DataValueField = "Id";
-                    BannerDDL.DataTextField = "Name";
-                    BannerDDL.DataSource = dtb;
-                    BannerDDL.DataBind();
-                    BannerDDL.SelectedIndex = 0;
                 }
             }
             catch (Exception ex)

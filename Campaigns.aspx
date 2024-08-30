@@ -20,25 +20,25 @@
                         <h4>Add Campaign</h4>
                         <asp:Panel ID="Panel1" runat="server">
                             <asp:TextBox ID="txtCampaignName" runat="server" CssClass="form-control" Placeholder="Campaign Name *" MaxLength="23" /><br />
-                            <asp:TextBox ID="txtCampaignDescription" runat="server" CssClass="form-control" TextMode="MultiLine" MaxLength="150" Placeholder="Campaign Description" /><br />
-                            <br />
+                            <asp:TextBox ID="txtCampaignDescription" runat="server" CssClass="form-control" TextMode="MultiLine" MaxLength="150" Placeholder="Campaign Description" />
                             <div class="form-group">
-                                <asp:Label ID="lblZoneType" runat="server" Text="Website:" />
-                                <asp:DropDownList ID="WebsiteDDL" runat="server" CssClass="form-control">
+                                <asp:Label ID="Label6" runat="server" Text="Update Priority" />
+                                <asp:DropDownList ID="CampaignDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="CampaignDDL_SelectedIndexChanged" AutoPostBack="true">
                                 </asp:DropDownList>
                             </div>
-                            <br />
-
-                            <asp:TextBox ID="txtCampaignBudget" runat="server" CssClass="form-control" Placeholder="Campaign Budget" TextMode="Number" /><br />
+                            <asp:TextBox ID="txtPriority" runat="server" CssClass="form-control" Width="86px" Enabled="false" Text="1" TextMode="Number"/>
+                            <hr />
+                            <br /><div style="align-items:flex-start">
+                            <asp:TextBox ID="txtCampaignBudget" runat="server" CssClass="form-control" Width="230" Placeholder="Campaign Budget" TextMode="Number" /><br />
 
                             <asp:Label ID="lblStartDate" runat="server" Text="Start Date:"></asp:Label>
-                            <asp:TextBox ID="txtStartDate" runat="server" TextMode="Date" CssClass="form-control" Placeholder="YYYY-MM-DD *" /><br />
-
+                            <asp:TextBox ID="txtStartDate" runat="server" TextMode="Date" Width="230" CssClass="form-control" Placeholder="YYYY-MM-DD *" /><br />
+                            
                             <asp:Label ID="lblEndDate" runat="server" Text="End Date:"></asp:Label>
-                            <asp:TextBox ID="txtEndDate" runat="server" TextMode="Date" CssClass="form-control" Placeholder="YYYY-MM-DD *" /><br />
+                            <asp:TextBox ID="txtEndDate" runat="server" TextMode="Date" Width="230" CssClass="form-control" Placeholder="YYYY-MM-DD *" /><br />
                             <div class="form-group text-center">
                                 <asp:Label ID="ErrLbl" runat="server" Height="15px" BackColor="Transparent" Text="" ForeColor="Red" Font-Size="Smaller"></asp:Label>
-                            </div>
+                            </div></div>
                             <asp:Button ID="CreateCampaignButton" runat="server" CssClass="btn-primary" Text="Create Campaign" OnClick="CreateCampaignButton_Click" />
                         </asp:Panel>
                     </div>
@@ -55,14 +55,14 @@
                                         <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("CampaignName") %>'><%# Eval("CampaignName") %></span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Priority" HeaderStyle-CssClass="sortable">
+                                    <ItemTemplate>
+                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("Priority") %>'><%# Eval("Priority") %></span>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Advertiser" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
                                         <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("Advertiser") %>'><%# Eval("Advertiser") %></span>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Website Name" HeaderStyle-CssClass="sortable">
-                                    <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("WebsiteName") %>'><%# Eval("WebsiteName") %></span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Created By" HeaderStyle-CssClass="sortable">
