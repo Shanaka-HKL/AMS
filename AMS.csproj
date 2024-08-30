@@ -203,6 +203,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="AuthClass.cs" />
     <Compile Include="DM.aspx.cs">
       <DependentUpon>DM.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -217,6 +218,7 @@
     <Compile Include="HitAd.aspx.designer.cs">
       <DependentUpon>HitAd.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Serve.cs" />
     <Compile Include="Site.Mobile.Master.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

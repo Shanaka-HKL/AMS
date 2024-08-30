@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Web;
@@ -49,19 +51,15 @@ namespace AMS
         {
             try
             {
-                string JsonInput = "{\r\n    \"UserId\" : " + "'" + Idn.Value + "'" + "\r\n}";
+                DataTable dt = new DataTable();
+                Serve apir = new Serve();
+                dt = apir.getWebsiteListById("getWebsiteListById", Convert.ToInt16(Idn.Value));
 
-                DataTable dta = new DataTable();
-
-                PostAPI apir = new PostAPI();
-
-                dta = apir.get_datatable("getWebsiteListById", JsonInput, "POST");
-
-                if (dta.Rows.Count > 0)
+                if (dt.Rows.Count > 0)
                 {
-                    ViewState["WebsiteTable"] = dta;
+                    ViewState["WebsiteTable"] = dt;
 
-                    WebsiteGridView.DataSource = dta;
+                    WebsiteGridView.DataSource = dt;
                     WebsiteGridView.DataBind();
                 }
             }
@@ -75,20 +73,8 @@ namespace AMS
         {
             try
             {
-                // Create a JSON object using a C# dictionary
-                var jsonObject = new
-                {
-                    WebsiteId = websiteID,
-                    Status = status,
-                    UserId = Idn.Value
-                };
-
-                // Serialize the object to a JSON string
-                string JsonInput = JsonConvert.SerializeObject(jsonObject);
-
-                PostAPI apir = new PostAPI();
-
-                string result = apir.get_string("updateWebsiteById", JsonInput, "POST");
+                Serve apir = new Serve();
+                string result = apir.updateWebsiteById("updateWebsiteById", websiteID, status, Convert.ToInt16(Idn.Value));
 
                 if (result.Contains(" successful"))
                 {
@@ -177,13 +163,8 @@ namespace AMS
         {
             try
             {
-                string JsonInput = "{\r\n    \"Name\" : " + "'" + NameTextBox_ + "'" +
-                    ",\r\n    \"WebsiteUrl\" : " + "'" + WebsiteUrlTextBox_ + "'" +
-                    ",\r\n    \"TargetFrame\" : " + "'" + TargetFrameDropDownList_ + "'" +
-                    ",\r\n    \"UserId\" : " + "'" + Idn.Value + "'" + "\r\n}";
-
-                PostAPI apir = new PostAPI();
-                string result = apir.get_string("insertWebsite", JsonInput, "post");
+                Serve apir = new Serve();
+                string result = apir.insertWebsite("insertWebsite", NameTextBox_, WebsiteUrlTextBox_, TargetFrameDropDownList_, Convert.ToInt16(Idn.Value));
 
                 return result;
             }

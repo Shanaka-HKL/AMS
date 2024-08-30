@@ -4,8 +4,7 @@
     <div style="position: relative; width: 100%; height: auto; background-image: url('Images/website.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center; overflow: hidden;"
         class="blurred-background">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <br />
-        <asp:HiddenField ID="Idn" runat="server" Value="InitialValue" /><asp:UpdateProgress ID="UpdateProgress10" runat="server" AssociatedUpdatePanelID="UpdatePanel10">
+        <br /><asp:UpdateProgress ID="UpdateProgress10" runat="server" AssociatedUpdatePanelID="UpdatePanel10">
             <ProgressTemplate>
                 <div style="position: fixed; left: 0%; top: 0%; z-index: 999; height: 100%; width: 100%; border-style: none; background-color: Black; filter: alpha(opacity=60); opacity: 0.3; -moz-opacity: 0.5;">
                     <asp:Image ID="ImageLodinggif" Style="position: fixed; left: 48%; top: 48%; z-index: 1000;" runat="server" ImageUrl="~/Images/loading.gif" Width="86px" Height="86px"></asp:Image>
@@ -14,6 +13,7 @@
         </asp:UpdateProgress>
         <asp:UpdatePanel ID="UpdatePanel10" runat="server">
             <ContentTemplate>
+        <asp:HiddenField ID="Idn" runat="server" Value="InitialValue" />
                 <div class="panel-header">Website Management</div>
                 <div class="dashboard-section">
                     <div class="dashboard-item">
@@ -48,35 +48,35 @@
                             <Columns>
                                 <asp:TemplateField HeaderText="Website Name" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("WebsiteName") %>'>
+                                        <span style="background-color: transparent;" title='<%# Eval("WebsiteName") %>'>
                                             <%# Eval("WebsiteName") %>
                                         </span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Created By" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("CreatedBy") %>'>
+                                        <span style="background-color: transparent;" title='<%# Eval("CreatedBy") %>'>
                                             <%# Eval("CreatedBy") %>
                                         </span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Created Date" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("CreatedDate") %>'>
+                                        <span style="background-color: transparent;" title='<%# Eval("CreatedDate") %>'>
                                             <%# Eval("CreatedDate") %>
                                         </span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Updated Date" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("UpdatedDate") %>'>
+                                        <span style="background-color: transparent;" title='<%# Eval("UpdatedDate") %>'>
                                             <%# Eval("UpdatedDate") %>
                                         </span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Status" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("Status") %>'>
+                                        <span style="background-color: transparent;" title='<%# Eval("Status") %>'>
                                             <%# Eval("Status") %>
                                         </span>
                                     </ItemTemplate>

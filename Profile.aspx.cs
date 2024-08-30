@@ -16,7 +16,7 @@ namespace AMS
 {
     public partial class _Profile : Page
     {
-         String Email = ""; String DName = ""; String AId = ""; String Address = ""; String Type = "";
+        String Email = ""; String DName = ""; String AId = ""; String Address = ""; String Type = "";
         String Phone = ""; String Pic = ""; String Description = "";
         protected void Page_Load(object sender, EventArgs e)
         {

@@ -54,15 +54,9 @@ namespace AMS
         {
             try
             {
-                string JsonInput = "{\r\n    \"Email\" : " + "'" + EmailTB.Text.ToLower().Trim() + "'" +
-                    ",\r\n    \"IP\" : " + "'" + IPlbl.Text.Replace("Your IP: ", "").Trim() + "'" +
-                    ",\r\n    \"Country\" : " + "'" + Conlbl.Text.Replace("Country: ", "").Trim() + "'" +
-                    ",\r\n    \"Region\" : " + "'" + Reglbl.Text.Replace("Region: ", "").Trim() + "'" +
-                    ",\r\n    \"City\" : " + "'" + Ctylbl.Text.Replace("City: ", "").Trim() + "'" + "\r\n}";
-
                 DataTable dt = new DataTable();
-                PostAPI apir = new PostAPI();
-                dt = apir.get_datatable("getCredentialsByEmail", JsonInput, "get");
+                Serve apir = new Serve();
+                dt = apir.getCredentialsByEmail("getCredentialsByEmail", EmailTB.Text.ToLower().Trim());
 
                 if (dt.Rows.Count > 0)
                 {

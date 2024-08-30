@@ -21,14 +21,14 @@
                         <asp:Panel ID="Panel1" runat="server">
                             <asp:TextBox ID="txtCampaignName" runat="server" CssClass="form-control" Placeholder="Campaign Name *" MaxLength="23" /><br />
                             <asp:TextBox ID="txtCampaignDescription" runat="server" CssClass="form-control" TextMode="MultiLine" MaxLength="150" Placeholder="Campaign Description" />
-                            <div class="form-group">
+                            
+                            <hr /><div class="form-group">
                                 <asp:Label ID="Label6" runat="server" Text="Update Priority" />
                                 <asp:DropDownList ID="CampaignDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="CampaignDDL_SelectedIndexChanged" AutoPostBack="true">
                                 </asp:DropDownList>
                             </div>
                             <asp:TextBox ID="txtPriority" runat="server" CssClass="form-control" Width="86px" Enabled="false" Text="1" TextMode="Number"/>
-                            <hr />
-                            <br /><div style="align-items:flex-start">
+                            <hr /><div style="align-items:flex-start">
                             <asp:TextBox ID="txtCampaignBudget" runat="server" CssClass="form-control" Width="230" Placeholder="Campaign Budget" TextMode="Number" /><br />
 
                             <asp:Label ID="lblStartDate" runat="server" Text="Start Date:"></asp:Label>
@@ -52,42 +52,42 @@
                             <Columns>
                                 <asp:TemplateField HeaderText="Campaign Name" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("CampaignName") %>'><%# Eval("CampaignName") %></span>
+                                        <span style="background-color: transparent;" title='<%# Eval("CampaignName") %>'><%# Eval("CampaignName") %></span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Priority" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("Priority") %>'><%# Eval("Priority") %></span>
+                                        <span style="background-color: transparent;" title='<%# Eval("Priority") %>'><%# Eval("Priority") %></span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Advertiser" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("Advertiser") %>'><%# Eval("Advertiser") %></span>
+                                        <span style="background-color: transparent;" title='<%# Eval("Advertiser") %>'><%# Eval("Advertiser") %></span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Created By" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("CreatedBy") %>'><%# Eval("CreatedBy") %></span>
+                                        <span style="background-color: transparent;" title='<%# Eval("CreatedBy") %>'><%# Eval("CreatedBy") %></span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Created Date" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("CreatedDate") %>'><%# Eval("CreatedDate") %></span>
+                                        <span style="background-color: transparent;" title='<%# Eval("CreatedDate") %>'><%# Eval("CreatedDate") %></span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Start Date" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("StartDate") %>'><%# Eval("StartDate") %></span>
+                                        <span style="background-color: transparent;" title='<%# Eval("StartDate") %>'><%# Eval("StartDate") %></span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="End Date" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("EndDate") %>'><%# Eval("EndDate") %></span>
+                                        <span style="background-color: transparent;" title='<%# Eval("EndDate") %>'><%# Eval("EndDate") %></span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Status" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("Status") %>'><%# Eval("Status") %></span>
+                                        <span style="background-color: transparent;" title='<%# Eval("Status") %>'><%# Eval("Status") %></span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Actions" HeaderStyle-CssClass="sortable">

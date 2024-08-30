@@ -52,13 +52,9 @@ namespace AMS
         {
             try
             {
-                string JsonInput = "{\r\n    \"UserId\" : " + "'" + Idn.Value + "'" + "\r\n}";
-
                 DataTable dta = new DataTable();
-
-                PostAPI apir = new PostAPI();
-
-                dta = apir.get_datatable("getZoneListById", JsonInput, "POST");
+                Serve apir = new Serve();
+                dta = apir.getZoneListById("getZoneListById", Convert.ToInt16(Idn.Value));
 
                 if (dta.Rows.Count > 0)
                 {
@@ -80,13 +76,9 @@ namespace AMS
         {
             try
             {
-                string JsonInput = "{\r\n    \"AdvertiserId\" : " + "'" + Idn.Value + "'" + "\r\n}";
-
                 DataTable dtc = new DataTable();
-
-                PostAPI apir = new PostAPI();
-
-                dtc = apir.get_datatable("getWebsiteByAdvertiserId", JsonInput, "POST");
+                Serve apir = new Serve();
+                dtc = apir.getWebsiteByAdvertiserId("getWebsiteByAdvertiserId", Convert.ToInt16(Idn.Value));
 
                 if (dtc.Rows.Count > 0)
                 {
@@ -107,20 +99,8 @@ namespace AMS
         {
             try
             {
-                // Create a JSON object using a C# dictionary
-                var jsonObject = new
-                {
-                    ZoneId = websiteID,
-                    Status = status,
-                    UserId = Idn.Value
-                };
-
-                // Serialize the object to a JSON string
-                string JsonInput = JsonConvert.SerializeObject(jsonObject);
-
-                PostAPI apir = new PostAPI();
-
-                string result = apir.get_string("updateZoneById", JsonInput, "POST");
+                Serve apir = new Serve();
+                string result = apir.updateZoneById("updateZoneById", websiteID, status, Convert.ToInt16(Idn.Value));
 
                 if (result.Contains(" successful"))
                 {
@@ -230,24 +210,14 @@ namespace AMS
                 int.TryParse(txtWidth, out width);
                 int.TryParse(txtHeight, out height);
 
-                // Create a JSON object with proper formatting
-                var jsonObject = new
-                {
-                    ZoneTypeId = ddlZoneTypeDDL,
-                    ZoneSizeId = ddlZoneSizeDDL,
-                    Description = txtZoneDescription,
-                    WebsiteId = WebSiteDDL_,
-                    Name = txtZoneName,
-                    mWidth = width,
-                    mHeight = height,
-                    UserId = Idn.Value
-                };
-
-                // Serialize the object to a JSON string
-                string JsonInput = JsonConvert.SerializeObject(jsonObject);
-
-                PostAPI apir = new PostAPI();
-                string result = apir.get_string("insertZone", JsonInput, "post");
+                Serve apir = new Serve();
+                string result = apir.insertZone("insertZone", txtZoneName,
+                    txtZoneDescription,
+                    WebSiteDDL_,
+                    ddlZoneTypeDDL,
+                    ddlZoneSizeDDL,
+                    width,
+                    height, Convert.ToInt16(Idn.Value));
 
                 return result;
             }

@@ -42,13 +42,10 @@ namespace AMS
             try
             {
                 string pass = Kripta.Encrypt(PasswordTB.Text, "PPA4XCyfPMBrVASxNr/8A" + EmailTB.Text.ToLower().Trim()).ToString().Trim();
-                string JsonInput = "{\r\n    \"Email\" : " + "'" + EmailTB.Text.ToLower().Trim() + "'" +
-                    ",\r\n    \"Password\" : " + "'" + pass.Trim() + "'" + "\r\n}";
 
                 DataTable dt = new DataTable();
-                PostAPI apir = new PostAPI();
-
-                dt = apir.get_datatable("getUserDetails", JsonInput, "post");
+                Serve apir = new Serve();
+                dt = apir.getUserDetails("getUserDetails", EmailTB.Text.ToLower().Trim(), pass);
 
                 if (dt.Rows.Count > 0)
                 {

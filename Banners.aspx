@@ -21,21 +21,20 @@
                         <asp:Panel ID="Panel1" runat="server">
                             <div class="form-group">
                                 <asp:Label ID="Label4" runat="server" Text="Campaign:" />
-                                <asp:DropDownList ID="CampaignDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="CampaignDDL_SelectedIndexChanged" AutoPostBack="true">
+                                <asp:DropDownList ID="CampaignDDL" runat="server" CssClass="form-control">
                                 </asp:DropDownList>
                             </div>
                             <div class="form-group">
                                 <asp:Label ID="lblWebsite" runat="server" Text="Website:" />
-                                <asp:DropDownList ID="WebsiteDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="WebsiteDDL_SelectedIndexChanged" AutoPostBack="true">
+                                <asp:DropDownList ID="WebsiteDDL" runat="server" CssClass="form-control">
                                 </asp:DropDownList>
                             </div>
-                            <br />
                             <div class="form-group">
                                 <asp:Label ID="Label1" runat="server" Text="Zone:" />
                                 <asp:DropDownList ID="ZonesDDL" runat="server" CssClass="form-control">
                                 </asp:DropDownList>
                             </div>
-                            <br />
+                            <hr />
                             <asp:TextBox ID="txtBannerName" runat="server" CssClass="form-control" Placeholder="Banner Name*" MaxLength="23" />
                             <br />
                             <div class="form-group">
@@ -48,7 +47,32 @@
                                     <asp:ListItem Text="Video" Value="video" />
                                 </asp:DropDownList>
                             </div>
-                            <br />
+                            <div class="form-group">
+                                <asp:Label ID="lblSize" runat="server" Text="Size:" />
+                                <asp:DropDownList ID="ddlBannerSizeDDL" runat="server" CssClass="form-control">
+                                    <asp:ListItem Text="-Select-" Selected="True" Value="0" />
+                                    <asp:ListItem Text="Banner, Button or Rectangle" Value="Banner" />
+                                    <asp:ListItem Value="468x60" Text="IAB Full Banner (468 x 60)" />
+                                    <asp:ListItem Value="120x600" Text="IAB Skyscraper (120 x 600)" />
+                                    <asp:ListItem Value="728x90" Text="IAB Leaderboard (728 x 90)" />
+                                    <asp:ListItem Value="120x90" Text="IAB Button 1 (120 x 90)" />
+                                    <asp:ListItem Value="120x60" Text="IAB Button 2 (120 x 60)" />
+                                    <asp:ListItem Value="234x60" Text="IAB Half Banner (234 x 60)" />
+                                    <asp:ListItem Value="88x31" Text="IAB Micro Bar (88 x 31)" />
+                                    <asp:ListItem Value="125x125" Text="IAB Square Button (125 x 125)" />
+                                    <asp:ListItem Value="120x240" Text="IAB Vertical Banner (120 x 240)" />
+                                    <asp:ListItem Value="180x150" Text="IAB Rectangle (180 x 150)" />
+                                    <asp:ListItem Value="300x250" Text="IAB Medium Rectangle (300 x 250)" />
+                                    <asp:ListItem Value="336x280" Text="IAB Large Rectangle (336 x 280)" />
+                                    <asp:ListItem Value="240x400" Text="IAB Vertical Rectangle (240 x 400)" />
+                                    <asp:ListItem Value="250x250" Text="IAB Square Pop-up (250 x 250)" />
+                                    <asp:ListItem Value="160x600" Text="IAB Wide Skyscraper (160 x 600)" />
+                                    <asp:ListItem Value="720x300" Text="IAB Pop-Under (720 x 300)" />
+                                    <asp:ListItem Value="300x100" Text="IAB 3:1 Rectangle (300 x 100)" />
+                                    <asp:ListItem Value="-" Text="Custom" />
+                                </asp:DropDownList>
+                            </div>
+                            <hr />
                             <asp:Label ID="Label3" runat="server" Text="Resource:"></asp:Label>
                             <asp:FileUpload ID="fileBannerUpload" runat="server" CssClass="form-control" />
                             <asp:CustomValidator ID="fileValidator" runat="server" ControlToValidate="fileBannerUpload" 
@@ -78,8 +102,8 @@
                                     args.IsValid = true;
                                 }
                             </script>
-
-                            <br />
+                            
+                            <hr />
                             <asp:TextBox ID="txtBannerLink" runat="server" CssClass="form-control" Placeholder="The website link this banner points to *" MaxLength="100" />
                             <br />
                             <div class="form-group">
@@ -107,42 +131,42 @@
                             <Columns>
                                 <asp:TemplateField HeaderText="Campaign Name" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("CampaignName") %>'><%# Eval("CampaignName") %></span>
+                                        <span style="background-color: transparent;" title='<%# Eval("CampaignName") %>'><%# Eval("CampaignName") %></span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Website Name" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("WebsiteName") %>'><%# Eval("WebsiteName") %></span>
+                                        <span style="background-color: transparent;" title='<%# Eval("WebsiteName") %>'><%# Eval("WebsiteName") %></span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Zone Name" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("ZoneName") %>'><%# Eval("ZoneName") %></span>
+                                        <span style="background-color: transparent;" title='<%# Eval("ZoneName") %>'><%# Eval("ZoneName") %></span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Banner Name" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("BannerName") %>'><%# Eval("BannerName") %></span>
+                                        <span style="background-color: transparent;" title='<%# Eval("BannerName") %>'><%# Eval("BannerName") %></span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Created By" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("CreatedBy") %>'><%# Eval("CreatedBy") %></span>
+                                        <span style="background-color: transparent;" title='<%# Eval("CreatedBy") %>'><%# Eval("CreatedBy") %></span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Created Date" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("CreatedDate") %>'><%# Eval("CreatedDate") %></span>
+                                        <span style="background-color: transparent;" title='<%# Eval("CreatedDate") %>'><%# Eval("CreatedDate") %></span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Updated Date" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("UpdatedDate") %>'><%# Eval("UpdatedDate") %></span>
+                                        <span style="background-color: transparent;" title='<%# Eval("UpdatedDate") %>'><%# Eval("UpdatedDate") %></span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Status" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("Status") %>'><%# Eval("Status") %></span>
+                                        <span style="background-color: transparent;" title='<%# Eval("Status") %>'><%# Eval("Status") %></span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
 

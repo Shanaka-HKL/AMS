@@ -52,23 +52,21 @@ namespace AMS
         {
             try
             {
-                string JsonInput = "{\r\n    \"UserId\" : " + "'" + Idn.Value + "'" + "\r\n}";
+                DataTable dt = new DataTable();
+                Serve apir = new Serve();
+                dt = apir.getBannerListById("getBannerListById", Convert.ToInt16(Idn.Value));
 
-                DataTable dta = new DataTable();
-
-                PostAPI apir = new PostAPI();
-
-                dta = apir.get_datatable("getBannerListById", JsonInput, "POST");
-
-                if (dta.Rows.Count > 0)
+                if (dt.Rows.Count > 0)
                 {
-                    ViewState["BannerTable"] = dta;
+                    ViewState["BannerTable"] = dt;
 
-                    BannerGridView.DataSource = dta;
+                    BannerGridView.DataSource = dt;
                     BannerGridView.DataBind();
                 }
                 
                 BindDropDowns();
+                getWebsites();
+                getZones();
             }
             catch (Exception ex)
             {
@@ -80,19 +78,15 @@ namespace AMS
         {
             try
             {
-                string JsonInput = "{\r\n    \"UserId\" : " + "'" + Idn.Value + "'" + "\r\n}";
+                DataTable dtc = new DataTable();
+                Serve apir = new Serve();
+                dtc = apir.getCampaignById("getCampaignById", Convert.ToInt16(Idn.Value));
 
-                DataTable dta = new DataTable();
-
-                PostAPI apir = new PostAPI();
-
-                dta = apir.get_datatable("getCampaignById", JsonInput, "POST");
-
-                if (dta.Rows.Count > 0)
+                if (dtc.Rows.Count > 0)
                 {
                     CampaignDDL.DataValueField = "Id";
                     CampaignDDL.DataTextField = "Name";
-                    CampaignDDL.DataSource = dta;
+                    CampaignDDL.DataSource = dtc;
                     CampaignDDL.DataBind();
                     CampaignDDL.SelectedIndex = 0;
                 }
@@ -107,20 +101,8 @@ namespace AMS
         {
             try
             {
-                // Create a JSON object using a C# dictionary
-                var jsonObject = new
-                {
-                    BannerId = websiteID,
-                    Status = status,
-                    UserId = Idn.Value
-                };
-
-                // Serialize the object to a JSON string
-                string JsonInput = JsonConvert.SerializeObject(jsonObject);
-
-                PostAPI apir = new PostAPI();
-
-                string result = apir.get_string("updateBannerById", JsonInput, "POST");
+                Serve apir = new Serve();
+                string result = apir.updateBannerById("updateBannerById", websiteID, status, Convert.ToInt16(Idn.Value));
 
                 if (result.Contains(" successful"))
                 {
@@ -215,7 +197,7 @@ namespace AMS
                     PostAPI apir = new PostAPI();
                     string reslt = "";
 
-                    reslt = InsertRecord(CampaignDDL.SelectedValue.ToString().Trim(), ZonesDDL.SelectedValue.ToString().Trim(), ddlBannerType.SelectedValue.ToString().Trim(),
+                    reslt = InsertRecord(WebsiteDDL.SelectedValue.ToString().Trim(), ddlBannerSizeDDL.SelectedValue.ToString().Trim(), CampaignDDL.SelectedValue.ToString().Trim(), ZonesDDL.SelectedValue.ToString().Trim(), ddlBannerType.SelectedValue.ToString().Trim(),
                         ddlTarget.SelectedValue.ToString().Trim(), txtBannerLink.Text.Trim(), txtBannerName.Text.Trim());
                     if (reslt.Contains(" successful"))
                     {
@@ -228,6 +210,7 @@ namespace AMS
                         CampaignDDL.SelectedIndex = 0;
                         WebsiteDDL.SelectedIndex = 0;
                         ZonesDDL.SelectedIndex = 0;
+                        ddlBannerSizeDDL.SelectedIndex = 0;
                         ddlBannerType.SelectedIndex = 0;
                         ddlTarget.SelectedIndex = 0;
                         txtBannerLink.Text = "";
@@ -242,28 +225,12 @@ namespace AMS
             }
         }
 
-        public string InsertRecord(string CampaignDDLVlu, string ZonesDDLVlu, string ddlBannerTypeVlu, string ddlTargetVlu, string txtBannerLinkVlu, string txtBannerNameVlu)
+        public string InsertRecord(string WebsiteId, string BannerSize, string CampaignDDLVlu, string ZonesDDLVlu, string ddlBannerTypeVlu, string ddlTargetVlu, string txtBannerLinkVlu, string txtBannerNameVlu)
         {
             try
             {
-                // Create a JSON object with the required fields
-                var jsonObject = new
-                {
-                    CampaignId = CampaignDDLVlu,
-                    ZoneId = ZonesDDLVlu,
-                    BannerTypeId = ddlBannerTypeVlu,
-                    Target = ddlTargetVlu,
-                    BannerLink = txtBannerLinkVlu,
-                    Name = txtBannerNameVlu,
-                    UserId = Idn.Value
-                };
-
-                // Serialize the object to a JSON string
-                string JsonInput = JsonConvert.SerializeObject(jsonObject);
-
-                // Create instance of PostAPI and retrieve data
-                PostAPI apir = new PostAPI();
-                string result = apir.get_string("insertBanner", JsonInput, "POST");
+                Serve apir = new Serve();
+                string result = apir.insertBanner("insertBanner", Convert.ToInt16(WebsiteId), BannerSize, Convert.ToInt16(CampaignDDLVlu), Convert.ToInt16(ZonesDDLVlu), ddlBannerTypeVlu, ddlTargetVlu, txtBannerLinkVlu, txtBannerNameVlu, Convert.ToInt16(Idn.Value));
 
                 return result;
             }
@@ -298,17 +265,13 @@ namespace AMS
             BindBannerGridView();
         }
 
-        protected void WebsiteDDL_SelectedIndexChanged(object sender, EventArgs e)
+        private void getZones()
         {
             try
             {
-                string JsonInput = "{\r\n    \"WebsiteId\" : " + "'" + WebsiteDDL.SelectedValue.ToString() + "'" + "\r\n}";
-
                 DataTable dta = new DataTable();
-
-                PostAPI apir = new PostAPI();
-
-                dta = apir.get_datatable("getZonesById", JsonInput, "POST");
+                Serve apir = new Serve();
+                dta = apir.getZonesById("getZonesById", Convert.ToInt16(Idn.Value));
 
                 if (dta.Rows.Count > 0)
                 {
@@ -325,18 +288,13 @@ namespace AMS
             }
         }
 
-        protected void CampaignDDL_SelectedIndexChanged(object sender, EventArgs e)
+        private void getWebsites()
         {
             try
             {
-                string JsonInput = "{\r\n    \"CampaignId\" : " + "'" + CampaignDDL.SelectedValue.ToString() + "'" + "\r\n}";
-
                 DataTable dta = new DataTable();
-                DataTable dtb = new DataTable();
-
-                PostAPI apir = new PostAPI();
-
-                dta = apir.get_datatable("getWebsiteByCampaignId", JsonInput, "POST");
+                Serve apir = new Serve();
+                dta = apir.getWebsiteByCampaignId("getWebsiteByCampaignId", Convert.ToInt16(Idn.Value));
 
                 if (dta.Rows.Count > 0)
                 {

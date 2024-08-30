@@ -28,7 +28,6 @@ namespace AMS
         public DataTable get_datatable(string method, string JsonOutput, string meth_)
         {
             InitializeSecurityProtocol();
-            string result = "";
             DataTable dt = new DataTable();
             try
             {
@@ -37,42 +36,42 @@ namespace AMS
                 http.KeepAlive = true;
                 http.PreAuthenticate = true;
                 http.AllowAutoRedirect = true;
-                ASCIIEncoding encoding = new ASCIIEncoding();
-                byte[] bytes = encoding.GetBytes(JsonOutput);
-                http.ContentLength = bytes.Length;
-                http.Headers["AMS_KEY"] = ApiKey;
-                http.Accept = "application/json";
                 http.ContentType = "application/json";
-                http.MediaType = "application/json";
-                http.Headers["Cache-Control"] = "no-cache";
+                http.Accept = "application/json";
                 http.Method = meth_.ToUpper();
+                http.Headers["AMS_KEY"] = ApiKey;
 
-                Stream newStream = http.GetRequestStream();
-                newStream.Write(bytes, 0, bytes.Length);
+                byte[] bytes = Encoding.ASCII.GetBytes(JsonOutput);
+                http.ContentLength = bytes.Length;
 
-                using ((HttpWebResponse)http.GetResponse())
+                // Write the request stream
+                using (Stream newStream = http.GetRequestStream())
                 {
-                    StreamReader sr = new StreamReader(http.GetResponse().GetResponseStream());
-                    result = sr.ReadToEnd().Trim();
-
-                    dt = (DataTable)JsonConvert.DeserializeObject(result, (typeof(DataTable)));
+                    newStream.Write(bytes, 0, bytes.Length);
                 }
-                return dt;
+
+                // Get the response
+                using (HttpWebResponse response = (HttpWebResponse)http.GetResponse())
+                {
+                    using (StreamReader sr = new StreamReader(response.GetResponseStream()))
+                    {
+                        string result = sr.ReadToEnd().Trim();
+
+                        // Deserialize the JSON response into a DataTable
+                        dt = JsonConvert.DeserializeObject<DataTable>(result);
+
+                        // Log the result for debugging
+                        Console.WriteLine(result);
+                    }
+                }
             }
-            catch //(WebException e)
+            catch (Exception ex)
             {
-                //using (WebResponse response = e.Response)
-                //{
-                //    HttpWebResponse httpResponse = (HttpWebResponse)response;
-                //    Console.WriteLine("Error code: {0}", httpResponse.StatusCode);
-                //    using (Stream data = response.GetResponseStream())
-                //    using (var reader = new StreamReader(data))
-                //    {
-                //        string text = reader.ReadToEnd();
-                //    }
-                //}
-                return dt;
+                // Log the exception for diagnostics
+                Console.WriteLine("Error: " + ex.Message);
             }
+
+            return dt;
         }
 
         [WebMethod]

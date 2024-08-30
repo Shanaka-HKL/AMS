@@ -24,7 +24,6 @@
                                 <asp:DropDownList ID="WebsiteDDL" runat="server" CssClass="form-control">
                                 </asp:DropDownList>
                             </div>
-                            <br />
                             <asp:TextBox ID="txtZoneName" runat="server" CssClass="form-control" Placeholder="Name *" MaxLength="23" />
                             <br />
                             <asp:TextBox ID="txtZoneDescription" runat="server" CssClass="form-control" TextMode="MultiLine" Placeholder="Description" MaxLength="150" />
@@ -41,7 +40,6 @@
                                     <asp:ListItem Text="Overlay Video ad" Value="OverlayVideoAd" />
                                 </asp:DropDownList>
                             </div>
-                            <br />
                             <div class="form-group">
                                 <asp:Label ID="lblSize" runat="server" Text="Size:" />
                                 <asp:DropDownList ID="ddlZoneSizeDDL" runat="server" CssClass="form-control">
@@ -67,13 +65,12 @@
                                     <asp:ListItem Value="-" Text="Custom" />
                                 </asp:DropDownList>
                             </div>
-                            <br />
-                            <div class="form-group">
+                            <div style="align-items:flex-start">
                                 <asp:Label ID="lblWidth" runat="server" Text="Custom:" CssClass="mr-2" />
-                                <asp:TextBox ID="txtWidth" runat="server" CssClass="form-control mr-2" TextMode="Number" Placeholder="Width" />
+                                <asp:TextBox ID="txtWidth" runat="server" CssClass="form-control mr-2" TextMode="Number" Width="250" Placeholder="Width" />
                                 <br />
-                                <asp:TextBox ID="txtHeight" runat="server" CssClass="form-control" TextMode="Number" Placeholder="Height" />
-                            </div>
+                                <asp:TextBox ID="txtHeight" runat="server" CssClass="form-control" TextMode="Number" Width="250" Placeholder="Height" />
+                            </div><br />
                             <div class="form-group text-center">
                                 <asp:Label ID="ErrLbl" runat="server" Height="15px" BackColor="Transparent" Text="" ForeColor="Red" Font-Size="Smaller"></asp:Label>
                             </div>
@@ -89,42 +86,42 @@
                             <Columns>
                                 <asp:TemplateField HeaderText="Website Name" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("WebsiteName") %>'><%# Eval("WebsiteName") %></span>
+                                        <span style="background-color: transparent;" title='<%# Eval("WebsiteName") %>'><%# Eval("WebsiteName") %></span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Zone Name" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("ZoneName") %>'><%# Eval("ZoneName") %></span>
+                                        <span style="background-color: transparent;" title='<%# Eval("ZoneName") %>'><%# Eval("ZoneName") %></span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Zone Type" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("ZoneType") %>'><%# Eval("ZoneType") %></span>
+                                        <span style="background-color: transparent;" title='<%# Eval("ZoneType") %>'><%# Eval("ZoneType") %></span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Zone Size" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("ZoneSize") %>'><%# Eval("ZoneSize") %></span>
+                                        <span style="background-color: transparent;" title='<%# Eval("ZoneSize") %>'><%# Eval("ZoneSize") %></span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Created By" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("CreatedBy") %>'><%# Eval("CreatedBy") %></span>
+                                        <span style="background-color: transparent;" title='<%# Eval("CreatedBy") %>'><%# Eval("CreatedBy") %></span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Created Date" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("CreatedDate") %>'><%# Eval("CreatedDate") %></span>
+                                        <span style="background-color: transparent;" title='<%# Eval("CreatedDate") %>'><%# Eval("CreatedDate") %></span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Updated Date" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("UpdatedDate") %>'><%# Eval("UpdatedDate") %></span>
+                                        <span style="background-color: transparent;" title='<%# Eval("UpdatedDate") %>'><%# Eval("UpdatedDate") %></span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Status" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="word-wrap: break-word; background-color: transparent;" title='<%# Eval("Status") %>'><%# Eval("Status") %></span>
+                                        <span style="background-color: transparent;" title='<%# Eval("Status") %>'><%# Eval("Status") %></span>
                                     </ItemTemplate>
                                 </asp:TemplateField>
 
