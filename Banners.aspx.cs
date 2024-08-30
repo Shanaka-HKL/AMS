@@ -442,6 +442,14 @@ namespace AMS
                 txtBannerName.Enabled = true;
                 txtPriority.Enabled = false;
                 txtPriority.Text = "1";
+
+                CampaignDDL.ForeColor = Color.White;
+                WebsiteDDL.ForeColor = Color.White;
+                ZonesDDL.ForeColor = Color.White;
+                ddlBannerType.ForeColor = Color.White;
+                ddlTarget.ForeColor = Color.White;
+                txtBannerLink.ForeColor = Color.White;
+                txtBannerName.ForeColor = Color.White;
             }
         }
 
