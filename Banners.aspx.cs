@@ -174,10 +174,10 @@ namespace AMS
             {
                 ErrLbl.Text = "Select a Banner Type!";
             }
-            else if (!fileBannerUpload.HasFile)
-            {
-                ErrLbl.Text = "Upload the Media!";
-            }
+            //else if (!fileBannerUpload.HasFile)
+            //{
+            //    ErrLbl.Text = "Upload the Media!";
+            //}
             else if (txtBannerLink.Text.Trim() == "")
             {
                 ErrLbl.Text = "Enter the website link this banner points to!";
@@ -196,33 +196,33 @@ namespace AMS
                 string fileExtension = System.IO.Path.GetExtension(fileBannerUpload.FileName).ToLower();
                 string[] allowedExtensions = { ".html", ".htm", ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".webp", ".txt", ".mp4", ".avi", ".mkv", ".mov", ".wmv" };
 
-                if (Array.Exists(allowedExtensions, ext => ext == fileExtension))
+                //if (Array.Exists(allowedExtensions, ext => ext == fileExtension))
                 {
-                    if (fileBannerUpload.PostedFile.ContentLength <= 5242880) // 5MB in bytes
-                    {
-                        string folderPath = Server.MapPath("~/uploads/" + WebsiteDDL.SelectedValue.ToString() + "_" + ZonesDDL.SelectedValue.ToString() + "/");
+                    //if (fileBannerUpload.PostedFile.ContentLength <= 5242880) // 5MB in bytes
+                    //{
+                    //    string folderPath = Server.MapPath("~/Uploads/" + WebsiteDDL.SelectedValue.ToString() + "_" + ZonesDDL.SelectedValue.ToString() + "/");
 
-                        if (!System.IO.Directory.Exists(folderPath))
-                        {
-                            System.IO.Directory.CreateDirectory(folderPath);
-                        }
-                        string savePath = folderPath + fileBannerUpload.FileName;
+                    //    if (!System.IO.Directory.Exists(folderPath))
+                    //    {
+                    //        System.IO.Directory.CreateDirectory(folderPath);
+                    //    }
+                    //    string savePath = folderPath + fileBannerUpload.FileName;
 
-                        fileBannerUpload.SaveAs(savePath);
-                        ErrLbl.Text = "File uploaded successfully!";
+                    //    fileBannerUpload.SaveAs(savePath);
+                    //    ErrLbl.Text = "File uploaded successfully!";
                         proceed = true;
-                    }
-                    else
-                    {
-                        ErrLbl.Text = "File size exceeds the 5MB limit.";
-                        proceed = false;
-                    }
+                    //}
+                    //else
+                    //{
+                    //    ErrLbl.Text = "File size exceeds the 5MB limit.";
+                    //    proceed = false;
+                    //}
                 }
-                else
-                {
-                    ErrLbl.Text = "Invalid file type. Only HTML, Image, Text, and Video files are allowed.";
-                    proceed = false;
-                }
+                //else
+                //{
+                //    ErrLbl.Text = "Invalid file type. Only HTML, Image, Text, and Video files are allowed.";
+                //    proceed = false;
+                //}
 
                 if (proceed == true)
                 {
@@ -294,19 +294,27 @@ namespace AMS
         {
             try
             {
-                string JsonInput = "{\r\n    \"CampaignId\" : " + "'" + CampaignDDLVlu + "'" +
-                    ",\r\n    \"BId\" : " + "'" + BannerDDL_ + "'" +
-                    ",\r\n    \"WebsiteId\" : " + "'" + WebsiteDDLVlu + "'" +
-                    ",\r\n    \"ZoneId\" : " + "'" + ZonesDDLVlu + "'" +
-                    ",\r\n    \"BannerTypeId\" : " + "'" + ddlBannerTypeVlu + "'" +
-                    ",\r\n    \"Target\" : " + "'" + ddlTargetVlu + "'" +
-                    ",\r\n    \"BannerLink\" : " + "'" + txtBannerLinkVlu + "'" +
-                    ",\r\n    \"Name\" : " + "'" + txtBannerNameVlu + "'" +
-                    ",\r\n    \"Priority\" : " + "'" + txtPriority_ + "'" +
-                    ",\r\n    \"UserId\" : " + "'" + Idn.Value + "'" + "\r\n}";
+                // Create a JSON object with the required fields
+                var jsonObject = new
+                {
+                    CampaignId = CampaignDDLVlu,
+                    BId = BannerDDL_,
+                    WebsiteId = WebsiteDDLVlu,
+                    ZoneId = ZonesDDLVlu,
+                    BannerTypeId = ddlBannerTypeVlu,
+                    Target = ddlTargetVlu,
+                    BannerLink = txtBannerLinkVlu,
+                    Name = txtBannerNameVlu,
+                    Priority = txtPriority_,
+                    UserId = Idn.Value
+                };
 
+                // Serialize the object to a JSON string
+                string JsonInput = JsonConvert.SerializeObject(jsonObject);
+
+                // Create instance of PostAPI and retrieve data
                 PostAPI apir = new PostAPI();
-                string result = apir.get_string("updateBannerByBannerId", JsonInput, "post");
+                string result = apir.get_string("updateBannerByBannerId", JsonInput, "POST");
 
                 return result;
             }
@@ -316,6 +324,7 @@ namespace AMS
                 return ex.Message;
             }
         }
+
         public string InsertRecord(int txtPriority_, string CampaignDDLVlu, string WebsiteDDLVlu, string ZonesDDLVlu, string ddlBannerTypeVlu, string ddlTargetVlu, string txtBannerLinkVlu, string txtBannerNameVlu)
         {
             try
@@ -349,7 +358,6 @@ namespace AMS
                 return ex.Message;
             }
         }
-
 
         protected void ActivateButton_Click(object sender, EventArgs e)
         {
@@ -409,6 +417,14 @@ namespace AMS
                     txtBannerLink.Enabled = false;
                     txtBannerName.Enabled = false;
                     txtPriority.Enabled = true;
+
+                    CampaignDDL.ForeColor = Color.Black;
+                    WebsiteDDL.ForeColor = Color.Black;
+                    ZonesDDL.ForeColor = Color.Black;
+                    ddlBannerType.ForeColor = Color.Black;
+                    ddlTarget.ForeColor = Color.Black;
+                    txtBannerLink.ForeColor = Color.Black;
+                    txtBannerName.ForeColor = Color.Black;
                 }
                 catch (Exception ex)
                 {
@@ -483,7 +499,7 @@ namespace AMS
                 {
                     BannerDDL.DataValueField = "Id";
                     BannerDDL.DataTextField = "Name";
-                    BannerDDL.DataSource = dta;
+                    BannerDDL.DataSource = dtb;
                     BannerDDL.DataBind();
                     BannerDDL.SelectedIndex = 0;
                 }
