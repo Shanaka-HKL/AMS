@@ -69,24 +69,6 @@ namespace AMS
         protected global::System.Web.UI.WebControls.TextBox txtCampaignDescription;
 
         /// <summary>
-        /// Label2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label2;
-
-        /// <summary>
-        /// AdvertiserDDL control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList AdvertiserDDL;
-
-        /// <summary>
         /// lblZoneType control.
         /// </summary>
         /// <remarks>

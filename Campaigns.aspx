@@ -23,12 +23,6 @@
                             <asp:TextBox ID="txtCampaignDescription" runat="server" CssClass="form-control" TextMode="MultiLine" MaxLength="150" Placeholder="Campaign Description" /><br />
                             <br />
                             <div class="form-group">
-                                <asp:Label ID="Label2" runat="server" Text="Advertiser:" />
-                                <asp:DropDownList ID="AdvertiserDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="AdvertiserDDL_SelectedIndexChanged">
-                                </asp:DropDownList>
-                            </div>
-                            <br />
-                            <div class="form-group">
                                 <asp:Label ID="lblZoneType" runat="server" Text="Website:" />
                                 <asp:DropDownList ID="WebsiteDDL" runat="server" CssClass="form-control">
                                 </asp:DropDownList>

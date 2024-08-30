@@ -65,35 +65,6 @@ namespace AMS
                     CampaignGridView.DataSource = dta;
                     CampaignGridView.DataBind();
                 }
-                
-                BindDropDowns();
-            }
-            catch (Exception ex)
-            {
-                ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + ex.Message + "');", true);
-            }
-        }
-
-        private void BindDropDowns()
-        {
-            try
-            {
-                string JsonInput = "{\r\n    \"UserId\" : " + "'" + Idn.Value + "'" + "\r\n}";
-
-                DataTable dta = new DataTable();
-
-                PostAPI apir = new PostAPI();
-
-                dta = apir.get_datatable("getAdvertiserById", JsonInput, "POST");
-
-                if (dta.Rows.Count > 0)
-                {
-                    AdvertiserDDL.DataValueField = "Id";
-                    AdvertiserDDL.DataTextField = "Name";
-                    AdvertiserDDL.DataSource = dta;
-                    AdvertiserDDL.DataBind();
-                    AdvertiserDDL.SelectedIndex = 1;
-                }
             }
             catch (Exception ex)
             {
@@ -146,10 +117,6 @@ namespace AMS
             {
                 ErrLbl.Text = "Enter Campaign Name!";
             }
-            else if (AdvertiserDDL.SelectedValue.ToString() == "0")
-            {
-                ErrLbl.Text = "Select an Advertiser!";
-            }
             else if (txtStartDate.Text.Trim() == "")
             {
                 ErrLbl.Text = "Select the Start Date!";
@@ -163,7 +130,7 @@ namespace AMS
                 PostAPI apir = new PostAPI();
                 string reslt = "";
 
-                reslt = InsertRecord(txtCampaignName.Text.Trim(), txtCampaignDescription.Text.Trim(), AdvertiserDDL.SelectedValue.ToString().Trim(), WebsiteDDL.SelectedValue.ToString().Trim(),
+                reslt = InsertRecord(txtCampaignName.Text.Trim(), txtCampaignDescription.Text.Trim(), Idn.Value, WebsiteDDL.SelectedValue.ToString().Trim(),
                      txtCampaignBudget.Text.Trim(), txtStartDate.Text.Trim(), txtEndDate.Text.Trim());
                 if (reslt.Contains(" successful"))
                 {
@@ -173,13 +140,12 @@ namespace AMS
 
                     BindCampaignGridView();
 
-                AdvertiserDDL.SelectedIndex = 0;
-                WebsiteDDL.SelectedIndex = 0;
-                txtCampaignName.Text = "";
-                txtCampaignDescription.Text = "";
-                txtCampaignBudget.Text = "";
-                txtStartDate.Text = "";
-                txtEndDate.Text = "";
+                    WebsiteDDL.SelectedIndex = 0;
+                    txtCampaignName.Text = "";
+                    txtCampaignDescription.Text = "";
+                    txtCampaignBudget.Text = "";
+                    txtStartDate.Text = "";
+                    txtEndDate.Text = "";
                 }
                 else
                 {
@@ -258,7 +224,7 @@ namespace AMS
         {
             try
             {
-                string JsonInput = "{\r\n    \"AdvertiserId\" : " + "'" + AdvertiserDDL.SelectedValue.ToString() + "'" + "\r\n}";
+                string JsonInput = "{\r\n    \"AdvertiserId\" : " + "'" + Idn.Value + "'" + "\r\n}";
 
                 DataTable dta = new DataTable();
 
