@@ -18,10 +18,16 @@ namespace AMS
     {
         String ApiKey = ConfigurationManager.AppSettings["Kripton_Key"].ToString().Trim(); String ApiPoint = ConfigurationManager.AppSettings["Kripta_Link"].ToString().Trim();
 
+        public static void InitializeSecurityProtocol()
+        {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+        }
+
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public DataTable get_datatable(string method, string JsonOutput, string meth_)
         {
+            InitializeSecurityProtocol();
             string result = "";
             DataTable dt = new DataTable();
             try
