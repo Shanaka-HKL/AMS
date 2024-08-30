@@ -320,18 +320,26 @@ namespace AMS
         {
             try
             {
-                string JsonInput = "{\r\n    \"CampaignId\" : " + "'" + CampaignDDLVlu + "'" +
-                    ",\r\n    \"WebsiteId\" : " + "'" + WebsiteDDLVlu + "'" +
-                    ",\r\n    \"ZoneId\" : " + "'" + ZonesDDLVlu + "'" +
-                    ",\r\n    \"BannerTypeId\" : " + "'" + ddlBannerTypeVlu + "'" +
-                    ",\r\n    \"Target\" : " + "'" + ddlTargetVlu + "'" +
-                    ",\r\n    \"BannerLink\" : " + "'" + txtBannerLinkVlu + "'" +
-                    ",\r\n    \"Name\" : " + "'" + txtBannerNameVlu + "'" +
-                    ",\r\n    \"Priority\" : " + "'" + txtPriority_ + "'" +
-                    ",\r\n    \"UserId\" : " + "'" + Idn.Value + "'" + "\r\n}";
+                // Create a JSON object with the required fields
+                var jsonObject = new
+                {
+                    CampaignId = CampaignDDLVlu,
+                    WebsiteId = WebsiteDDLVlu,
+                    ZoneId = ZonesDDLVlu,
+                    BannerTypeId = ddlBannerTypeVlu,
+                    Target = ddlTargetVlu,
+                    BannerLink = txtBannerLinkVlu,
+                    Name = txtBannerNameVlu,
+                    Priority = txtPriority_,
+                    UserId = Idn.Value
+                };
 
+                // Serialize the object to a JSON string
+                string JsonInput = JsonConvert.SerializeObject(jsonObject);
+
+                // Create instance of PostAPI and retrieve data
                 PostAPI apir = new PostAPI();
-                string result = apir.get_string("insertBanner", JsonInput, "post");
+                string result = apir.get_string("insertBanner", JsonInput, "POST");
 
                 return result;
             }
@@ -341,6 +349,7 @@ namespace AMS
                 return ex.Message;
             }
         }
+
 
         protected void ActivateButton_Click(object sender, EventArgs e)
         {
