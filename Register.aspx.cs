@@ -105,7 +105,8 @@ namespace AMS
                 {
                     ErrTB.ForeColor = Color.Green;
                     ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + result + "');", true);
-                    ErrTB.Text = "Check your email inbox and please click on the link to activate your account.";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + "Check your email inbox and please click on the link to activate your account." + "');", true);
+                    ErrTB.Text = "Please activate your account.";
 
                     await SendEmailAsync(DName, EmailTB_, PasswordTB_, key);
                 }
