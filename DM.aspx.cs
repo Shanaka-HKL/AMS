@@ -9,7 +9,7 @@ using System.Web.UI.WebControls;
 
 namespace AMS
 {
-    public partial class DM : System.Web.UI.Page
+    public partial class _DM : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {

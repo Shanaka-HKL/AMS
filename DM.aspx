@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="DM.aspx.cs" Inherits="AMS.DM" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="DM.aspx.cs" Inherits="AMS._DM" %>
 
 <!DOCTYPE html>
 

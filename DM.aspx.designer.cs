@@ -10,7 +10,7 @@
 
 namespace AMS
 {
-    public partial class DM
+    public partial class _DM
     {
 
         /// <summary>
