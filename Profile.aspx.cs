@@ -50,7 +50,7 @@ namespace AMS
                     }
                     else
                     {
-                        profileImageDisplay.ImageUrl = "data:image/png;base64," + Pic.Trim();
+                        profileImageDisplay.ImageUrl = Pic.Trim();
                     }
                     Description = Kripta.Decrypt(userin4ck["description"].Trim(), "PPA4XCyfPMBrVASxNr/8A").ToString().Trim();
                     profileDescription.Text = Description;
@@ -158,8 +158,6 @@ namespace AMS
 
         protected void UploadBtn_Click(object sender, EventArgs e)
         {
-            string base64Stringa = "";
-
             if (profileImage.HasFile)
             {
                 string fileExtension = System.IO.Path.GetExtension(profileImage.FileName).ToLower();
@@ -184,15 +182,51 @@ namespace AMS
                 }
                 if (proceed == true)
                 {
-                    Stream fs = profileImage.PostedFile.InputStream;
-                    BinaryReader br = new BinaryReader(fs);
-                    Byte[] bytes = br.ReadBytes((Int32)fs.Length);
-                    base64Stringa = Convert.ToBase64String(bytes, 0, bytes.Length);
+                    string fullPath = Server.MapPath("~/Uploads/" + profileImage.FileName);
+                    string folderPath = Server.MapPath("~/Uploads/");
+
+                    if (!System.IO.Directory.Exists(folderPath))
+                    {
+                        System.IO.Directory.CreateDirectory(folderPath);
+                    }
+                    string savePath = fullPath;
+
+                    profileImage.SaveAs(savePath);
 
                     HttpCookie userin4ck = new HttpCookie("SzxWNHuO4XCyfPMBrVASxNrPPA");
-                    Pic = base64Stringa;
-                    userin4ck["pic"] = base64Stringa;
+
+                    Idn.Value = Kripta.Decrypt(userin4ck["id"].Trim(), "PPA4XCyfPMBrVASxNr/8A").ToString().Trim();
+                    Emailn.Value = Kripta.Decrypt(userin4ck["email"].Trim(), "PPA4XCyfPMBrVASxNr/8A").ToString().Trim();
+                    DName = Kripta.Decrypt(userin4ck["dname"].Trim(), "PPA4XCyfPMBrVASxNr/8A").ToString().Trim();
+                    AId = Kripta.Decrypt(userin4ck["aId"].Trim(), "PPA4XCyfPMBrVASxNr/8A").ToString().Trim();
+                    Address = Kripta.Decrypt(userin4ck["addr"].Trim(), "PPA4XCyfPMBrVASxNr/8A").ToString().Trim();
+                    Type = Kripta.Decrypt(userin4ck["type"].Trim(), "PPA4XCyfPMBrVASxNr/8A").ToString().Trim();
+                    Phone = Kripta.Decrypt(userin4ck["phone"].Trim(), "PPA4XCyfPMBrVASxNr/8A").ToString().Trim();
+                    Description = Kripta.Encrypt(Description.Trim(), "PPA4XCyfPMBrVASxNr/8A").ToString().Trim();
+
+                    userin4ck["id"] = Idn.Value;
+                    userin4ck["email"] = Emailn.Value;
+                    userin4ck["dname"] = DName;
+                    userin4ck["aId"] = AId;
+                    userin4ck["addr"] = Address;
+                    userin4ck["type"] = Type;
+                    userin4ck["phone"] = Phone;
+                    userin4ck["pic"] = savePath;
+                    userin4ck["description"] = Description;
+
+                    if (savePath == "")
+                    {
+                        profileImageDisplay.ImageUrl = "~/Images/Default-profile.png";
+                    }
+                    else
+                    {
+                        profileImageDisplay.ImageUrl = savePath;
+                    }
+
                     Response.Cookies.Add(userin4ck);
+
+                    profileImageDisplay.ImageUrl = savePath;
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + "File uploaded successfully!" + "');", true);
                 }
             }
             else

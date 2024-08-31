@@ -77,7 +77,7 @@ namespace AMS
                     Address = Kripta.Encrypt(Address.Trim(), "PPA4XCyfPMBrVASxNr/8A").ToString().Trim();
                     Type = Kripta.Encrypt(Type.Trim(), "PPA4XCyfPMBrVASxNr/8A").ToString().Trim();
                     Phone = Kripta.Encrypt(Phone.Trim(), "PPA4XCyfPMBrVASxNr/8A").ToString().Trim();
-                    Pic = Pic.Trim();
+
                     Description = Kripta.Encrypt(Description.Trim(), "PPA4XCyfPMBrVASxNr/8A").ToString().Trim();
 
                     userin4ck["id"] = Id;
@@ -92,7 +92,7 @@ namespace AMS
 
                     Response.Cookies.Add(userin4ck);
 
-                    Session["SesE"] = Id;
+                    Session["SesE"] = Pic;
 
                     EmailTB.Text = "";
                     PasswordTB.Text = "";
