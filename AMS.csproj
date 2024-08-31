@@ -130,7 +130,6 @@
     <Content Include="Images\track_performance.jpg" />
     <Content Include="Images\website.jpg" />
     <Content Include="Images\zone.jpg" />
-    <Content Include="DM.aspx" />
     <Content Include="HitAd.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -204,13 +203,6 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="AuthClass.cs" />
-    <Compile Include="DM.aspx.cs">
-      <DependentUpon>DM.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DM.aspx.designer.cs">
-      <DependentUpon>DM.aspx</DependentUpon>
-    </Compile>
     <Compile Include="HitAd.aspx.cs">
       <DependentUpon>HitAd.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

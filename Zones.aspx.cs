@@ -16,7 +16,7 @@ namespace AMS
 {
     public partial class _Zones : Page
     {
-        
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -64,7 +64,7 @@ namespace AMS
                     ZoneGridView.DataSource = dta;
                     ZoneGridView.DataBind();
                 }
-                
+
                 BindDropDowns();
             }
             catch (Exception ex)
@@ -230,16 +230,12 @@ namespace AMS
         }
         public static string GenerateRandomKey(int size = 32)
         {
-            // Size is in bytes; a 32-byte key will generate a 256-bit key
             byte[] randomBytes = new byte[size];
 
             using (var rng = new RNGCryptoServiceProvider())
             {
-                // Fill the array with cryptographically strong random bytes
                 rng.GetBytes(randomBytes);
             }
-
-            // Convert the byte array to a base64 string
             return Convert.ToBase64String(randomBytes);
         }
 
@@ -339,10 +335,25 @@ namespace AMS
                 Session["DownloadContent"] = script;
                 Session["DownloadFileName"] = $"{websiteName}.txt";
 
-                ScriptManager.RegisterStartupScript(this, GetType(), "DownloadFile", "window.open('DM.aspx', '_blank');", true);
+                ScriptManager.RegisterStartupScript(this, GetType(), "triggerDownload", "document.getElementById('" + HiddenDownloadButton.ClientID + "').click();", true);
             }
 
             BindZoneGridView();
+        }
+
+        protected void HiddenDownloadButton_Click(object sender, EventArgs e)
+        {
+            if (Session["DownloadContent"] != null && Session["DownloadFileName"] != null)
+            {
+                string content = Session["DownloadContent"].ToString();
+                string fileName = Session["DownloadFileName"].ToString();
+
+                Response.Clear();
+                Response.ContentType = "text/plain";
+                Response.AddHeader("Content-Disposition", $"attachment;filename={fileName}");
+                Response.Write(content);
+                Response.End();
+            }
         }
     }
 }

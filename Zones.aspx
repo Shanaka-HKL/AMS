@@ -154,5 +154,6 @@
                 </div>
             </ContentTemplate>
         </asp:UpdatePanel>
+        <asp:Button ID="HiddenDownloadButton" runat="server" OnClick="HiddenDownloadButton_Click" Style="display:none;" />
     </div>
 </asp:Content>
