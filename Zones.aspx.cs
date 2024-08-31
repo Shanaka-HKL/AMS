@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Security.Policy;
 using System.Web;
 using System.Web.UI;
@@ -227,6 +228,20 @@ namespace AMS
                 return ex.Message;
             }
         }
+        public static string GenerateRandomKey(int size = 32)
+        {
+            // Size is in bytes; a 32-byte key will generate a 256-bit key
+            byte[] randomBytes = new byte[size];
+
+            using (var rng = new RNGCryptoServiceProvider())
+            {
+                // Fill the array with cryptographically strong random bytes
+                rng.GetBytes(randomBytes);
+            }
+
+            // Convert the byte array to a base64 string
+            return Convert.ToBase64String(randomBytes);
+        }
 
         protected void DownloadButton_Click(object sender, EventArgs e)
         {
@@ -236,8 +251,11 @@ namespace AMS
                 int rowIndex = Convert.ToInt32(clickedButton.CommandArgument);
                 GridViewRow row = ZoneGridView.Rows[rowIndex];
 
-                string websiteName = row.Cells[1].Text;
-                string location = "~/media/";
+                //Label lblWebsiteName = (Label)row.FindControl("Website Name");
+                //string websiteName = lblWebsiteName.Text;
+                string websiteName = GenerateRandomKey();
+
+                string location = "~/Uploads/";
                 string div_width = "800";
                 string div_height = "640";
                 string target = "_blank";
