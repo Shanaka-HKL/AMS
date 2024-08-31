@@ -72,25 +72,8 @@ namespace AMS
             }
             else
             {
-                string reslt = "";
-                reslt = Insertuser(EmailTB.Text.Trim(), PasswordTB.Text.Trim(), NameTB.Text.Trim(), SupportDDL.SelectedValue.ToString(), PhoneTB.Text.Trim(), AddressTB.Text.Trim());
-                if (reslt.Contains(" successful"))
-                {
-                    ErrTB.ForeColor = Color.Green;
-                    ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + reslt + "');", true);
-                    ErrTB.Text = "Check your email inbox and please click on the link to activate your account.";
-                }
-                else
-                {
-                    ErrTB.ForeColor = Color.Red;
-                    ErrTB.Text = reslt;
-                }
+                Insertuser(EmailTB.Text.Trim(), PasswordTB.Text.Trim(), NameTB.Text.Trim(), SupportDDL.SelectedValue.ToString(), PhoneTB.Text.Trim(), AddressTB.Text.Trim());
             }
-        }
-
-        public async Task EmailAsync(string nme, string email_, string password_, string key)
-        {
-            await SendEmailAsync(nme, email_, password_, key);
         }
 
         private static string GenerateRandomKey(int length)
@@ -102,7 +85,7 @@ namespace AMS
             }
             return BitConverter.ToString(buff).Replace("-", "");
         }
-        public string Insertuser(string EmailTB_, string PasswordTB_, string DName, string AId, string Phone, string Address)
+        public async Task<string> Insertuser(string EmailTB_, string PasswordTB_, string DName, string AId, string Phone, string Address)
         {
             try
             {
@@ -118,7 +101,19 @@ namespace AMS
                 Serve apir = new Serve();
                 string result = apir.insertUser("insertUser", EmailTB_.ToLower().Trim(), pass, DName, AId, Phone, key, Address);
 
-                _ = EmailAsync(DName, EmailTB_, PasswordTB_, key);
+                if (result.Contains(" successful"))
+                {
+                    ErrTB.ForeColor = Color.Green;
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + result + "');", true);
+                    ErrTB.Text = "Check your email inbox and please click on the link to activate your account.";
+
+                    await SendEmailAsync(DName, EmailTB_, PasswordTB_, key);
+                }
+                else
+                {
+                    ErrTB.ForeColor = Color.Red;
+                    ErrTB.Text = result;
+                }
 
                 return result;
             }
@@ -128,6 +123,7 @@ namespace AMS
                 return ex.Message;
             }
         }
+
         public async Task<bool> SendEmailAsync(string nme, string email_, string password_, string key)
         {
             try

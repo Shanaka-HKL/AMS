@@ -19,7 +19,7 @@ namespace AMS
     {
         public DataTable getWebsiteByCampaignId(string spname, int UserId)
         {
-            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
             try
             {
                 con.Open();
@@ -55,7 +55,7 @@ namespace AMS
         }
         public DataTable getZonesById(string spname, int UserId)
         {
-            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
             try
             {
                 con.Open();
@@ -91,7 +91,7 @@ namespace AMS
         }
         public DataTable getBannerListById(string spname, int UserId)
         {
-            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
             try
             {
                 con.Open();
@@ -127,7 +127,7 @@ namespace AMS
         }
         public DataTable getCampaignById(string spname, int UserId)
         {
-            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
             try
             {
                 con.Open();
@@ -163,7 +163,7 @@ namespace AMS
         }
         public DataTable getCampaignByCampaignId(string spname, int CampaignId)
         {
-            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
             try
             {
                 con.Open();
@@ -199,7 +199,7 @@ namespace AMS
         }
         public DataTable getCampaignListById(string spname, int UserId)
         {
-            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
             try
             {
                 con.Open();
@@ -235,7 +235,7 @@ namespace AMS
         }
         public DataTable getWebsiteListById(string spname, int UserId)
         {
-            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
             try
             {
                 con.Open();
@@ -271,7 +271,7 @@ namespace AMS
         }
         public DataTable getUserDetails(string spname, string email, string password)
         {
-            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
             try
             {
                 con.Open();
@@ -308,7 +308,7 @@ namespace AMS
         }
         public string updateBannerById(string spname, int websiteID, int status, int UserId)
         {
-            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
             try
             {
                 con.Open();
@@ -352,7 +352,7 @@ namespace AMS
         }
         public string updateWebsiteById(string spname, int websiteID, int status, int UserId)
         {
-            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
             try
             {
                 con.Open();
@@ -396,7 +396,7 @@ namespace AMS
         }
         public string insertBanner(string spname, int WebsiteId, string BannerSize, int CampaignDDLVlu, int ZoneId, string BannerTypeId, string Target, string txtBannerLinkVlu, string txtBannerNameVlu, int UserId)
         {
-            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
             try
             {
                 con.Open();
@@ -446,7 +446,7 @@ namespace AMS
         }
         public string insertWebsite(string spname, string Name, string WebsiteUrl, string TargetFrame, int UserId)
         {
-            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
             try
             {
                 con.Open();
@@ -498,7 +498,7 @@ namespace AMS
         }
         public DataTable getWebsiteByAdvertiserId(string spname, int UserId)
         {
-            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
             try
             {
                 con.Open();
@@ -534,7 +534,7 @@ namespace AMS
         }
         public DataTable getZoneListById(string spname, int UserId)
         {
-            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
             try
             {
                 con.Open();
@@ -570,7 +570,7 @@ namespace AMS
         }
         public string deleteUserById(string spname, string Email, int UserId)
         {
-            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
             try
             {
                 con.Open();
@@ -613,7 +613,7 @@ namespace AMS
         }
         public string updatePasswordProfileById(string spname, string OldPassword, string NewPassword, int UserId)
         {
-            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
             try
             {
                 con.Open();
@@ -657,7 +657,7 @@ namespace AMS
         }
         public string updateProfileImageById(string spname, string Pic, int UserId)
         {
-            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
             try
             {
                 con.Open();
@@ -700,7 +700,7 @@ namespace AMS
         }
         public string updateProfileById(string spname, string profileDescription, int UserId)
         {
-            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
             try
             {
                 con.Open();
@@ -743,7 +743,7 @@ namespace AMS
         }
         public string updateUserByActivationCode(string spname, string KeyPara)
         {
-            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
             try
             {
                 con.Open();
@@ -785,7 +785,7 @@ namespace AMS
         }
         public string updateZoneById(string spname, int ZoneId, int Status, int UserId)
         {
-            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
             try
             {
                 con.Open();
@@ -829,7 +829,7 @@ namespace AMS
         }
         public string insertUser(string spname, string EmailTB_, string PasswordTB_, string DName, string AId, string Phone, string KeyPara, string Address)
         {
-            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
             try
             {
                 con.Open();
@@ -893,7 +893,7 @@ namespace AMS
         }
         public string insertZone(string spname, string Name, string Description, string WebsiteId, string ZoneTypeId, string ZoneSizeId, int mWidth, int mHeight, int Id)
         {
-            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
             try
             {
                 con.Open();
@@ -949,7 +949,7 @@ namespace AMS
         }
         public DataTable getCredentialsByEmail(string spname, string Email)
         {
-            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
             try
             {
                 con.Open();
@@ -985,7 +985,7 @@ namespace AMS
         }
         public string updateCampaignById(string spname, int CampaignId, int status, int UserId)
         {
-            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
             try
             {
                 con.Open();
@@ -1029,7 +1029,7 @@ namespace AMS
         }
         public string updateCampaign(string spname, int txtCampaignId, int prio, int Id)
         {
-            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
             try
             {
                 con.Open();
@@ -1074,7 +1074,7 @@ namespace AMS
         public string insertCampaign(string spname, string txtCampaignName_, string txtCampaignDescription_, int prio, int AdvertiserDDL_, decimal budget,
             string startDate, string endDate, int Id)
         {
-            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
             try
             {
                 con.Open();

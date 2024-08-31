@@ -237,104 +237,59 @@ namespace AMS
             }
             return Convert.ToBase64String(randomBytes);
         }
-
         protected void DownloadButton_Click(object sender, EventArgs e)
         {
             LinkButton clickedButton = sender as LinkButton;
             if (clickedButton != null)
             {
-                int rowIndex = Convert.ToInt32(clickedButton.CommandArgument);
-                GridViewRow row = ZoneGridView.Rows[rowIndex];
-                string websiteName = GenerateRandomKey();
+                GridViewRow row = (GridViewRow)clickedButton.NamingContainer;
 
-                string location = "~/Uploads/";
-                string div_width = "800";
-                string div_height = "640";
-                string target = "_blank";
+                // Get the selected DataKey (zoneId)
+                string zoneId = ZoneGridView.DataKeys[row.RowIndex].Value.ToString();
 
-                // Fetch files from the directory
-                string mediaFolder = Server.MapPath(location);
-                var mediaFiles = Directory.GetFiles(mediaFolder)
-                    .Select(filePath => new
+                // Retrieve the DataTable from ViewState
+                DataTable dt = ViewState["ZoneTable"] as DataTable;
+
+                if (dt != null)
+                {
+                    // Find the DataRow where the zoneId matches
+                    DataRow[] foundRows = dt.Select($"Id = '{zoneId}'");
+
+                    if (foundRows.Length > 0)
                     {
-                        Url = location + Path.GetFileName(filePath),
-                        Priority = int.Parse(Path.GetFileName(filePath)[0].ToString()), // First letter of filename as priority
-                        Extension = Path.GetExtension(filePath)
-                    })
-                    .OrderBy(file => file.Priority) // Sort by priority
-                    .ToList();
+                        DataRow foundRow = foundRows[0];
 
-                string mediaItemsScriptArray = string.Join(",\n", mediaFiles.Select(file => $@"{{ url: '{file.Url}', type: '{file.Extension.Replace(".", "")}', priority: {file.Priority} }}"));
+                        // Retrieve the ZoneSize from the DataRow
+                        string zoneSize = foundRow["ZoneSize"].ToString();
+                        string width = "0";
+                        string height = "0";
 
-                string script = $@"<!-- -----Paid Advertisement AMS IQ------ -->
-                            <div id=""ad-container"" style=""width: {div_width}px; height: {div_height}px;""></div>
-                            <script>
-                              // Array of media URLs with their priorities and types
-                              const mediaItems = [
-                                {mediaItemsScriptArray}
-                              ];
+                        if (!string.IsNullOrEmpty(zoneSize))
+                        {
+                            string[] size = zoneSize.Split('x');
+                            if (size.Length == 2)
+                            {
+                                width = size[0];
+                                height = size[1];
+                            }
+                        }
 
-                              let currentIndex = 0;
-                              const displayTime = 5 * 60 * 1000; // 5 minutes in milliseconds
+                        string script = $@"<%-- AMS IQ --%>
+<div id='adZone'>
+    <iframe src='https://advertisementmanagementsystem.azurewebsites.net/displayBanner.aspx?zoneId={zoneId}' 
+            width='{width}' height='{height}' frameborder='0' scrolling='no'></iframe>
+</div><%-- AMS IQ --%>";
 
-                              function loadAdContent() {{
-                                const adContainer = document.getElementById('ad-container');
-                                const currentMedia = mediaItems[currentIndex];
+                        Session["DownloadContent"] = script;
+                        Session["DownloadFileName"] = $"adZone_{zoneId}.txt";
 
-                                // Clear previous content
-                                adContainer.innerHTML = '';
-
-                                if (currentMedia.type === 'txt') {{
-                                  fetch(currentMedia.url)
-                                    .then(response => response.text())
-                                    .then(data => {{
-                                      const textElement = document.createElement('p');
-                                      textElement.textContent = data;
-                                      adContainer.appendChild(textElement);
-                                    }});
-                                }} else if (currentMedia.type === 'html') {{
-                                  fetch(currentMedia.url)
-                                    .then(response => response.text())
-                                    .then(data => {{
-                                      adContainer.innerHTML = data;
-                                    }});
-                                }} else if (currentMedia.type === 'jpg' || currentMedia.type === 'png' || currentMedia.type === 'gif') {{
-                                  const imgElement = document.createElement('img');
-                                  imgElement.src = currentMedia.url;
-                                  imgElement.style.width = '100%';
-                                  adContainer.appendChild(imgElement);
-                                }} else if (currentMedia.type === 'mp4' || currentMedia.type === 'webm') {{
-                                  const videoElement = document.createElement('video');
-                                  videoElement.src = currentMedia.url;
-                                  videoElement.controls = true;
-                                  videoElement.style.width = '100%';
-                                  adContainer.appendChild(videoElement);
-                                }} else {{
-                                  const defaultMessage = document.createElement('p');
-                                  defaultMessage.textContent = 'Advertisement content could not be loaded.';
-                                  adContainer.appendChild(defaultMessage);
-                                }}
-
-                                adContainer.onclick = function () {{
-                                  window.location.href = 'HitAd.aspx';
-                                  window.location.target = '{target}';
-                                }};
-
-                                currentIndex = (currentIndex + 1) % mediaItems.length;
-                              }}
-
-                              // Initial display of the first media item
-                              loadAdContent();
-
-                              // Set an interval to change the media item every 5 minutes
-                              setInterval(loadAdContent, displayTime);
-                            </script>
-                            <!-- -----Paid Advertisement AMS IQ------ -->";
-
-                Session["DownloadContent"] = script;
-                Session["DownloadFileName"] = $"{websiteName}.txt";
-
-                ScriptManager.RegisterStartupScript(this, GetType(), "triggerDownload", "document.getElementById('" + HiddenDownloadButton.ClientID + "').click();", true);
+                        ScriptManager.RegisterStartupScript(this, GetType(), "triggerDownload", "document.getElementById('" + HiddenDownloadButton.ClientID + "').click();", true);
+                    }
+                    else
+                    {
+                        Response.Redirect("~/Zone.aspx", false);
+                    }
+                }
             }
 
             BindZoneGridView();

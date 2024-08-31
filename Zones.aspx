@@ -81,50 +81,50 @@
                 <div class="dashboard-section">
                     <div class="dashboard-item">
                         <h4>Registered Zones</h4>
-                        <asp:GridView ID="ZoneGridView" AllowPaging="True" PageSize="10" OnPageIndexChanging="ZoneGridView_PageIndexChanging" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered table-dark table-hover">
+                        <asp:GridView ID="ZoneGridView" AllowPaging="True" DataKeyNames="Id" PageSize="10" OnPageIndexChanging="ZoneGridView_PageIndexChanging" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered table-dark table-hover">
                             <RowStyle BorderStyle="inset" BorderColor="white" />
                             <Columns>
                                 <asp:TemplateField HeaderText="Website Name" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="background-color: transparent;" title='<%# Eval("WebsiteName") %>'><%# Eval("WebsiteName") %></span>
+                                        <asp:Label runat="server" ID="WebsiteName"  style="background-color: transparent;" title='<%# Eval("WebsiteName") %>'><%# Eval("WebsiteName") %></asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Zone Name" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="background-color: transparent;" title='<%# Eval("ZoneName") %>'><%# Eval("ZoneName") %></span>
+                                        <asp:Label runat="server" ID="ZoneName" style="background-color: transparent;" title='<%# Eval("ZoneName") %>'><%# Eval("ZoneName") %></asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Zone Type" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="background-color: transparent;" title='<%# Eval("ZoneType") %>'><%# Eval("ZoneType") %></span>
+                                        <asp:Label runat="server" ID="ZoneType"  style="background-color: transparent;" title='<%# Eval("ZoneType") %>'><%# Eval("ZoneType") %></asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Zone Size" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="background-color: transparent;" title='<%# Eval("ZoneSize") %>'><%# Eval("ZoneSize") %></span>
+                                        <asp:Label runat="server" ID="ZoneSize" style="background-color: transparent;" title='<%# Eval("ZoneSize") %>'><%# Eval("ZoneSize") %></asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Created By" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="background-color: transparent;" title='<%# Eval("CreatedBy") %>'><%# Eval("CreatedBy") %></span>
+                                        <asp:Label runat="server" ID="CreatedBy"  style="background-color: transparent;" title='<%# Eval("CreatedBy") %>'><%# Eval("CreatedBy") %></asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Created Date" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="background-color: transparent;" title='<%# Eval("CreatedDate") %>'><%# Eval("CreatedDate") %></span>
+                                        <asp:Label runat="server" ID="CreatedDate"  style="background-color: transparent;" title='<%# Eval("CreatedDate") %>'><%# Eval("CreatedDate") %></asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Updated Date" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="background-color: transparent;" title='<%# Eval("UpdatedDate") %>'><%# Eval("UpdatedDate") %></span>
+                                        <asp:Label runat="server" ID="UpdatedDate"  style="background-color: transparent;" title='<%# Eval("UpdatedDate") %>'><%# Eval("UpdatedDate") %></asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Status" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
-                                        <span style="background-color: transparent;" title='<%# Eval("Status") %>'><%# Eval("Status") %></span>
+                                        <asp:Label runat="server" ID="Status"  style="background-color: transparent;" title='<%# Eval("Status") %>'><%# Eval("Status") %></asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-
+                                
                                 <asp:TemplateField HeaderText="Actions" HeaderStyle-CssClass="sortable">
                                     <ItemTemplate>
                                         <asp:LinkButton ID="ActivateButton" OnClick="ActivateButton_Click" runat="server" CommandName="Activate" CommandArgument='<%# Eval("Id") %>' CssClass="btn btn-success" Text="Activate" Visible='<%# Eval("Status").ToString() == "Deactivated" %>'></asp:LinkButton>
