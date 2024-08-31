@@ -278,11 +278,9 @@ namespace AMS
                             }
                         }
 
-                        string script = $@"<%-- AMS IQ --%>
-<div id='adZone'>
-    <iframe src='https://advertisementmanagementsystem.azurewebsites.net/DisplayBanner.aspx?zoneId={zoneId}' 
-            width='{width}' height='{height}' frameborder='0' scrolling='no'></iframe>
-</div><%-- AMS IQ --%>";
+                        string script = $@"
+    <div id='adZone'><iframe src='https://advertisementmanagementsystem.azurewebsites.net/DisplayBanner.aspx?zoneId={zoneId}' 
+            width='{width}' height='{height}' frameborder='0' scrolling='no'></iframe>";
 
                         Session["DownloadContent"] = script;
                         Session["DownloadFileName"] = $"adZone_{zoneId}.txt";

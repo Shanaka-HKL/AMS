@@ -30,11 +30,11 @@ namespace AMS
                     {
                         foreach (DataRow row in dt.Rows)
                         {
-                            BannerId = row["Id"].ToString(); Target = row["Target"].ToString(); FileName = row["FileName"].ToString();
-                            BannerTypeId = row["BannerTypeId"].ToString();
-                            CampaignId = row["CampaignId"].ToString(); WebsiteId = row["WebsiteId"].ToString();
-                            BannerLink = row["BannerLink"].ToString(); BannerSizeId = row["BannerSizeId"].ToString();
-                            TargetFrame = row["TargetFrame"].ToString(); Priority = row["Priority"].ToString();
+                            BannerId = row["Id"].ToString().Trim(); Target = row["Target"].ToString().Trim(); FileName = row["FileName"].ToString().Trim();
+                            BannerTypeId = row["BannerTypeId"].ToString().Trim();
+                            CampaignId = row["CampaignId"].ToString().Trim(); WebsiteId = row["WebsiteId"].ToString().Trim();
+                            BannerLink = row["BannerLink"].ToString().Trim(); BannerSizeId = row["BannerSizeId"].ToString().Trim();
+                            TargetFrame = row["TargetFrame"].ToString().Trim(); Priority = row["Priority"].ToString().Trim();
                         }
                         Response.Write($@"
         <html>
