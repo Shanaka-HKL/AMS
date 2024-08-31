@@ -342,6 +342,48 @@ namespace AMS
                 con.Close();
             }
         }
+        public string insertClickCount(string spname, int BannerId)
+        {
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
+            try
+            {
+                con.Open();
+                SqlTransaction trn = con.BeginTransaction();
+
+                SqlCommand cmd = new SqlCommand(spname, con, trn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@BannerId", SqlDbType.Int).Value = BannerId;
+
+                try
+                {
+                    int cunt = cmd.ExecuteNonQuery();
+                    if (cunt > 0)
+                    {
+                        trn.Commit();
+                        return "Clickcount has been updated successfully";
+                    }
+                    else
+                    {
+                        trn.Rollback();
+                        return "Clickcount update process unsuccessful";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    trn.Rollback();
+                    return ex.Message + " - " + "Clickcount update process unsuccessful";
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message + " - " + "Clickcount update process unsuccessful";
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
         public string updateBannerById(string spname, int websiteID, int status, int UserId)
         {
             SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());

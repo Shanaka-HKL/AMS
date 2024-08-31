@@ -13,48 +13,44 @@ namespace AMS
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //always responce redirect
-            string cpara = "";
+            string zoneId = ""; string Target = ""; string BannerLink = ""; string TargetFrame = ""; string BannerId = "";
             try
             {
-                var vlu = Request.QueryString["Cpara"];
-                if (vlu != null)
+                zoneId = Request.QueryString["zoneId"];
+                if (zoneId != null)
                 {
-                    cpara = Request.QueryString["Cpara"].Trim();
-                    Vdate(cpara);
+                    DataTable dt = new DataTable();
+                    Serve apir = new Serve();
+                    dt = apir.getDetailsByZoneId("getDetailsByZoneId", Convert.ToInt16(zoneId));
+
+                    if (dt.Rows.Count > 0)
+                    {
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            BannerLink = row["BannerLink"].ToString().Trim(); Target = row["Target"].ToString().Trim();
+                            BannerId = row["Id"].ToString().Trim();
+                            TargetFrame = row["TargetFrame"].ToString().Trim();
+                        }
+
+                        apir.insertClickCount("insertClickCount", Convert.ToInt16(BannerId));
+
+                        string fullUrl = $"{BannerLink}?targetFrame={TargetFrame}&target={Target}";
+
+                        Response.Redirect(fullUrl, false);
+                    }
+                    else
+                    {
+                        Response.Redirect("~/Default.aspx", false);
+                    }
                 }
                 else
                 {
-                    Response.Redirect("~/Default", false);
+                    Response.Redirect("~/Default.aspx", false);
                 }
             }
             catch
             {
-                Response.Redirect("~/Default", false);
-            }
-        }
-        public void Vdate(string ema)
-        {
-            try
-            {
-                string JsonInput = "{\r\n    \"KeyPara\" : " + "'" + ema.Trim() + "'" + "\r\n}";
-
-                PostAPI apir = new PostAPI();
-                string result = apir.get_string("updateUserByActivationCode", JsonInput, "post");
-                if (result.Contains(" successful"))
-                {
-                    Session["Msg"] = "Account has been activated successfully!";
-                    Response.Redirect("SPage.aspx", false);
-                }
-                else
-                {
-                    Session["Msg"] = result;
-                    Response.Redirect("SPage.aspx", false);
-                }
-            }
-            catch (Exception ex)
-            {
-                ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + ex.Message + "');", true);
+                Response.Redirect("~/Default.aspx", false);
             }
         }
     }
