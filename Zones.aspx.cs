@@ -202,6 +202,10 @@ namespace AMS
         {
             try
             {
+                if(ddlZoneSizeDDL == "-")
+                {
+                    ddlZoneSizeDDL = txtWidth + "x" + txtHeight;
+                }
                 // Parse numeric values
                 int width = 0;
                 int height = 0;
@@ -276,7 +280,7 @@ namespace AMS
 
                         string script = $@"<%-- AMS IQ --%>
 <div id='adZone'>
-    <iframe src='https://advertisementmanagementsystem.azurewebsites.net/displayBanner.aspx?zoneId={zoneId}' 
+    <iframe src='https://advertisementmanagementsystem.azurewebsites.net/DisplayBanner.aspx?zoneId={zoneId}' 
             width='{width}' height='{height}' frameborder='0' scrolling='no'></iframe>
 </div><%-- AMS IQ --%>";
 

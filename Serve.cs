@@ -17,6 +17,42 @@ namespace AMS
 {
     public class Serve
     {
+        public DataTable getDetailsByZoneId(string spname, int ZoneId)
+        {
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
+            try
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand(spname, con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@ZoneId", SqlDbType.Int).Value = ZoneId;
+
+                SqlDataReader dr = cmd.ExecuteReader();
+                DataTable dt = new DataTable();
+                dt.Load(dr);
+                dr.Close();
+
+                if (dt.Rows.Count > 0)
+                {
+                    return dt;
+                }
+                else
+                {
+                    DataTable dtx = new DataTable();
+                    return dtx;
+                }
+            }
+            catch
+            {
+                DataTable dtx = new DataTable();
+                return dtx;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
         public DataTable getWebsiteByCampaignId(string spname, int UserId)
         {
             SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
@@ -394,7 +430,7 @@ namespace AMS
                 con.Close();
             }
         }
-        public string insertBanner(string spname, int WebsiteId, string BannerSize, int CampaignDDLVlu, int ZoneId, string BannerTypeId, string Target, string txtBannerLinkVlu, string txtBannerNameVlu, int UserId)
+        public string insertBanner(string spname, string filenme, int WebsiteId, string BannerSize, int CampaignDDLVlu, int ZoneId, string BannerTypeId, string Target, string txtBannerLinkVlu, string txtBannerNameVlu, int UserId)
         {
             SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
             try
@@ -407,6 +443,7 @@ namespace AMS
 
                 cmd.Parameters.Add("@Name", SqlDbType.Char).Value = txtBannerNameVlu.Trim();
                 cmd.Parameters.Add("@WebsiteId", SqlDbType.Int).Value = WebsiteId;
+                cmd.Parameters.Add("@FileName", SqlDbType.Char).Value = filenme;
                 cmd.Parameters.Add("@CampaignId", SqlDbType.Int).Value = CampaignDDLVlu;
                 cmd.Parameters.Add("@BannerSizeId", SqlDbType.Char).Value = BannerSize;
                 cmd.Parameters.Add("@ZoneId", SqlDbType.Int).Value = ZoneId;

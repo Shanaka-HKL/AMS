@@ -13,6 +13,7 @@ namespace AMS
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            //always responce redirect
             string cpara = "";
             try
             {

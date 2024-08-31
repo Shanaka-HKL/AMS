@@ -160,7 +160,7 @@ namespace AMS
             }
             else
             {
-                bool proceed;
+                bool proceed; string filenme = "";
                 string fileExtension = System.IO.Path.GetExtension(fileBannerUpload.FileName).ToLower();
                 string[] allowedExtensions = { ".html", ".htm", ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".webp", ".txt", ".mp4", ".avi", ".mkv", ".mov", ".wmv" };
 
@@ -168,13 +168,14 @@ namespace AMS
                 {
                     if (fileBannerUpload.PostedFile.ContentLength <= 5242880) // 5MB in bytes
                     {
-                        string folderPath = Server.MapPath("~/Uploads/" + CampaignDDL.SelectedValue.ToString() + "_" + WebsiteDDL.SelectedValue.ToString() + "_" + ZonesDDL.SelectedValue.ToString() + "/");
+                        string folderPath = Server.MapPath("~/Uploads/");
 
                         if (!System.IO.Directory.Exists(folderPath))
                         {
                             System.IO.Directory.CreateDirectory(folderPath);
                         }
-                        string savePath = folderPath + fileBannerUpload.FileName;
+                        filenme = CampaignDDL.SelectedValue.ToString() + "_" + WebsiteDDL.SelectedValue.ToString() + "_" + ZonesDDL.SelectedValue.ToString() + fileExtension;
+                        string savePath = folderPath + filenme;
 
                         fileBannerUpload.SaveAs(savePath);
                         ErrLbl.Text = "File uploaded successfully!";
@@ -197,7 +198,7 @@ namespace AMS
                     PostAPI apir = new PostAPI();
                     string reslt = "";
 
-                    reslt = InsertRecord(WebsiteDDL.SelectedValue.ToString().Trim(), ddlBannerSizeDDL.SelectedValue.ToString().Trim(), CampaignDDL.SelectedValue.ToString().Trim(), ZonesDDL.SelectedValue.ToString().Trim(), ddlBannerType.SelectedValue.ToString().Trim(),
+                    reslt = InsertRecord(filenme, WebsiteDDL.SelectedValue.ToString().Trim(), ddlBannerSizeDDL.SelectedValue.ToString().Trim(), CampaignDDL.SelectedValue.ToString().Trim(), ZonesDDL.SelectedValue.ToString().Trim(), ddlBannerType.SelectedValue.ToString().Trim(),
                         ddlTarget.SelectedValue.ToString().Trim(), txtBannerLink.Text.Trim(), txtBannerName.Text.Trim());
                     if (reslt.Contains(" successful"))
                     {
@@ -225,12 +226,12 @@ namespace AMS
             }
         }
 
-        public string InsertRecord(string WebsiteId, string BannerSize, string CampaignDDLVlu, string ZonesDDLVlu, string ddlBannerTypeVlu, string ddlTargetVlu, string txtBannerLinkVlu, string txtBannerNameVlu)
+        public string InsertRecord(string filenme, string WebsiteId, string BannerSize, string CampaignDDLVlu, string ZonesDDLVlu, string ddlBannerTypeVlu, string ddlTargetVlu, string txtBannerLinkVlu, string txtBannerNameVlu)
         {
             try
             {
                 Serve apir = new Serve();
-                string result = apir.insertBanner("insertBanner", Convert.ToInt16(WebsiteId), BannerSize, Convert.ToInt16(CampaignDDLVlu), Convert.ToInt16(ZonesDDLVlu), ddlBannerTypeVlu, ddlTargetVlu, txtBannerLinkVlu, txtBannerNameVlu, Convert.ToInt16(Idn.Value));
+                string result = apir.insertBanner("insertBanner", filenme, Convert.ToInt16(WebsiteId), BannerSize, Convert.ToInt16(CampaignDDLVlu), Convert.ToInt16(ZonesDDLVlu), ddlBannerTypeVlu, ddlTargetVlu, txtBannerLinkVlu, txtBannerNameVlu, Convert.ToInt16(Idn.Value));
 
                 return result;
             }
