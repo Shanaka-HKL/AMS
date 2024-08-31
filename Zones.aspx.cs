@@ -250,9 +250,6 @@ namespace AMS
             {
                 int rowIndex = Convert.ToInt32(clickedButton.CommandArgument);
                 GridViewRow row = ZoneGridView.Rows[rowIndex];
-
-                //Label lblWebsiteName = (Label)row.FindControl("Website Name");
-                //string websiteName = lblWebsiteName.Text;
                 string websiteName = GenerateRandomKey();
 
                 string location = "~/Uploads/";
