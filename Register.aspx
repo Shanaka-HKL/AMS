@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Create Account" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Register.aspx.cs" Inherits="AMS.Register" %>
+﻿<%@ Page Title="Create Account" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Register.aspx.cs" Inherits="AMS.Register" Async="true"%>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <div style="width: 100%; height: auto; background-image: url('Images/AdsBackground2.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center; vertical-align: central;">

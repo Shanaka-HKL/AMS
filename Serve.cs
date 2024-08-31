@@ -655,7 +655,7 @@ namespace AMS
                 con.Close();
             }
         }
-        public string updateProfileById(string spname, string base64Stringa, string profileDescription, int UserId)
+        public string updateProfileById(string spname, string profileDescription, int UserId)
         {
             SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
             try
@@ -666,7 +666,6 @@ namespace AMS
                 SqlCommand cmd = new SqlCommand("updateProfileById", con, trn);
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add("@Pic", SqlDbType.NVarChar).Value = base64Stringa;
                 cmd.Parameters.Add("@Description", SqlDbType.Char).Value = profileDescription;
                 cmd.Parameters.Add("@UserId", SqlDbType.Int).Value = UserId;
 

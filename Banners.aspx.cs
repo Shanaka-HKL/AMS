@@ -146,10 +146,10 @@ namespace AMS
             {
                 ErrLbl.Text = "Select a Banner Type!";
             }
-            //else if (!fileBannerUpload.HasFile)
-            //{
-            //    ErrLbl.Text = "Upload the Media!";
-            //}
+            else if (!fileBannerUpload.HasFile)
+            {
+                ErrLbl.Text = "Upload the Media!";
+            }
             else if (txtBannerLink.Text.Trim() == "")
             {
                 ErrLbl.Text = "Enter the website link this banner points to!";
@@ -164,33 +164,33 @@ namespace AMS
                 string fileExtension = System.IO.Path.GetExtension(fileBannerUpload.FileName).ToLower();
                 string[] allowedExtensions = { ".html", ".htm", ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".webp", ".txt", ".mp4", ".avi", ".mkv", ".mov", ".wmv" };
 
-                //if (Array.Exists(allowedExtensions, ext => ext == fileExtension))
+                if (Array.Exists(allowedExtensions, ext => ext == fileExtension))
                 {
-                    //if (fileBannerUpload.PostedFile.ContentLength <= 5242880) // 5MB in bytes
-                    //{
-                    //    string folderPath = Server.MapPath("~/Uploads/" + WebsiteDDL.SelectedValue.ToString() + "_" + ZonesDDL.SelectedValue.ToString() + "/");
+                    if (fileBannerUpload.PostedFile.ContentLength <= 5242880) // 5MB in bytes
+                    {
+                        string folderPath = Server.MapPath("~/Uploads/" + CampaignDDL.SelectedValue.ToString() + "_" + WebsiteDDL.SelectedValue.ToString() + "_" + ZonesDDL.SelectedValue.ToString() + "/");
 
-                    //    if (!System.IO.Directory.Exists(folderPath))
-                    //    {
-                    //        System.IO.Directory.CreateDirectory(folderPath);
-                    //    }
-                    //    string savePath = folderPath + fileBannerUpload.FileName;
+                        if (!System.IO.Directory.Exists(folderPath))
+                        {
+                            System.IO.Directory.CreateDirectory(folderPath);
+                        }
+                        string savePath = folderPath + fileBannerUpload.FileName;
 
-                    //    fileBannerUpload.SaveAs(savePath);
-                    //    ErrLbl.Text = "File uploaded successfully!";
-                    proceed = true;
-                    //}
-                    //else
-                    //{
-                    //    ErrLbl.Text = "File size exceeds the 5MB limit.";
-                    //    proceed = false;
-                    //}
+                        fileBannerUpload.SaveAs(savePath);
+                        ErrLbl.Text = "File uploaded successfully!";
+                        proceed = true;
+                    }
+                    else
+                    {
+                        ErrLbl.Text = "File size exceeds the 5MB limit.";
+                        proceed = false;
+                    }
                 }
-                //else
-                //{
-                //    ErrLbl.Text = "Invalid file type. Only HTML, Image, Text, and Video files are allowed.";
-                //    proceed = false;
-                //}
+                else
+                {
+                    ErrLbl.Text = "Invalid file type. Only HTML, Image, Text, and Video files are allowed.";
+                    proceed = false;
+                }
 
                 if (proceed == true)
                 {

@@ -102,19 +102,19 @@ namespace AMS
                 {
                     DataTable dta = new DataTable();
                     Serve apir = new Serve();
-                    dta = apir.getCampaignByCampaignId("getCampaignByCampaignId", Convert.ToInt16(Idn.Value));
+                    dta = apir.getCampaignByCampaignId("getCampaignByCampaignId", Convert.ToInt16(CampaignDDL.SelectedIndex));
 
                     if (dta.Rows.Count > 0)
                     {
                         foreach (DataRow dr in dta.Rows)
                         {
-                            CampaignDDL.SelectedValue = dr["Id"].ToString().Trim();
+                            //CampaignDDL.SelectedValue = dr["Id"].ToString().Trim();
                             txtCampaignName.Text = dr["Name"].ToString().Trim();
                             txtCampaignDescription.Text = dr["Description"].ToString().Trim();
                             txtCampaignBudget.Text = dr["Budget"].ToString().Trim();
                             txtPriority.Text = dr["Priority"].ToString().Trim();
-                            txtStartDate.Text = Convert.ToDateTime(dr["StartDate"].ToString().Trim()).ToString("MM/dd/yyyy");
-                            txtEndDate.Text = Convert.ToDateTime(dr["EndDate"].ToString().Trim()).ToString("MM/dd/yyyy");
+                            txtStartDate.Text = Convert.ToDateTime(dr["StartDate"].ToString().Trim()).ToString("yyyy-MM-dd");
+                            txtEndDate.Text = Convert.ToDateTime(dr["EndDate"].ToString().Trim()).ToString("yyyy-MM-dd");
                         }
 
                         txtCampaignName.Enabled = false;
@@ -137,25 +137,38 @@ namespace AMS
                     ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + ex.Message + "');", true);
                 }
             }
-            else if (CampaignDDL.SelectedIndex == 0)
+            else
             {
                 CreateCampaignButton.Text = "Create Campaign";
 
-                txtCampaignName.Enabled = false;
-                txtCampaignDescription.Enabled = false;
-                txtCampaignBudget.Enabled = false;
-                txtPriority.Enabled = true;
-                txtStartDate.Enabled = false;
-                txtEndDate.Enabled = false;
+                txtCampaignName.Enabled = true;
+                txtCampaignDescription.Enabled = true;
+                txtCampaignBudget.Enabled = true;
+                txtPriority.Enabled = false;
+                txtStartDate.Enabled = true;
+                txtEndDate.Enabled = true;
 
-                txtCampaignName.ForeColor = Color.Black;
-                txtCampaignDescription.ForeColor = Color.Black;
-                txtCampaignBudget.ForeColor = Color.Black;
-                txtPriority.ForeColor = Color.White;
-                txtStartDate.ForeColor = Color.Black;
-                txtEndDate.ForeColor = Color.Black;
+                txtCampaignName.ForeColor = Color.Gray;
+                txtCampaignDescription.ForeColor = Color.Gray;
+                txtCampaignBudget.ForeColor = Color.Gray;
+                txtPriority.ForeColor = Color.Gray;
+                txtStartDate.ForeColor = Color.Gray;
+                txtEndDate.ForeColor = Color.Gray;
 
+                txtCampaignName.BackColor = Color.Transparent;
+                txtCampaignDescription.BackColor = Color.Transparent;
+                txtCampaignBudget.BackColor = Color.Transparent;
+                txtPriority.BackColor = Color.Transparent;
+                txtStartDate.BackColor = Color.Transparent;
+                txtEndDate.BackColor = Color.Transparent;
+
+                txtCampaignName.Text = "";
+                txtCampaignDescription.Text = "";
+                txtCampaignBudget.Text = "";
+                txtStartDate.Text = "";
+                txtEndDate.Text = "";
                 txtPriority.Text = "1";
+                CampaignDDL.SelectedIndex = 0;
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -60,30 +61,14 @@ namespace AMS
         {
             ErrTB.ForeColor = Color.Red;
 
-            string base64Stringa = "";
-
-            if (profileImage.HasFile)
-            {
-                Stream fs = profileImage.PostedFile.InputStream;
-                BinaryReader br = new BinaryReader(fs);
-                Byte[] bytes = br.ReadBytes((Int32)fs.Length);
-                base64Stringa = Convert.ToBase64String(bytes, 0, bytes.Length);
-            }
-
             Serve apir = new Serve();
-            string result = apir.updateProfileById("updateProfileById", base64Stringa, profileDescription.Text, Convert.ToInt16(Idn.Value));
+            string result = apir.updateProfileById("updateProfileById", profileDescription.Text, Convert.ToInt16(Idn.Value));
 
             if (result.Contains(" successful"))
             {
                 ErrTB.ForeColor = Color.Green;
                 ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + result + "');", true);
                 ErrTB.Text = result;
-
-                HttpCookie userin4ck = new HttpCookie("SzxWNHuO4XCyfPMBrVASxNrPPA");
-                Pic = base64Stringa;
-                userin4ck["pic"] = base64Stringa;
-                Response.Cookies.Add(userin4ck);
-
             }
             else
             {
@@ -168,6 +153,51 @@ namespace AMS
                 profilePassword.Text = "";
                 newPassword.Text = "";
                 profileRePassword.Text = "";
+            }
+        }
+
+        protected void UploadBtn_Click(object sender, EventArgs e)
+        {
+            string base64Stringa = "";
+
+            if (profileImage.HasFile)
+            {
+                string fileExtension = System.IO.Path.GetExtension(profileImage.FileName).ToLower();
+                string[] allowedExtensions = { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff" };
+                bool proceed;
+                if (Array.Exists(allowedExtensions, ext => ext == fileExtension))
+                {
+                    if (profileImage.PostedFile.ContentLength <= 1002880)
+                    {
+                        proceed = true;
+                    }
+                    else
+                    {
+                        ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + "File size exceeds the 1MB limit!" + "');", true);
+                        proceed = false;
+                    }
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + "Invalid file type. Only Image files are allowed!" + "');", true);
+                    proceed = false;
+                }
+                if (proceed == true)
+                {
+                    Stream fs = profileImage.PostedFile.InputStream;
+                    BinaryReader br = new BinaryReader(fs);
+                    Byte[] bytes = br.ReadBytes((Int32)fs.Length);
+                    base64Stringa = Convert.ToBase64String(bytes, 0, bytes.Length);
+
+                    HttpCookie userin4ck = new HttpCookie("SzxWNHuO4XCyfPMBrVASxNrPPA");
+                    Pic = base64Stringa;
+                    userin4ck["pic"] = base64Stringa;
+                    Response.Cookies.Add(userin4ck);
+                }
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + "Select profile image!" + "');", true);
             }
         }
     }
