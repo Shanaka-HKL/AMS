@@ -5,7 +5,9 @@
         class="blurred-background">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <br />
-        <asp:HiddenField ID="Idn" runat="server" Value="InitialValue" /><asp:UpdateProgress ID="UpdateProgress11" runat="server" AssociatedUpdatePanelID="UpdatePanel11">
+        <asp:HiddenField ID="Emailn" runat="server" Value="InitialValue" />
+        <asp:HiddenField ID="Idn" runat="server" Value="InitialValue" />
+        <asp:UpdateProgress ID="UpdateProgress11" runat="server" AssociatedUpdatePanelID="UpdatePanel11">
             <ProgressTemplate>
                 <div style="position: fixed; left: 0%; top: 0%; z-index: 999; height: 100%; width: 100%; border-style: none; background-color: Black; filter: alpha(opacity=60); opacity: 0.3; -moz-opacity: 0.5;">
                     <asp:Image ID="ImageLodinggif" Style="position: fixed; left: 48%; top: 48%; z-index: 1000;" runat="server" ImageUrl="~/Images/loading.gif" Width="86px" Height="86px"></asp:Image>
@@ -45,7 +47,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="form-group">
-                                <asp:Label ID="Label1" runat="server" Text="Update Profile Image:" />
+                                    <asp:Label ID="Label1" runat="server" Text="Update Profile Image:" />
                                     <asp:FileUpload ID="profileImage" runat="server" onchange="previewFile();" accept=".png,.jpg,.jpeg,.gif" CssClass="form-control" Width="300px" />
                                 </div>
                             </div>
@@ -74,29 +76,37 @@
                                 <asp:Label ID="lblProfileAddress" runat="server" Text="Address:" />
                                 <asp:TextBox ID="profileAddress" runat="server" CssClass="form-control" ForeColor="Black" Placeholder="Address*" TextMode="MultiLine" Enabled="false" />
                             </div>
-                            <br />
-                            <hr />
-                            <h4>Reset Password</h4>
-                            <div class="form-group">
-                                <asp:Label ID="lblProfilePassword" runat="server" Text="Current Password:" />
-                                <asp:TextBox ID="profilePassword" runat="server" CssClass="form-control" Text="" Placeholder="Password*" TextMode="Password" />
-                            </div>
-                            <div class="form-group">
-                                <asp:Label ID="lblNewPassword" runat="server" Text="New Password:" />
-                                <asp:TextBox ID="newPassword" runat="server" CssClass="form-control" Placeholder="Password*" TextMode="Password" />
-                            </div>
-                            <div class="form-group">
-                                <asp:Label ID="lblProfileRePassword" runat="server" Text="Re-Type New Password:" />
-                                <asp:TextBox ID="profileRePassword" runat="server" CssClass="form-control" Placeholder="Re-Type Password*" TextMode="Password" />
-                            </div>
                             <div class="form-group text-center">
                                 <asp:Label ID="ErrTB" runat="server" Height="15px" BackColor="Transparent" Text="" ForeColor="Red" Font-Size="Smaller"></asp:Label>
                             </div>
                             <div class="form-group">
                                 <asp:Button ID="UpdateProfileButton" runat="server" CssClass="btn-primary" Text="Update Profile" OnClick="UpdateProfileButton_Click" />
-                                <asp:Button ID="DeleteAccountButton" runat="server" CssClass="btn-primary" Text="Delete Account" OnClientClick="return confirmAction();" OnClick="DeleteAccountButton_Click" />
+                                <asp:Button ID="DeleteAccountButton" runat="server" CssClass="btn-primary" Text="Delete Account"
+                                    OnClientClick="return confirm('Are you sure you want to delete your account?');"
+                                    OnClick="DeleteAccountButton_Click" />
                             </div>
                         </asp:Panel>
+                    </div>
+                    <div class="dashboard-item" style="max-height:410px;">
+                        <h4>Reset Password</h4>
+                        <div class="form-group">
+                            <asp:Label ID="lblProfilePassword" runat="server" Text="Current Password:" />
+                            <asp:TextBox ID="profilePassword" runat="server" CssClass="form-control" Text="" Placeholder="Password*" TextMode="Password" />
+                        </div>
+                        <div class="form-group">
+                            <asp:Label ID="lblNewPassword" runat="server" Text="New Password:" />
+                            <asp:TextBox ID="newPassword" runat="server" CssClass="form-control" Placeholder="Password*" TextMode="Password" />
+                        </div>
+                        <div class="form-group">
+                            <asp:Label ID="lblProfileRePassword" runat="server" Text="Re-Type New Password:" />
+                            <asp:TextBox ID="profileRePassword" runat="server" CssClass="form-control" Placeholder="Re-Type Password*" TextMode="Password" />
+                        </div>
+                        <div class="form-group text-center">
+                            <asp:Label ID="Elbl" runat="server" Height="15px" BackColor="Transparent" Text="" ForeColor="Red" Font-Size="Smaller"></asp:Label>
+                        </div>
+                        <div class="form-group">
+                            <asp:Button ID="UpdatePassBtn" runat="server" CssClass="btn-primary" Text="Reset Password" OnClick="UpdatePassBtn_Click" />
+                        </div>
                     </div>
                 </div>
             </ContentTemplate>

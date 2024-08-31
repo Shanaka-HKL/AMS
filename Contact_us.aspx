@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Help and Support" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Contact_us.aspx.cs" Inherits="AMS.Contactus" %>
+﻿<%@ Page Title="Help and Support" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Contact_us.aspx.cs" Inherits="AMS.Contactus" Async="true"%>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <div style="position: relative; width: 100%; height: auto; background-image: url('Images/contact_us.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center; overflow: hidden;"

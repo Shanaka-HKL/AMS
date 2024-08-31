@@ -15,6 +15,15 @@ namespace AMS
     {
 
         /// <summary>
+        /// Emailn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField Emailn;
+
+        /// <summary>
         /// Idn control.
         /// </summary>
         /// <remarks>
@@ -186,6 +195,33 @@ namespace AMS
         protected global::System.Web.UI.WebControls.TextBox profileAddress;
 
         /// <summary>
+        /// ErrTB control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label ErrTB;
+
+        /// <summary>
+        /// UpdateProfileButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button UpdateProfileButton;
+
+        /// <summary>
+        /// DeleteAccountButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button DeleteAccountButton;
+
+        /// <summary>
         /// lblProfilePassword control.
         /// </summary>
         /// <remarks>
@@ -240,30 +276,21 @@ namespace AMS
         protected global::System.Web.UI.WebControls.TextBox profileRePassword;
 
         /// <summary>
-        /// ErrTB control.
+        /// Elbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label ErrTB;
+        protected global::System.Web.UI.WebControls.Label Elbl;
 
         /// <summary>
-        /// UpdateProfileButton control.
+        /// UpdatePassBtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button UpdateProfileButton;
-
-        /// <summary>
-        /// DeleteAccountButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button DeleteAccountButton;
+        protected global::System.Web.UI.WebControls.Button UpdatePassBtn;
     }
 }

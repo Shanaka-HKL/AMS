@@ -51,7 +51,7 @@ namespace AMS
             if (x == true)
             {
                 ErrLbl.ForeColor = Color.Green;
-                ErrLbl.Text = "Email sent. One of our agents will contact you soon!";
+                ErrLbl.Text = "Email sent! one of our agents will contact you soon!";
 
                 txtName.Text = "";
                 txtEmail.Text = "";
@@ -70,37 +70,51 @@ namespace AMS
             {
                 MailMessage mail = new MailMessage
                 {
-                    From = new MailAddress("alert@advertisementmanagementsystem.com")
+                    From = new MailAddress("alert@iq.lk"),
+                    Subject = subject,
+                    IsBodyHtml = true
                 };
                 mail.To.Add("shanaka@iq-global.com");
-                mail.IsBodyHtml = true;
-                mail.Subject = subject;
 
-                string INNOVATION_QUOTIENT = "<a href='http://advertisementmanagementsystem.com/Terms_and_Conditions.aspx'>Terms</a>";
-                mail.Body = "<div style='background-image: url(https://e0.pxfuel.com/wallpapers/277/595/desktop-wallpaper-mail-background-email-outlook.jpg); background-size: 100% 100%; color:Black; font-family:verdana;'><br /><b>&nbsp;"
-                    + "Hi,<br />This is an alert email!</b><br /><br />"
-                    + "&nbsp;This is from: " + nme.ToUpper() + "<br /><br />"
-                    + "&nbsp;This is the sender's email: " + email_.ToLower() + "<br /><br />"
-                    + "<br /><br />&nbsp;This is the original message: " + "<br /><br />&nbsp;" + message
-                    + "<br /><br />&nbsp;Best Regards!<br />&nbsp;IT Team - " + INNOVATION_QUOTIENT + "<br /><br />"
-                    + "&nbsp;<b>Note:</b> This is an Auto-Generated mail. Kindly do not reply to this. Please reply to info@advertisementmanagementsystem.com<br /></div>";
+                string INNOVATION_QUOTIENT = "<a href='https://advertisementmanagementsystem.azurewebsites.net/Terms_and_Conditions.aspx' style='color: #007BFF; text-decoration: none; font-weight: bold;'>Terms</a>";
 
-                using (var SmtpServer = new SmtpClient("webmail.advertisementmanagementsystem.com"))
+                mail.Body = "<div style='background-color: #f4f4f4; color: #333; font-family: Arial, sans-serif; padding: 20px;'>"
+                            + "<div style='background-color: #ffffff; border: 1px solid #ddd; border-radius: 8px; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1);'>"
+                            + "<h2 style='color: #007BFF;'>Hello,</h2>"
+                            + "<p style='font-size: 16px; color: #555;'>We hope this message finds you well. This is an alert email to inform you of important information.</p>"
+                            + "<hr style='border: 0; border-top: 2px solid #007BFF; margin: 20px 0;'>"
+                            + "<p><strong style='color: #333;'>Sender:</strong> <span style='color: #555;'>" + nme.ToUpper() + "</span></p>"
+                            + "<p><strong style='color: #333;'>Sender's Email:</strong> <span style='color: #555;'>" + email_.ToLower() + "</span></p>"
+                            + "<hr style='border: 0; border-top: 2px solid #007BFF; margin: 20px 0;'>"
+                            + "<p><strong style='color: #333;'>Original Message:</strong></p>"
+                            + "<p style='background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 4px; padding: 10px; color: #555;'>" + message + "</p>"
+                            + "<hr style='border: 0; border-top: 2px solid #007BFF; margin: 20px 0;'>"
+                            + "<p>Best Regards,<br /><strong>IT Team</strong><br />INNOVATION QUOTIENT</p>"
+                            + "<p style='font-size: 14px; color: #777;'><strong>Note:</strong> This is an auto-generated email. Please do not reply to this message. - " + INNOVATION_QUOTIENT + "</p>"
+                            + "</div></div>";
+
+
+                using (var SmtpServer = new SmtpClient("smtp.gmail.com"))
                 {
-                    SmtpServer.Port = 25;
-                    SmtpServer.EnableSsl = false;
+                    SmtpServer.Port = 587;
+                    SmtpServer.EnableSsl = true;
                     SmtpServer.DeliveryMethod = SmtpDeliveryMethod.Network;
-                    SmtpServer.UseDefaultCredentials = true;
-                    SmtpServer.Credentials = new NetworkCredential("alert@advertisementmanagementsystem.com", "^tVn62l16");
+                    SmtpServer.UseDefaultCredentials = false;
+                    SmtpServer.Credentials = new NetworkCredential("alert@iq.lk", "pyme mtyw auqi joal");
                     SmtpServer.Timeout = 30000;
 
                     await SmtpServer.SendMailAsync(mail);
                 }
+
+                // Return true if email was sent successfully
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error: " + ex.Message);
+                // Log the exception (you might want to log it somewhere)
+                Console.WriteLine("Error sending email: " + ex.Message);
+
+                // Return false if there was an error
                 return false;
             }
         }

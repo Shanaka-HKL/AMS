@@ -10,6 +10,8 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security.Policy;
+using System.Security.Cryptography;
+using System.Xml.Linq;
 
 namespace AMS
 {
@@ -566,6 +568,179 @@ namespace AMS
                 con.Close();
             }
         }
+        public string deleteUserById(string spname, string Email, int UserId)
+        {
+            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            try
+            {
+                con.Open();
+                SqlTransaction trn = con.BeginTransaction();
+
+                SqlCommand cmd = new SqlCommand("deleteUserById", con, trn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@Email", SqlDbType.VarChar).Value = Email;
+                cmd.Parameters.Add("@UserId", SqlDbType.Int).Value = UserId;
+
+                try
+                {
+                    int cunt = cmd.ExecuteNonQuery();
+                    if (cunt > 0)
+                    {
+                        trn.Commit();
+                        return "Account has been deleted successfully";
+                    }
+                    else
+                    {
+                        trn.Rollback();
+                        return "Account deletion process unsuccessful";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    trn.Rollback();
+                    return ex.Message + " - " + "Account deletion process unsuccessful";
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message + " - " + "Account deletion process unsuccessful";
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+        public string updatePasswordProfileById(string spname, string OldPassword, string NewPassword, int UserId)
+        {
+            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            try
+            {
+                con.Open();
+                SqlTransaction trn = con.BeginTransaction();
+
+                SqlCommand cmd = new SqlCommand("updatePasswordProfileById", con, trn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@OldPassword", SqlDbType.NVarChar).Value = OldPassword;
+                cmd.Parameters.Add("@NewPassword", SqlDbType.NVarChar).Value = NewPassword;
+                cmd.Parameters.Add("@UserId", SqlDbType.Int).Value = UserId;
+
+                try
+                {
+                    int cunt = cmd.ExecuteNonQuery();
+                    if (cunt > 0)
+                    {
+                        trn.Commit();
+                        return "Password has been updated successfully";
+                    }
+                    else
+                    {
+                        trn.Rollback();
+                        return "Password update process unsuccessful";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    trn.Rollback();
+                    return ex.Message + " - " + "Password update process unsuccessful";
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message + " - " + "Password update process unsuccessful";
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+        public string updateProfileById(string spname, string base64Stringa, string profileDescription, int UserId)
+        {
+            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            try
+            {
+                con.Open();
+                SqlTransaction trn = con.BeginTransaction();
+
+                SqlCommand cmd = new SqlCommand("updateProfileById", con, trn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@Pic", SqlDbType.NVarChar).Value = base64Stringa;
+                cmd.Parameters.Add("@Description", SqlDbType.Char).Value = profileDescription;
+                cmd.Parameters.Add("@UserId", SqlDbType.Int).Value = UserId;
+
+                try
+                {
+                    int cunt = cmd.ExecuteNonQuery();
+                    if (cunt > 0)
+                    {
+                        trn.Commit();
+                        return "Profile has been updated successfully";
+                    }
+                    else
+                    {
+                        trn.Rollback();
+                        return "Profile update process unsuccessful";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    trn.Rollback();
+                    return ex.Message + " - " + "Profile update process unsuccessful";
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message + " - " + "Profile update process unsuccessful";
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+        public string updateUserByActivationCode(string spname, string KeyPara)
+        {
+            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            try
+            {
+                con.Open();
+                SqlTransaction trn = con.BeginTransaction();
+
+                SqlCommand cmd = new SqlCommand("updateUserByActivationCode", con, trn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@KeyPara", SqlDbType.VarChar).Value = KeyPara;
+
+                try
+                {
+                    int cunt = cmd.ExecuteNonQuery();
+                    if (cunt > 0)
+                    {
+                        trn.Commit();
+                        return "Account has been updated successfully";
+                    }
+                    else
+                    {
+                        trn.Rollback();
+                        return "Account update process unsuccessful";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    trn.Rollback();
+                    return ex.Message + " - " + "Account update process unsuccessful";
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message + " - " + "Account update process unsuccessful";
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
         public string updateZoneById(string spname, int ZoneId, int Status, int UserId)
         {
             SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
@@ -604,6 +779,70 @@ namespace AMS
             catch (Exception ex)
             {
                 return ex.Message + " - " + "Zone update process unsuccessful";
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+        public string insertUser(string spname, string EmailTB_, string PasswordTB_, string DName, string AId, string Phone, string KeyPara, string Address)
+        {
+            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            try
+            {
+                con.Open();
+                SqlTransaction trn = con.BeginTransaction();
+
+                SqlCommand cmd = new SqlCommand("insertUser", con, trn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@Email", SqlDbType.VarChar).Value = EmailTB_.Trim();
+                cmd.Parameters.Add("@Password", SqlDbType.NVarChar).Value = PasswordTB_.Trim();
+                cmd.Parameters.Add("@DName", SqlDbType.Char).Value = DName.Trim();
+                cmd.Parameters.Add("@AId", SqlDbType.Int).Value = AId;
+                cmd.Parameters.Add("@Phone", SqlDbType.Char).Value = Phone.Trim();
+                cmd.Parameters.Add("@KeyPara", SqlDbType.VarChar).Value = KeyPara.Trim();
+                cmd.Parameters.Add("@Address", SqlDbType.VarChar).Value = Address.Trim();
+
+                try
+                {
+                    int cunt = cmd.ExecuteNonQuery();
+                    if (cunt > 0)
+                    {
+                        //bool res = SendEmail(cls.Password.Trim(), cls.DName.Trim(), cls.Email.Trim());
+                        //if (res == true)
+                        //{
+                        trn.Commit();
+                        return "Profile has been created successfully!";
+                        //}
+                        //else
+                        //{
+                        //    trn.Rollback();
+                        //    return new JsonResult("Profile creation process unsuccessful due to Email sending failure!");
+                        //}
+                    }
+                    else
+                    {
+                        trn.Rollback();
+                        return "Profile creation process unsuccessful.";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    trn.Rollback();
+                    if (ex.Message.Contains("PRIMARY KEY"))
+                    {
+                        return "Profile creation process unsuccessful! Email already exists.";
+                    }
+                    else
+                    {
+                        return "Profile creation process unsuccessful.";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message + " - " + "Profile creation process unsuccessful.";
             }
             finally
             {

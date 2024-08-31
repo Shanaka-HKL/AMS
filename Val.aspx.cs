@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
@@ -36,10 +37,9 @@ namespace AMS
         {
             try
             {
-                string JsonInput = "{\r\n    \"KeyPara\" : " + "'" + ema.Trim() + "'" + "\r\n}";
+                Serve apir = new Serve();
+                string result = apir.updateUserByActivationCode("updateUserByActivationCode", ema.Trim());
 
-                PostAPI apir = new PostAPI();
-                string result = apir.get_string("updateUserByActivationCode", JsonInput, "post");
                 if (result.Contains(" successful"))
                 {
                     Session["Msg"] = "Account has been activated successfully!";
