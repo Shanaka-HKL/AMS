@@ -223,6 +223,10 @@ namespace AMS
             {
                 ErrLbl.Text = "Select the End Date!";
             }
+            else if(Convert.ToDateTime(txtStartDate.Text.Trim()) < Convert.ToDateTime(txtEndDate.Text.Trim()))
+            {
+                ErrLbl.Text = "The End Date should be greater than or equal to the Start Date!";
+            }
             else if (CampaignDDL.SelectedValue.ToString() != "0" && txtPriority_ <= 0)
             {
                 ErrLbl.Text = "Enter the Priority!";

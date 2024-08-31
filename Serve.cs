@@ -655,6 +655,49 @@ namespace AMS
                 con.Close();
             }
         }
+        public string updateProfileImageById(string spname, string Pic, int UserId)
+        {
+            SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
+            try
+            {
+                con.Open();
+                SqlTransaction trn = con.BeginTransaction();
+
+                SqlCommand cmd = new SqlCommand("updateProfileImageById", con, trn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@Pic", SqlDbType.Char).Value = Pic;
+                cmd.Parameters.Add("@UserId", SqlDbType.Int).Value = UserId;
+
+                try
+                {
+                    int cunt = cmd.ExecuteNonQuery();
+                    if (cunt > 0)
+                    {
+                        trn.Commit();
+                        return "Profile image has been updated successfully";
+                    }
+                    else
+                    {
+                        trn.Rollback();
+                        return "Profile image update process unsuccessful";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    trn.Rollback();
+                    return ex.Message + " - " + "Profile image update process unsuccessful";
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message + " - " + "Profile image update process unsuccessful";
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
         public string updateProfileById(string spname, string profileDescription, int UserId)
         {
             SqlConnection con = new SqlConnection("Data Source=iq-it.database.windows.net;User ID=azureadmin;Password=Iqit@#@#;Initial Catalog=AMS_BE; Connection Timeout=320;pooling=true;Max Pool Size=400");
