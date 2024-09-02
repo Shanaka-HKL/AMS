@@ -49,6 +49,21 @@ namespace AMS
     </body>
     </html>");
                         }
+    //                    else if (BannerTypeId == "html5")
+    //                    {
+    //                        Response.Write($@"
+    //<html>
+    //<body style='margin:0;padding:0;'>
+    //    <div style='width:100%; height:100%;'>
+    //        <a href='HitAd.aspx?zoneId={zoneId}' target='{Target}'>
+    //            <object data='{"https://advertisementmanagementsystem.azurewebsites.net/Uploads/" + FileName}' type='application/x-shockwave-flash' style='width:100%; height:100%;'>
+    //                <embed src='{"https://advertisementmanagementsystem.azurewebsites.net/Uploads/" + FileName}' style='width:100%; height:100%;'></embed>
+    //            </object>
+    //        </a>
+    //    </div>
+    //</body>
+    //</html>");
+    //                    }
                         else if (BannerTypeId == "html5")
                         {
                             Response.Write($@"
