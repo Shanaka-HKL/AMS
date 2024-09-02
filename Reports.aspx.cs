@@ -1,5 +1,4 @@
-﻿using Microsoft.Reporting.WebForms;
-using System;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
@@ -57,19 +56,20 @@ namespace AMS
 
         private void LoadReport(DataTable dt)
         {
-            // Set the processing mode for the ReportViewer to Local
-            ReportViewer1.ProcessingMode = ProcessingMode.Local;
+           //// Set the processing mode for the ReportViewer to Local
 
-            // Set the path to the RDLC file
-            ReportViewer1.LocalReport.ReportPath = Server.MapPath("~/PerformanceReport.rdlc");
+           ////ReportViewer1.ProcessingMode = ProcessingMode.Local;
 
-            // Bind DataTable to the report
-            ReportDataSource rds = new ReportDataSource("WebsiteDataSet", dt); // The name must match the DataSet in the RDLC
-            ReportViewer1.LocalReport.DataSources.Clear();
-            ReportViewer1.LocalReport.DataSources.Add(rds);
+           //// Set the path to the RDLC file
+           //// ReportViewer1.LocalReport.ReportPath = Server.MapPath("~/PerformanceReport.rdlc");
 
-            // Refresh the report
-            ReportViewer1.LocalReport.Refresh();
+           //// Bind DataTable to the report
+           ////ReportDataSource rds = new ReportDataSource("WebsiteDataSet", dt); // The name must match the DataSet in the RDLC
+           //// ReportViewer1.LocalReport.DataSources.Clear();
+           //// ReportViewer1.LocalReport.DataSources.Add(rds);
+
+           //// Refresh the report
+           //// ReportViewer1.LocalReport.Refresh();
         }
 
         private DataTable GetData()
