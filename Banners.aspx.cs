@@ -124,168 +124,361 @@ namespace AMS
                 ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + ex.Message + "');", true);
             }
         }
-        private static string GenerateRandomKey(int length)
-        {
-            byte[] buff = new byte[length];
-            using (var rng = new RNGCryptoServiceProvider())
-            {
-                rng.GetBytes(buff);
-            }
-            return BitConverter.ToString(buff).Replace("-", "");
-        }
-
         protected void CreateBannerButton_Click(object sender, EventArgs e)
         {
+            // Initialize error label color and clear any previous messages
             ErrLbl.ForeColor = Color.Red;
+            ErrLbl.Text = string.Empty;
 
-            if (CampaignDDL.SelectedValue.ToString() == "0")
+            // Validation checks for form fields
+            if (CampaignDDL.SelectedValue == "0")
             {
                 ErrLbl.Text = "Select a Campaign!";
+                return;
             }
-            else if (WebsiteDDL.SelectedValue.ToString() == "0")
+
+            if (WebsiteDDL.SelectedValue == "0")
             {
                 ErrLbl.Text = "Select a Website!";
+                return;
             }
-            else if (ZonesDDL.SelectedValue.ToString() == "0")
+
+            if (ZonesDDL.SelectedValue == "0")
             {
                 ErrLbl.Text = "Select a Zone!";
+                return;
             }
-            else if (txtBannerName.Text.Trim() == "")
+
+            if (string.IsNullOrWhiteSpace(txtBannerName.Text))
             {
                 ErrLbl.Text = "Enter Banner Name!";
+                return;
             }
-            else if (ddlBannerType.SelectedValue.ToString() == "0")
+
+            if (ddlBannerType.SelectedValue == "0")
             {
                 ErrLbl.Text = "Select a Banner Type!";
+                return;
             }
-            else if (!fileBannerUpload.HasFile)
+
+            if (!fileBannerUpload.HasFile)
             {
                 ErrLbl.Text = "Upload the Media!";
+                return;
             }
-            else if (txtBannerLink.Text.Trim() == "")
+
+            if (string.IsNullOrWhiteSpace(txtBannerLink.Text))
             {
                 ErrLbl.Text = "Enter the website link this banner points to!";
+                return;
             }
-            else if (ddlTarget.SelectedValue.ToString() == "0")
+
+            if (ddlTarget.SelectedValue == "0")
             {
                 ErrLbl.Text = "Select the Target!";
+                return;
             }
-            else
+
+            // Proceed with file processing
+            string fileExtension = Path.GetExtension(fileBannerUpload.FileName).ToLower();
+            string[] allowedExtensions = { ".html", ".htm", ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".webp", ".txt", ".mp4", ".avi", ".mkv", ".mov", ".wmv", ".zip" };
+
+            if (!allowedExtensions.Contains(fileExtension))
             {
-                bool proceed; string filenme = "";
-                string fileExtension = System.IO.Path.GetExtension(fileBannerUpload.FileName).ToLower();
-                string[] allowedExtensions = { ".html", ".htm", ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".webp", ".txt", ".mp4", ".avi", ".mkv", ".mov", ".wmv", ".zip" };
+                ErrLbl.Text = "Invalid file type. Only HTML, Image, Text, and Video files are allowed.";
+                return;
+            }
 
-                if (Array.Exists(allowedExtensions, ext => ext == fileExtension))
+            if (fileBannerUpload.PostedFile.ContentLength > 5242880) // 5MB in bytes
+            {
+                ErrLbl.Text = "File size exceeds the 5MB limit.";
+                return;
+            }
+
+            // Define folder path and ensure it exists
+            string folderPath = Server.MapPath("~/Uploads/");
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            // Generate a unique key for the file
+            string key = GenerateRandomKey(50).Substring(0, 7);
+            string filenme = $"{CampaignDDL.SelectedValue}_{WebsiteDDL.SelectedValue}_{ZonesDDL.SelectedValue}_{key}{fileExtension}";
+            string savePath = Path.Combine(folderPath, filenme);
+
+            bool proceed = false;
+
+            try
+            {
+                if (fileExtension == ".zip")
                 {
-                    if (fileBannerUpload.PostedFile.ContentLength <= 5242880) // 5MB in bytes
+                    // Handle zip file extraction
+                    string extractPath = Path.Combine(folderPath, key);
+                    if (!Directory.Exists(extractPath))
                     {
-                        string folderPath = Server.MapPath("~/Uploads/");
-                        string savePath = "";
+                        Directory.CreateDirectory(extractPath);
+                    }
 
-                        if (!System.IO.Directory.Exists(folderPath))
-                        {
-                            System.IO.Directory.CreateDirectory(folderPath);
-                        }
+                    // Save the uploaded zip file
+                    fileBannerUpload.SaveAs(savePath);
 
-                        string key = GenerateRandomKey(50);
+                    // Extract zip contents
+                    ZipFile.ExtractToDirectory(savePath, extractPath);
 
-                        if (key.Length > 7)
-                        {
-                            key = key.Substring(0, 7);
-                        }
+                    // Process extracted files, looking for the main HTML file
+                    string[] htmlFiles = Directory.GetFiles(extractPath, "*.html");
+                    if (htmlFiles.Length > 0)
+                    {
+                        string mainHtmlFile = htmlFiles[0];
+                        string htmlContent = File.ReadAllText(mainHtmlFile);
 
-                        if (fileExtension == ".zip")
-                        {
-                            string extractPath = folderPath + key;//filenme.Replace(".zip", "");
-                            ZipFile.ExtractToDirectory(savePath, extractPath);
+                        // Adjust paths in HTML content
+                        htmlContent = htmlContent.Replace("src=\"", $"src=\"{extractPath}/");
+                        File.WriteAllText(mainHtmlFile, htmlContent);
 
-                            try
-                            {
-                                // Find the main HTML file
-                                string[] htmlFiles = Directory.GetFiles(extractPath, "*.html");
-                                if (htmlFiles.Length > 0)
-                                {
-                                    string mainHtmlFile = htmlFiles[0];
-
-                                    string htmlContent = File.ReadAllText(mainHtmlFile);
-                                    htmlContent = htmlContent.Replace("src=\"", "src=\"" + extractPath + "/");
-                                    File.WriteAllText(mainHtmlFile, htmlContent);
-
-                                    //filenme = Path.GetFileName(mainHtmlFile);
-                                    filenme = CampaignDDL.SelectedValue.ToString() + "_" + WebsiteDDL.SelectedValue.ToString() + "_" + ZonesDDL.SelectedValue.ToString() + "_" + key + fileExtension;
-                                    savePath = folderPath + filenme;
-
-                                    fileBannerUpload.SaveAs(savePath);
-                                    ErrLbl.Text = "File uploaded successfully!";
-                                    proceed = true;
-                                }
-                                else
-                                {
-                                    ErrLbl.Text = "HTML file not found in this attachment!";
-                                    proceed = false;
-                                }
-                            }
-                            catch
-                            {
-                                ErrLbl.Text = "HTML file not found or currupted in this attachment!";
-                                proceed = false;
-                            }
-                        }
-                        else
-                        {
-                            filenme = CampaignDDL.SelectedValue.ToString() + "_" + WebsiteDDL.SelectedValue.ToString() + "_" + ZonesDDL.SelectedValue.ToString() + "_" + key + fileExtension;
-                            savePath = folderPath + filenme;
-
-                            fileBannerUpload.SaveAs(savePath);
-                            ErrLbl.Text = "File uploaded successfully!";
-                            proceed = true;
-                        }
+                        ErrLbl.Text = "File uploaded and extracted successfully!";
+                        proceed = true;
                     }
                     else
                     {
-                        ErrLbl.Text = "File size exceeds the 5MB limit.";
-                        proceed = false;
+                        ErrLbl.Text = "HTML file not found in this attachment!";
                     }
                 }
                 else
                 {
-                    ErrLbl.Text = "Invalid file type. Only HTML, Image, Text, and Video files are allowed.";
-                    proceed = false;
+                    // Save non-zip files
+                    fileBannerUpload.SaveAs(savePath);
+                    ErrLbl.Text = "File uploaded successfully!";
+                    proceed = true;
                 }
+            }
+            catch (Exception ex)
+            {
+                ErrLbl.Text = $"An error occurred: {ex.Message}";
+                proceed = false;
+            }
 
-                if (proceed == true)
+            if (proceed)
+            {
+                // Insert the record into the database
+                string result = InsertRecord(
+                    filenme,
+                    WebsiteDDL.SelectedValue.Trim(),
+                    ddlBannerSizeDDL.SelectedValue.Trim(),
+                    CampaignDDL.SelectedValue.Trim(),
+                    ZonesDDL.SelectedValue.Trim(),
+                    ddlBannerType.SelectedValue.Trim(),
+                    ddlTarget.SelectedValue.Trim(),
+                    txtBannerLink.Text.Trim(),
+                    txtBannerName.Text.Trim()
+                );
+
+                if (result.Contains(" successful"))
                 {
-                    PostAPI apir = new PostAPI();
-                    string reslt = "";
+                    ErrLbl.ForeColor = Color.Green;
+                    ScriptManager.RegisterStartupScript(this, GetType(), "Alert", $"alert('{result}');", true);
+                    ErrLbl.Text = result;
 
-                    reslt = InsertRecord(filenme, WebsiteDDL.SelectedValue.ToString().Trim(), ddlBannerSizeDDL.SelectedValue.ToString().Trim(), CampaignDDL.SelectedValue.ToString().Trim(), ZonesDDL.SelectedValue.ToString().Trim(), ddlBannerType.SelectedValue.ToString().Trim(),
-                        ddlTarget.SelectedValue.ToString().Trim(), txtBannerLink.Text.Trim(), txtBannerName.Text.Trim());
-                    if (reslt.Contains(" successful"))
-                    {
-                        ErrLbl.ForeColor = Color.Green;
-                        ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + reslt + "');", true);
-                        ErrLbl.Text = reslt;
+                    // Refresh the GridView
+                    BindBannerGridView();
 
-                        BindBannerGridView();
-
-                        CampaignDDL.SelectedIndex = 0;
-                        WebsiteDDL.SelectedIndex = 0;
-                        ZonesDDL.SelectedIndex = 0;
-                        ddlBannerSizeDDL.SelectedIndex = 0;
-                        ddlBannerType.SelectedIndex = 0;
-                        ddlTarget.SelectedIndex = 0;
-                        txtBannerLink.Text = "";
-                        txtBannerName.Text = "";
-                    }
-                    else
-                    {
-                        ErrLbl.ForeColor = Color.Red;
-                        ErrLbl.Text = reslt;
-                    }
+                    // Reset form fields
+                    ResetFormFields();
+                }
+                else
+                {
+                    ErrLbl.Text = result;
                 }
             }
         }
+
+        private void ResetFormFields()
+        {
+            CampaignDDL.SelectedIndex = 0;
+            WebsiteDDL.SelectedIndex = 0;
+            ZonesDDL.SelectedIndex = 0;
+            ddlBannerSizeDDL.SelectedIndex = 0;
+            ddlBannerType.SelectedIndex = 0;
+            ddlTarget.SelectedIndex = 0;
+            txtBannerLink.Text = string.Empty;
+            txtBannerName.Text = string.Empty;
+        }
+
+        // Utility method to generate a random key
+        private string GenerateRandomKey(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[new Random().Next(s.Length)]).ToArray());
+        }
+        //private static string GenerateRandomKey(int length)
+        //{
+        //    byte[] buff = new byte[length];
+        //    using (var rng = new RNGCryptoServiceProvider())
+        //    {
+        //        rng.GetBytes(buff);
+        //    }
+        //    return BitConverter.ToString(buff).Replace("-", "");
+        //}
+
+        //protected void CreateBannerButton_Click(object sender, EventArgs e)
+        //{
+        //    ErrLbl.ForeColor = Color.Red;
+
+        //    if (CampaignDDL.SelectedValue.ToString() == "0")
+        //    {
+        //        ErrLbl.Text = "Select a Campaign!";
+        //    }
+        //    else if (WebsiteDDL.SelectedValue.ToString() == "0")
+        //    {
+        //        ErrLbl.Text = "Select a Website!";
+        //    }
+        //    else if (ZonesDDL.SelectedValue.ToString() == "0")
+        //    {
+        //        ErrLbl.Text = "Select a Zone!";
+        //    }
+        //    else if (txtBannerName.Text.Trim() == "")
+        //    {
+        //        ErrLbl.Text = "Enter Banner Name!";
+        //    }
+        //    else if (ddlBannerType.SelectedValue.ToString() == "0")
+        //    {
+        //        ErrLbl.Text = "Select a Banner Type!";
+        //    }
+        //    else if (!fileBannerUpload.HasFile)
+        //    {
+        //        ErrLbl.Text = "Upload the Media!";
+        //    }
+        //    else if (txtBannerLink.Text.Trim() == "")
+        //    {
+        //        ErrLbl.Text = "Enter the website link this banner points to!";
+        //    }
+        //    else if (ddlTarget.SelectedValue.ToString() == "0")
+        //    {
+        //        ErrLbl.Text = "Select the Target!";
+        //    }
+        //    else
+        //    {
+        //        bool proceed; string filenme = "";
+        //        string fileExtension = System.IO.Path.GetExtension(fileBannerUpload.FileName).ToLower();
+        //        string[] allowedExtensions = { ".html", ".htm", ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".webp", ".txt", ".mp4", ".avi", ".mkv", ".mov", ".wmv", ".zip" };
+
+        //        if (Array.Exists(allowedExtensions, ext => ext == fileExtension))
+        //        {
+        //            if (fileBannerUpload.PostedFile.ContentLength <= 5242880) // 5MB in bytes
+        //            {
+        //                string folderPath = Server.MapPath("~/Uploads/");
+        //                string savePath = "";
+
+        //                if (!System.IO.Directory.Exists(folderPath))
+        //                {
+        //                    System.IO.Directory.CreateDirectory(folderPath);
+        //                }
+
+        //                string key = GenerateRandomKey(50);
+
+        //                if (key.Length > 7)
+        //                {
+        //                    key = key.Substring(0, 7);
+        //                }
+
+        //                if (fileExtension == ".zip")
+        //                {
+        //                    string extractPath = folderPath + key;//filenme.Replace(".zip", "");
+        //                    if (!System.IO.Directory.Exists(extractPath))
+        //                    {
+        //                        System.IO.Directory.CreateDirectory(extractPath);
+        //                    }
+        //                    savePath = folderPath;
+        //                    ZipFile.ExtractToDirectory(savePath, extractPath);
+
+        //                    try
+        //                    {
+        //                        // Find the main HTML file
+        //                        string[] htmlFiles = Directory.GetFiles(extractPath, "*.html");
+        //                        if (htmlFiles.Length > 0)
+        //                        {
+        //                            string mainHtmlFile = htmlFiles[0];
+
+        //                            string htmlContent = File.ReadAllText(mainHtmlFile);
+        //                            htmlContent = htmlContent.Replace("src=\"", "src=\"" + extractPath + "/");
+        //                            File.WriteAllText(mainHtmlFile, htmlContent);
+
+        //                            //filenme = Path.GetFileName(mainHtmlFile);
+        //                            filenme = CampaignDDL.SelectedValue.ToString() + "_" + WebsiteDDL.SelectedValue.ToString() + "_" + ZonesDDL.SelectedValue.ToString() + "_" + key + fileExtension;
+        //                            savePath = folderPath + filenme;
+
+        //                            fileBannerUpload.SaveAs(savePath);
+        //                            ErrLbl.Text = "File uploaded successfully!";
+        //                            proceed = true;
+        //                        }
+        //                        else
+        //                        {
+        //                            ErrLbl.Text = "HTML file not found in this attachment!";
+        //                            proceed = false;
+        //                        }
+        //                    }
+        //                    catch
+        //                    {
+        //                        ErrLbl.Text = "HTML file not found or currupted in this attachment!";
+        //                        proceed = false;
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    filenme = CampaignDDL.SelectedValue.ToString() + "_" + WebsiteDDL.SelectedValue.ToString() + "_" + ZonesDDL.SelectedValue.ToString() + "_" + key + fileExtension;
+        //                    savePath = folderPath + filenme;
+
+        //                    fileBannerUpload.SaveAs(savePath);
+        //                    ErrLbl.Text = "File uploaded successfully!";
+        //                    proceed = true;
+        //                }
+        //            }
+        //            else
+        //            {
+        //                ErrLbl.Text = "File size exceeds the 5MB limit.";
+        //                proceed = false;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            ErrLbl.Text = "Invalid file type. Only HTML, Image, Text, and Video files are allowed.";
+        //            proceed = false;
+        //        }
+
+        //        if (proceed == true)
+        //        {
+        //            PostAPI apir = new PostAPI();
+        //            string reslt = "";
+
+        //            reslt = InsertRecord(filenme, WebsiteDDL.SelectedValue.ToString().Trim(), ddlBannerSizeDDL.SelectedValue.ToString().Trim(), CampaignDDL.SelectedValue.ToString().Trim(), ZonesDDL.SelectedValue.ToString().Trim(), ddlBannerType.SelectedValue.ToString().Trim(),
+        //                ddlTarget.SelectedValue.ToString().Trim(), txtBannerLink.Text.Trim(), txtBannerName.Text.Trim());
+        //            if (reslt.Contains(" successful"))
+        //            {
+        //                ErrLbl.ForeColor = Color.Green;
+        //                ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + reslt + "');", true);
+        //                ErrLbl.Text = reslt;
+
+        //                BindBannerGridView();
+
+        //                CampaignDDL.SelectedIndex = 0;
+        //                WebsiteDDL.SelectedIndex = 0;
+        //                ZonesDDL.SelectedIndex = 0;
+        //                ddlBannerSizeDDL.SelectedIndex = 0;
+        //                ddlBannerType.SelectedIndex = 0;
+        //                ddlTarget.SelectedIndex = 0;
+        //                txtBannerLink.Text = "";
+        //                txtBannerName.Text = "";
+        //            }
+        //            else
+        //            {
+        //                ErrLbl.ForeColor = Color.Red;
+        //                ErrLbl.Text = reslt;
+        //            }
+        //        }
+        //    }
+        //}
 
         public string InsertRecord(string filenme, string WebsiteId, string BannerSize, string CampaignDDLVlu, string ZonesDDLVlu, string ddlBannerTypeVlu, string ddlTargetVlu, string txtBannerLinkVlu, string txtBannerNameVlu)
         {
