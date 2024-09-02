@@ -86,7 +86,7 @@
                         var filePath = fileInput.value;
                         var fileSize = fileInput.files[0].size / 1024 / 1024;
 
-                        var allowedExtensions = /(\.html|\.htm|\.jpg|\.jpeg|\.png|\.gif|\.bmp|\.tiff|\.webp|\.txt|\.mp4|\.avi|\.mkv|\.mov|\.wmv)$/i;
+                        var allowedExtensions = /(\.html|\.htm|\.jpg|\.jpeg|\.png|\.gif|\.bmp|\.tiff|\.webp|\.txt|\.mp4|\.avi|\.mkv|\.mov|\.wmv|\.zip)$/i;
 
                         if (!allowedExtensions.exec(filePath)) {
                             args.IsValid = false;

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
@@ -10,6 +11,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
+using System.IO.Compression;
+using System.Linq.Expressions;
 
 namespace AMS
 {
@@ -121,6 +124,15 @@ namespace AMS
                 ScriptManager.RegisterStartupScript(this, GetType(), "Alert", "alert('" + ex.Message + "');", true);
             }
         }
+        private static string GenerateRandomKey(int length)
+        {
+            byte[] buff = new byte[length];
+            using (var rng = new RNGCryptoServiceProvider())
+            {
+                rng.GetBytes(buff);
+            }
+            return BitConverter.ToString(buff).Replace("-", "");
+        }
 
         protected void CreateBannerButton_Click(object sender, EventArgs e)
         {
@@ -162,24 +174,73 @@ namespace AMS
             {
                 bool proceed; string filenme = "";
                 string fileExtension = System.IO.Path.GetExtension(fileBannerUpload.FileName).ToLower();
-                string[] allowedExtensions = { ".html", ".htm", ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".webp", ".txt", ".mp4", ".avi", ".mkv", ".mov", ".wmv" };
+                string[] allowedExtensions = { ".html", ".htm", ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".webp", ".txt", ".mp4", ".avi", ".mkv", ".mov", ".wmv", ".zip" };
 
                 if (Array.Exists(allowedExtensions, ext => ext == fileExtension))
                 {
                     if (fileBannerUpload.PostedFile.ContentLength <= 5242880) // 5MB in bytes
                     {
                         string folderPath = Server.MapPath("~/Uploads/");
+                        string savePath = "";
 
                         if (!System.IO.Directory.Exists(folderPath))
                         {
                             System.IO.Directory.CreateDirectory(folderPath);
                         }
-                        filenme = CampaignDDL.SelectedValue.ToString() + "_" + WebsiteDDL.SelectedValue.ToString() + "_" + ZonesDDL.SelectedValue.ToString() + fileExtension;
-                        string savePath = folderPath + filenme;
 
-                        fileBannerUpload.SaveAs(savePath);
-                        ErrLbl.Text = "File uploaded successfully!";
-                        proceed = true;
+                        string key = GenerateRandomKey(50);
+
+                        if (key.Length > 7)
+                        {
+                            key = key.Substring(0, 7);
+                        }
+
+                        if (fileExtension == ".zip")
+                        {
+                            string extractPath = folderPath + key;//filenme.Replace(".zip", "");
+                            ZipFile.ExtractToDirectory(savePath, extractPath);
+
+                            try
+                            {
+                                // Find the main HTML file
+                                string[] htmlFiles = Directory.GetFiles(extractPath, "*.html");
+                                if (htmlFiles.Length > 0)
+                                {
+                                    string mainHtmlFile = htmlFiles[0];
+
+                                    string htmlContent = File.ReadAllText(mainHtmlFile);
+                                    htmlContent = htmlContent.Replace("src=\"", "src=\"" + extractPath + "/");
+                                    File.WriteAllText(mainHtmlFile, htmlContent);
+
+                                    //filenme = Path.GetFileName(mainHtmlFile);
+                                    filenme = CampaignDDL.SelectedValue.ToString() + "_" + WebsiteDDL.SelectedValue.ToString() + "_" + ZonesDDL.SelectedValue.ToString() + "_" + key + fileExtension;
+                                    savePath = folderPath + filenme;
+
+                                    fileBannerUpload.SaveAs(savePath);
+                                    ErrLbl.Text = "File uploaded successfully!";
+                                    proceed = true;
+                                }
+                                else
+                                {
+                                    ErrLbl.Text = "HTML file not found in this attachment!";
+                                    proceed = false;
+                                }
+                            }
+                            catch
+                            {
+                                ErrLbl.Text = "HTML file not found or currupted in this attachment!";
+                                proceed = false;
+                            }
+                        }
+                        else
+                        {
+                            filenme = CampaignDDL.SelectedValue.ToString() + "_" + WebsiteDDL.SelectedValue.ToString() + "_" + ZonesDDL.SelectedValue.ToString() + "_" + key + fileExtension;
+                            savePath = folderPath + filenme;
+
+                            fileBannerUpload.SaveAs(savePath);
+                            ErrLbl.Text = "File uploaded successfully!";
+                            proceed = true;
+                        }
                     }
                     else
                     {
