@@ -1,9 +1,66 @@
 ﻿<%@ Page Title="Reports & Analytics" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Reports.aspx.cs" Inherits="AMS._Reports" %>
 
-<%@ Register Assembly="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
-    Namespace="Microsoft.Reporting.WebForms" TagPrefix="rsweb" %>
-
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+    <style>
+        /* Style for the report header */
+        .report-header-panel {
+            margin-bottom: 5px;
+            padding: 5px;
+            border: 1px solid #dcdcdc;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            color: black;
+            background-color: transparent;
+        }
+
+        /* GridView styling */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table-bordered {
+            border: 1px solid #ddd;
+        }
+
+            .table-bordered th, .table-bordered td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+            }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #f9f9f9;
+        }
+
+        .table thead {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+
+        .table th {
+            padding: 10px;
+        }
+
+        .table td {
+            padding: 8px;
+        }
+
+        .table th, .table td {
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .table-bordered {
+            border: 1px solid #ddd;
+        }
+    </style>
+
     <div style="position: relative; width: 100%; height: auto; background-image: url('Images/report.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center; overflow: hidden;"
         class="blurred-background">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -34,33 +91,14 @@
                             </asp:DropDownList>
                             <br />
                             <asp:Label ID="Label10" runat="server" Text="Advertiser:" />
-                            <asp:DropDownList ID="AdDDL" runat="server" CssClass="form-control">
-                                <asp:ListItem Text="-Select All-" Value="0" />
-                                <asp:ListItem Text="Advertiser 1" Value="1" />
-                                <asp:ListItem Text="Advertiser 2" Value="2" />
-                                <asp:ListItem Text="Advertiser 3" Value="3" />
-                                <asp:ListItem Text="Advertiser 4" Value="4" />
-                                <asp:ListItem Text="Advertiser 5" Value="5" />
-                            </asp:DropDownList>
+                            <asp:TextBox ID="AdDDL" runat="server" CssClass="form-control" />
                             <br />
                             <asp:Label ID="Label9" runat="server" Text="Campaign:" />
                             <asp:DropDownList ID="CampaignDDL" runat="server" CssClass="form-control">
-                                <asp:ListItem Text="-Select All-" Value="0" />
-                                <asp:ListItem Text="Campaign A" Value="1" />
-                                <asp:ListItem Text="Campaign B" Value="2" />
-                                <asp:ListItem Text="Campaign C" Value="3" />
-                                <asp:ListItem Text="Campaign D" Value="4" />
-                                <asp:ListItem Text="Campaign E" Value="5" />
                             </asp:DropDownList>
                             <br />
                             <asp:Label ID="lblZoneType" runat="server" Text="Website:" />
                             <asp:DropDownList ID="WebsiteDDL" runat="server" CssClass="form-control">
-                                <asp:ListItem Text="-Select All-" Selected="True" Value="0" />
-                                <asp:ListItem Text="Website A" Value="1" />
-                                <asp:ListItem Text="Website B" Value="2" />
-                                <asp:ListItem Text="Website C" Value="3" />
-                                <asp:ListItem Text="Website D" Value="4" />
-                                <asp:ListItem Text="Website E" Value="5" />
                             </asp:DropDownList>
                             <br />
                         </asp:Panel>
@@ -85,14 +123,23 @@
                 </div>
             </ContentTemplate>
         </asp:UpdatePanel>
-
-        <div class="dashboard-section">
-            <div class="dashboard-item">
-                <h4>Registered Zones</h4>
-                <div>
-                    <rsweb:reportviewer id="ReportViewer1" runat="server" width="100%" height="100%">
-                    </rsweb:reportviewer>
-                </div>
+        <div id="divToExport" class="dashboard-section">
+            <div class="dashboard-item" style="background-color: silver;">
+                <h4>Report Details</h4>
+                <asp:UpdatePanel ID="UpdatePanel14" runat="server">
+                    <ContentTemplate>
+                        <asp:Label ID="ReportNameLabel" runat="server" Text="" Style="color: black;" />
+                        <br />
+                        <asp:Label ID="ReportDateLabel" runat="server" Text="" Style="color: black;" />
+                        <br />
+                        <br />
+                        <asp:GridView ID="DynamicReportGridView" AllowPaging="True" PageSize="10" runat="server" AutoGenerateColumns="True" CssClass="table table-bordered table-striped table-hover">
+                        </asp:GridView>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+                <br />
+                <asp:Button ID="btnDownloadPdf" runat="server" CssClass="btn btn-success" Text="Download PDF" OnClick="btnDownloadPdf_Click" />
+                <asp:Button ID="btnDownloadExcel" runat="server" CssClass="btn btn-success" Text="Download EXCEL" OnClick="btnDownloadExcel_Click" />
             </div>
         </div>
     </div>
