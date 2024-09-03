@@ -10,6 +10,7 @@ using System.Security.Policy;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Windows.Media.Media3D;
 using System.Xml.Linq;
 
 namespace AMS
@@ -277,6 +278,12 @@ namespace AMS
                                 height = size[1];
                             }
                         }
+                        if (width == "0")
+                        {
+                            width = "100%";
+                        }
+                        if (height == "0")
+                        { height = "100%"; }
 
                         string script = $@"
     <div id='adZone'><iframe src='https://advertisementmanagementsystem.azurewebsites.net/DisplayBanner.aspx?zoneId={zoneId}' 

@@ -105,7 +105,6 @@ namespace AMS
     </body>
     </html>");
                         }
-
                         else
                         {
                             Response.Write($@"
@@ -114,11 +113,11 @@ namespace AMS
         <div style='text-align:center;'>
             <p style='font-size:24px;'>Advertisement Space Available</p>
             <p style='font-size:16px;'>Contact us for more information.</p>
+            <p style='font-size:16px;'>+94 (11) 7 101 606 | +94 777 00 45 45</p>
         </div>
     </body>
     </html>");
                         }
-
                     }
                     else
                     {
@@ -128,6 +127,7 @@ namespace AMS
         <div style='text-align:center;'>
             <p style='font-size:24px;'>Advertisement Space Available</p>
             <p style='font-size:16px;'>Contact us for more information.</p>
+            <p style='font-size:16px;'>+94 (11) 7 101 606 | +94 777 00 45 45</p>
         </div>
     </body>
     </html>");
@@ -141,6 +141,7 @@ namespace AMS
         <div style='text-align:center;'>
             <p style='font-size:24px;'>Advertisement Space Available</p>
             <p style='font-size:16px;'>Contact us for more information.</p>
+            <p style='font-size:16px;'>+94 (11) 7 101 606 | +94 777 00 45 45</p>
         </div>
     </body>
     </html>");
@@ -154,6 +155,7 @@ namespace AMS
         <div style='text-align:center;'>
             <p style='font-size:24px;'>Advertisement Space Available</p>
             <p style='font-size:16px;'>Contact us for more information.</p>
+            <p style='font-size:16px;'>+94 (11) 7 101 606 | +94 777 00 45 45</p>
         </div>
     </body>
     </html>");

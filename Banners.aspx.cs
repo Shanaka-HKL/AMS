@@ -126,11 +126,9 @@ namespace AMS
         }
         protected void CreateBannerButton_Click(object sender, EventArgs e)
         {
-            // Initialize error label color and clear any previous messages
             ErrLbl.ForeColor = Color.Red;
             ErrLbl.Text = string.Empty;
 
-            // Validation checks for form fields
             if (CampaignDDL.SelectedValue == "0")
             {
                 ErrLbl.Text = "Select a Campaign!";
@@ -179,7 +177,6 @@ namespace AMS
                 return;
             }
 
-            // Proceed with file processing
             string fileExtension = Path.GetExtension(fileBannerUpload.FileName).ToLower();
             string[] allowedExtensions = { ".html", ".htm", ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".webp", ".txt", ".mp4", ".avi", ".mkv", ".mov", ".wmv", ".zip" };
 
@@ -189,20 +186,18 @@ namespace AMS
                 return;
             }
 
-            if (fileBannerUpload.PostedFile.ContentLength > 5242880) // 5MB in bytes
+            if (fileBannerUpload.PostedFile.ContentLength > 5242880)
             {
                 ErrLbl.Text = "File size exceeds the 5MB limit.";
                 return;
             }
 
-            // Define folder path and ensure it exists
             string folderPath = Server.MapPath("~/Uploads/");
             if (!Directory.Exists(folderPath))
             {
                 Directory.CreateDirectory(folderPath);
             }
 
-            // Generate a unique key for the file
             string key = GenerateRandomKey(50).Substring(0, 7);
             string filenme = $"{CampaignDDL.SelectedValue}_{WebsiteDDL.SelectedValue}_{ZonesDDL.SelectedValue}_{key}{fileExtension}";
             string savePath = Path.Combine(folderPath, filenme);
@@ -213,41 +208,57 @@ namespace AMS
             {
                 if (fileExtension == ".zip")
                 {
-                    // Handle zip file extraction
                     string extractPath = Path.Combine(folderPath, key);
                     if (!Directory.Exists(extractPath))
                     {
                         Directory.CreateDirectory(extractPath);
                     }
 
-                    // Save the uploaded zip file
                     fileBannerUpload.SaveAs(savePath);
-
-                    // Extract zip contents
                     ZipFile.ExtractToDirectory(savePath, extractPath);
 
-                    // Process extracted files, looking for the main HTML file
                     string[] htmlFiles = Directory.GetFiles(extractPath, "*.html");
                     if (htmlFiles.Length > 0)
                     {
                         string mainHtmlFile = htmlFiles[0];
                         string htmlContent = File.ReadAllText(mainHtmlFile);
+                        string htmlFileName = Path.GetFileName(mainHtmlFile);
 
-                        // Adjust paths in HTML content
-                        htmlContent = htmlContent.Replace("src=\"", $"src=\"{extractPath}/");
+                        string pattern = "src=\"";
+                        int index = 0;
+
+                        while ((index = htmlContent.IndexOf(pattern, index)) != -1)
+                        {
+                            int startIndex = index + pattern.Length;
+                            int endIndex = htmlContent.IndexOf("\"", startIndex);
+
+                            if (endIndex > startIndex)
+                            {
+                                string srcValue = htmlContent.Substring(startIndex, endIndex - startIndex);
+
+                                if (!srcValue.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    string newSrcValue = $"{extractPath}/{srcValue}";
+                                    htmlContent = htmlContent.Substring(0, startIndex) + newSrcValue + htmlContent.Substring(endIndex);
+                                }
+                            }
+
+                            index = endIndex + 1;
+                        }
+
                         File.WriteAllText(mainHtmlFile, htmlContent);
-
+                        filenme = $"{CampaignDDL.SelectedValue}_{WebsiteDDL.SelectedValue}_{ZonesDDL.SelectedValue}_{key}{htmlFileName}";
                         ErrLbl.Text = "File uploaded and extracted successfully!";
                         proceed = true;
                     }
                     else
                     {
                         ErrLbl.Text = "HTML file not found in this attachment!";
+                        proceed = false;
                     }
                 }
                 else
                 {
-                    // Save non-zip files
                     fileBannerUpload.SaveAs(savePath);
                     ErrLbl.Text = "File uploaded successfully!";
                     proceed = true;
@@ -280,10 +291,8 @@ namespace AMS
                     ScriptManager.RegisterStartupScript(this, GetType(), "Alert", $"alert('{result}');", true);
                     ErrLbl.Text = result;
 
-                    // Refresh the GridView
                     BindBannerGridView();
 
-                    // Reset form fields
                     ResetFormFields();
                 }
                 else
