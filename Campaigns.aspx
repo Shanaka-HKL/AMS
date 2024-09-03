@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Campaigns Management" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Campaigns.aspx.cs" Inherits="AMS._Campaigns" %>
+﻿<%@ Page Title="Campaign Management" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Campaigns.aspx.cs" Inherits="AMS._Campaigns" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <div style="position: relative; width: 100%; height: auto; background-image: url('Images/campaign.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center; overflow: hidden;"
@@ -21,14 +21,8 @@
                         <asp:Panel ID="Panel1" runat="server">
                             <asp:TextBox ID="txtCampaignName" runat="server" CssClass="form-control" Placeholder="Campaign Name *" MaxLength="23" /><br />
                             <asp:TextBox ID="txtCampaignDescription" runat="server" CssClass="form-control" TextMode="MultiLine" MaxLength="150" Placeholder="Campaign Description" />
-                            
-                            <hr /><div class="form-group">
-                                <asp:Label ID="Label6" runat="server" Text="Update Priority" />
-                                <asp:DropDownList ID="CampaignDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="CampaignDDL_SelectedIndexChanged" AutoPostBack="true">
-                                </asp:DropDownList>
-                            </div>
-                            <asp:TextBox ID="txtPriority" runat="server" CssClass="form-control" Width="86px" Enabled="false" Text="1" TextMode="Number"/>
-                            <hr /><div style="align-items:flex-start">
+                            <br />
+                            <div style="align-items:flex-start">
                             <asp:TextBox ID="txtCampaignBudget" runat="server" CssClass="form-control" Width="230" Placeholder="Campaign Budget" TextMode="Number" /><br />
 
                             <asp:Label ID="lblStartDate" runat="server" Text="Start Date:"></asp:Label>
@@ -36,7 +30,13 @@
                             
                             <asp:Label ID="lblEndDate" runat="server" Text="End Date:"></asp:Label>
                             <asp:TextBox ID="txtEndDate" runat="server" TextMode="Date" Width="230" CssClass="form-control" Placeholder="YYYY-MM-DD *" /><br />
-                            <div class="form-group text-center">
+                            <hr /><div class="form-group">
+                                <asp:Label ID="Label6" runat="server" Text="Update Priority" />
+                                <asp:DropDownList ID="CampaignDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="CampaignDDL_SelectedIndexChanged" AutoPostBack="true">
+                                </asp:DropDownList>
+                            </div>
+                            <asp:TextBox ID="txtPriority" runat="server" CssClass="form-control" Width="86px" Enabled="false" Text="1" TextMode="Number"/>
+                            <hr /><div class="form-group text-center">
                                 <asp:Label ID="ErrLbl" runat="server" Height="15px" BackColor="Transparent" Text="" ForeColor="Red" Font-Size="Smaller"></asp:Label>
                             </div></div>
                             <asp:Button ID="CreateCampaignButton" runat="server" CssClass="btn-primary" Text="Create Campaign" OnClick="CreateCampaignButton_Click" />

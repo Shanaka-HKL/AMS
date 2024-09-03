@@ -321,6 +321,7 @@ namespace AMS
             return new string(Enumerable.Repeat(chars, length)
                 .Select(s => s[new Random().Next(s.Length)]).ToArray());
         }
+
         //private static string GenerateRandomKey(int length)
         //{
         //    byte[] buff = new byte[length];

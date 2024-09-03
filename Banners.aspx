@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Banners Management" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Banners.aspx.cs" Inherits="AMS._Banners" %>
+﻿<%@ Page Title="Banner Management" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Banners.aspx.cs" Inherits="AMS._Banners" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <div style="position: relative; width: 100%; height: auto; background-image: url('Images/banner.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center; overflow: hidden;"

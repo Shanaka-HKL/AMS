@@ -67,17 +67,14 @@ namespace AMS
                         else if (BannerTypeId == "html5")
                         {
                             Response.Write($@"
-    <html>
-    <body style='margin:0;padding:0;'>
-        <div style='width:100%; height:100%;'>
-            <a href='HitAd.aspx?zoneId={zoneId}' target='{Target}'>
-                <object data='{"https://advertisementmanagementsystem.azurewebsites.net/Uploads/" + FileName}' type='application/x-shockwave-flash' style='width:100%; height:100%;'>
-                    <embed src='{"https://advertisementmanagementsystem.azurewebsites.net/Uploads/" + FileName}' style='width:100%; height:100%;'></embed>
-                </object>
-            </a>
-        </div>
-    </body>
-    </html>");
+<html>
+<body style='margin:0;padding:0;'>
+    <div style='width:100%; height:100%; position:relative;'>
+        <iframe src='{"https://advertisementmanagementsystem.azurewebsites.net/Uploads/" + FileName}' style='width:100%; height:100%; border:none;'></iframe>
+        <a href='HitAd.aspx?zoneId={zoneId}' target='{Target}' style='position:absolute; top:0; left:0; width:100%; height:100%; background:transparent;'></a>
+    </div>
+</body>
+</html>");
                         }
                         else if (BannerTypeId == "text")
                         {

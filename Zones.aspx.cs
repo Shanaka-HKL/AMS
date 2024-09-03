@@ -274,8 +274,8 @@ namespace AMS
                             string[] size = zoneSize.Split('x');
                             if (size.Length == 2)
                             {
-                                width = size[0];
-                                height = size[1];
+                                width = size[0].ToString().Trim();
+                                height = size[1].ToString().Trim();
                             }
                         }
                         if (width == "0")
@@ -287,7 +287,7 @@ namespace AMS
 
                         string script = $@"
     <div id='adZone'><iframe src='https://advertisementmanagementsystem.azurewebsites.net/DisplayBanner.aspx?zoneId={zoneId}' 
-            width='{width}' height='{height}' frameborder='0' scrolling='no'></iframe>";
+            width='{width}' height='{height}' frameborder='0' scrolling='no'></iframe></div>";
 
                         Session["DownloadContent"] = script;
                         Session["DownloadFileName"] = $"adZone_{zoneId}.txt";

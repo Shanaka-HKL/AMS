@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Zones Management" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Zones.aspx.cs" Inherits="AMS._Zones" %>
+﻿<%@ Page Title="Zone Management" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Zones.aspx.cs" Inherits="AMS._Zones" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <div style="position: relative; width: 100%; height: auto; background-image: url('Images/zone.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center; overflow: hidden;"
