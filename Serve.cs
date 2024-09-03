@@ -17,6 +17,199 @@ namespace AMS
 {
     public class Serve
     {
+        public DataTable campaignPerformanceReport(string spname, string FromDate, string ToDate, int UserId)
+        {
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
+            try
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand(spname, con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@FromDate", SqlDbType.Date).Value = FromDate;
+                cmd.Parameters.Add("@ToDate", SqlDbType.Date).Value = ToDate;
+                cmd.Parameters.Add("@UserId", SqlDbType.Int).Value = UserId;
+
+                SqlDataReader dr = cmd.ExecuteReader();
+                DataTable dt = new DataTable();
+                dt.Load(dr);
+                dr.Close();
+
+                if (dt.Rows.Count > 0)
+                {
+                    return dt;
+                }
+                else
+                {
+                    DataTable dtx = new DataTable();
+                    return dtx;
+                }
+            }
+            catch
+            {
+                DataTable dtx = new DataTable();
+                return dtx;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+        public DataTable bannerPerformanceReport(string spname, string FromDate, string ToDate, int UserId)
+        {
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
+            try
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand(spname, con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@FromDate", SqlDbType.Date).Value = FromDate;
+                cmd.Parameters.Add("@ToDate", SqlDbType.Date).Value = ToDate;
+                cmd.Parameters.Add("@UserId", SqlDbType.Int).Value = UserId;
+
+                SqlDataReader dr = cmd.ExecuteReader();
+                DataTable dt = new DataTable();
+                dt.Load(dr);
+                dr.Close();
+
+                if (dt.Rows.Count > 0)
+                {
+                    return dt;
+                }
+                else
+                {
+                    DataTable dtx = new DataTable();
+                    return dtx;
+                }
+            }
+            catch
+            {
+                DataTable dtx = new DataTable();
+                return dtx;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+        public DataTable websitePerformanceReport(string spname, string FromDate, string ToDate, int UserId)
+        {
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
+            try
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand(spname, con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@FromDate", SqlDbType.Date).Value = FromDate;
+                cmd.Parameters.Add("@ToDate", SqlDbType.Date).Value = ToDate;
+                cmd.Parameters.Add("@UserId", SqlDbType.Int).Value = UserId;
+
+                SqlDataReader dr = cmd.ExecuteReader();
+                DataTable dt = new DataTable();
+                dt.Load(dr);
+                dr.Close();
+
+                if (dt.Rows.Count > 0)
+                {
+                    return dt;
+                }
+                else
+                {
+                    DataTable dtx = new DataTable();
+                    return dtx;
+                }
+            }
+            catch
+            {
+                DataTable dtx = new DataTable();
+                return dtx;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+        public DataTable zonePerformanceReport(string spname, string FromDate, string ToDate, int UserId)
+        {
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
+            try
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand(spname, con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@FromDate", SqlDbType.Date).Value = FromDate;
+                cmd.Parameters.Add("@ToDate", SqlDbType.Date).Value = ToDate;
+                cmd.Parameters.Add("@UserId", SqlDbType.Int).Value = UserId;
+
+                SqlDataReader dr = cmd.ExecuteReader();
+                DataTable dt = new DataTable();
+                dt.Load(dr);
+                dr.Close();
+
+                if (dt.Rows.Count > 0)
+                {
+                    return dt;
+                }
+                else
+                {
+                    DataTable dtx = new DataTable();
+                    return dtx;
+                }
+            }
+            catch
+            {
+                DataTable dtx = new DataTable();
+                return dtx;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+        public DataTable customReport(string spname, int AdvertiserId, int CampaignId, int WebsiteId, string StartDate, string EndDate, int UserId)
+        {
+            SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
+            try
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand(spname, con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@AdvertiserId", SqlDbType.Int).Value = AdvertiserId;
+                cmd.Parameters.Add("@CampaignId", SqlDbType.Int).Value = CampaignId;
+                cmd.Parameters.Add("@WebsiteId", SqlDbType.Int).Value = WebsiteId;
+                cmd.Parameters.Add("@StartDate", SqlDbType.Date).Value = StartDate;
+                cmd.Parameters.Add("@EndDate", SqlDbType.Date).Value = EndDate;
+                cmd.Parameters.Add("@UserId", SqlDbType.Int).Value = UserId;
+
+                SqlDataReader dr = cmd.ExecuteReader();
+                DataTable dt = new DataTable();
+                dt.Load(dr);
+                dr.Close();
+
+                if (dt.Rows.Count > 0)
+                {
+                    return dt;
+                }
+                else
+                {
+                    DataTable dtx = new DataTable();
+                    return dtx;
+                }
+            }
+            catch
+            {
+                DataTable dtx = new DataTable();
+                return dtx;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
         public DataTable getDetailsByZoneId(string spname, int ZoneId)
         {
             SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
