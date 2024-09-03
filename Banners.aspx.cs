@@ -247,7 +247,7 @@ namespace AMS
                         }
 
                         File.WriteAllText(mainHtmlFile, htmlContent);
-                        filenme = $"{CampaignDDL.SelectedValue}_{WebsiteDDL.SelectedValue}_{ZonesDDL.SelectedValue}_{key}{htmlFileName}";
+                        filenme = $"{key}/{htmlFileName}";
                         ErrLbl.Text = "File uploaded and extracted successfully!";
                         proceed = true;
                     }
