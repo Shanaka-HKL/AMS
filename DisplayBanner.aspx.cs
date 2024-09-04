@@ -49,21 +49,6 @@ namespace AMS
     </body>
     </html>");
                         }
-    //                    else if (BannerTypeId == "html5")
-    //                    {
-    //                        Response.Write($@"
-    //<html>
-    //<body style='margin:0;padding:0;'>
-    //    <div style='width:100%; height:100%;'>
-    //        <a href='HitAd.aspx?zoneId={zoneId}' target='{Target}'>
-    //            <object data='{"https://advertisementmanagementsystem.azurewebsites.net/Uploads/" + FileName}' type='application/x-shockwave-flash' style='width:100%; height:100%;'>
-    //                <embed src='{"https://advertisementmanagementsystem.azurewebsites.net/Uploads/" + FileName}' style='width:100%; height:100%;'></embed>
-    //            </object>
-    //        </a>
-    //    </div>
-    //</body>
-    //</html>");
-    //                    }
                         else if (BannerTypeId == "html5")
                         {
                             Response.Write($@"
@@ -92,12 +77,12 @@ namespace AMS
                             Response.Write($@"
     <html>
     <body style='margin:0;padding:0; position:relative;'>
-        <video width='100%' height='100%' controls>
+        <video width='100%' height='100%' controls style='z-index: 1; position:relative;'>
             <source src='{"https://advertisementmanagementsystem.azurewebsites.net/Uploads/" + FileName}' type='video/mp4'>
             Your browser does not support the video tag.
         </video>
-        <a href='{BannerLink}' target='{Target}'>
-            <div style='position:absolute; top:0; left:0; width:100%; height:100%; background:transparent; cursor:pointer;'></div>
+        <a href='{BannerLink}' target='{Target}' style='z-index: 2;'>
+            <div style='position:absolute; top:0; left:0; width:100%; height:100%; background:transparent; cursor:pointer; z-index:2;'></div>
         </a>
     </body>
     </html>");
