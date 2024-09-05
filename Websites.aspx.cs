@@ -110,12 +110,16 @@ namespace AMS
             {
                 ErrLbl.Text = "Enter Target Frame!";
             }
+            else if (txtCampaignBudget.Text.Trim() == "")
+            {
+                ErrLbl.Text = "Enter Campaign Budget!";
+            }
             else
             {
                 PostAPI apir = new PostAPI();
                 string reslt = "";
 
-                reslt = InsertRecord(NameTextBox.Text.Trim(), WebsiteUrlTextBox.Text.Trim(), TargetFrameDropDownList.SelectedValue.ToString().Trim());
+                reslt = InsertRecord(NameTextBox.Text.Trim(), WebsiteUrlTextBox.Text.Trim(), TargetFrameDropDownList.SelectedValue.ToString().Trim(), txtCampaignBudget.Text.Trim());
                 if (reslt.Contains(" successful"))
                 {
                     ErrLbl.ForeColor = Color.Green;
@@ -159,12 +163,15 @@ namespace AMS
 
             BindWebsiteGridView();
         }
-        public string InsertRecord(string NameTextBox_, string WebsiteUrlTextBox_, string TargetFrameDropDownList_)
+        public string InsertRecord(string NameTextBox_, string WebsiteUrlTextBox_, string TargetFrameDropDownList_, string bdget)
         {
             try
             {
+                decimal budget_ = 0;
+                decimal.TryParse(bdget, out budget_);
+
                 Serve apir = new Serve();
-                string result = apir.insertWebsite("insertWebsite", NameTextBox_, WebsiteUrlTextBox_, TargetFrameDropDownList_, Convert.ToInt16(Idn.Value));
+                string result = apir.insertWebsite("insertWebsite", NameTextBox_, WebsiteUrlTextBox_, budget_, TargetFrameDropDownList_, Convert.ToInt16(Idn.Value));
 
                 return result;
             }

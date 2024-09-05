@@ -82,7 +82,7 @@
                         <asp:Panel ID="Panel1" runat="server">
                             <asp:Label ID="lblReportType" runat="server" Text="Select Report Type:" />
                             <asp:DropDownList ID="ddlReportType" runat="server" CssClass="form-control">
-                                <asp:ListItem Text="-Select-" Value="0" />
+                                <asp:ListItem Text="-Select Type-" Value="0" />
                                 <asp:ListItem Text="Campaign Performance" Value="CampaignPerformance" />
                                 <asp:ListItem Text="Banner Performance" Value="BannerPerformance" />
                                 <asp:ListItem Text="Website Performance" Value="WebsitePerformance" />

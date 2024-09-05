@@ -716,7 +716,7 @@ namespace AMS
                 con.Close();
             }
         }
-        public string insertWebsite(string spname, string Name, string WebsiteUrl, string TargetFrame, int UserId)
+        public string insertWebsite(string spname, string Name, string WebsiteUrl, decimal budget, string TargetFrame, int UserId)
         {
             SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
             try
@@ -729,6 +729,7 @@ namespace AMS
 
                 cmd.Parameters.Add("@Name", SqlDbType.Char).Value = Name.Trim();
                 cmd.Parameters.Add("@WebsiteUrl", SqlDbType.VarChar).Value = WebsiteUrl.Trim();
+                cmd.Parameters.Add("@Budget", SqlDbType.Decimal).Value = budget;
                 cmd.Parameters.Add("@TargetFrame", SqlDbType.Int).Value = TargetFrame;
                 cmd.Parameters.Add("@UserId", SqlDbType.Int).Value = UserId;
 
@@ -1343,7 +1344,7 @@ namespace AMS
                 con.Close();
             }
         }
-        public string insertCampaign(string spname, string txtCampaignName_, string txtCampaignDescription_, int prio, int AdvertiserDDL_, decimal budget,
+        public string insertCampaign(string spname, string txtCampaignName_, string txtCampaignDescription_, int prio, int AdvertiserDDL_,
             string startDate, string endDate, int Id)
         {
             SqlConnection con = new SqlConnection(AuthClass.Getconstring().ToString());
@@ -1359,7 +1360,6 @@ namespace AMS
                 cmd.Parameters.Add("@Description", SqlDbType.VarChar).Value = txtCampaignDescription_;
                 cmd.Parameters.Add("@Priority", SqlDbType.Int).Value = prio;
                 cmd.Parameters.Add("@AdvertiserId", SqlDbType.Int).Value = AdvertiserDDL_;
-                cmd.Parameters.Add("@Budget", SqlDbType.Decimal).Value = budget;
                 cmd.Parameters.Add("@StartDate", SqlDbType.Date).Value = startDate;
                 cmd.Parameters.Add("@EndDate", SqlDbType.Date).Value = endDate;
                 cmd.Parameters.Add("@UserId", SqlDbType.Int).Value = Id;

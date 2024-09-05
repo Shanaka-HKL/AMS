@@ -207,7 +207,7 @@ namespace AMS
             {
                 DataTable dtc = new DataTable();
                 Serve apir = new Serve();
-                dtc = apir.getCampaignById("getCampaignById", Convert.ToInt16(Idn.Value));
+                dtc = apir.getCampaignById("getCampaignByIdAll", Convert.ToInt16(Idn.Value));
 
                 if (dtc.Rows.Count > 0)
                 {
@@ -236,7 +236,7 @@ namespace AMS
             {
                 DataTable dta = new DataTable();
                 Serve apir = new Serve();
-                dta = apir.getWebsiteByCampaignId("getWebsiteByCampaignId", Convert.ToInt16(Idn.Value));
+                dta = apir.getWebsiteByCampaignId("getWebsiteByCampaignIdAll", Convert.ToInt16(Idn.Value));
 
                 if (dta.Rows.Count > 0)
                 {
