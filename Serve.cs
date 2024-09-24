@@ -1124,8 +1124,17 @@ namespace AMS
                     int cunt = cmd.ExecuteNonQuery();
                     if (cunt > 0)
                     {
+                        //bool res = SendEmail(cls.Password.Trim(), cls.DName.Trim(), cls.Email.Trim());
+                        //if (res == true)
+                        //{
                         trn.Commit();
                         return "Profile has been created successfully!";
+                        //}
+                        //else
+                        //{
+                        //    trn.Rollback();
+                        //    return new JsonResult("Profile creation process unsuccessful due to Email sending failure!");
+                        //}
                     }
                     else
                     {
